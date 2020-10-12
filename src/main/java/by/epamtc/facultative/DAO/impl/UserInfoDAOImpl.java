@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.sun.crypto.provider.RSACipher;
 
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
 import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
@@ -16,6 +15,7 @@ import by.epamtc.facultative.bean.UserPageInfo;
 public class UserInfoDAOImpl {
 
 	private static final UserInfoDAOImpl instance = new UserInfoDAOImpl();
+	
 	
 	private static final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
 			+ "users.user_email, users.department_department_id, departments.name, "
@@ -47,7 +47,6 @@ public class UserInfoDAOImpl {
 		String userFirstName = null;
 		String userSecondName = null;
 		String userPatronymic = null;
-		String userLogin = login;
 		String userEmail = null;
 
 		String userRole = null;
@@ -113,7 +112,7 @@ public class UserInfoDAOImpl {
 			userPageInfo.setUserDateOfBirth(userDateOfBirth);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//logger.log(Level.ERROR, "Ошибка базы данных");
 		}
 		
 		finally {

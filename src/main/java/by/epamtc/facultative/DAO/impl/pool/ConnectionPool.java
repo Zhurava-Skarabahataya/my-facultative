@@ -18,7 +18,7 @@ public class ConnectionPool {
 	private static final String DB_PASSWORD = "db.password";
 	private static final String CONNECTION_COUNT = "db.connection_count";
 
-	private static final String DB_PROPERTIES_FILE = "by.epamtc.facultative.DAO.impl.pool.properties.db";
+	private static final String DB_PROPERTIES_FILE = "db";
 
 	private static final int MINIMAL_CONNECTION_COUNT = 5;
 

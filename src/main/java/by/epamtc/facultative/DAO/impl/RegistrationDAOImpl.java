@@ -5,9 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epamtc.facultative.DAO.RegistrationDAO;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
@@ -16,7 +13,6 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 
 	private static final RegistrationDAOImpl instance = new RegistrationDAOImpl();
 
-	private final static Logger logger = LogManager.getLogger(RegistrationDAOImpl.class);
 
 	private static final String QUERY_INSERT_NEW_USER_INTO_USERS = "INSERT into USERS(user_login, user_password, user_email,"
 			+ "first_name, second_name, patronymic, user_role_id, department_department_id"

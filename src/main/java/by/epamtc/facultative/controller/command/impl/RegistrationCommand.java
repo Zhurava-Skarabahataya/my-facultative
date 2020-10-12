@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.bean.UserRegistrationInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.RegistrationNewUserService;
@@ -25,6 +27,8 @@ public class RegistrationCommand implements Command{
 	private static final String REQUEST_ATTRIBUTE_IS_LOGGED = "isLogged";
 	
 	private static final String COMMAND_GO_TO_SUCCESS_PAGE = "?command=go_to_registration_success_page";
+
+	private static final Logger logger = Logger.getLogger(RegistrationCommand.class);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
