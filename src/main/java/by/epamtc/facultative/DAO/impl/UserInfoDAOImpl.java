@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 
+import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
+import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
 import by.epamtc.facultative.bean.UserPageInfo;
 
@@ -16,6 +19,7 @@ public class UserInfoDAOImpl {
 
 	private static final UserInfoDAOImpl instance = new UserInfoDAOImpl();
 	
+	private static final Logger logger = Logger.getLogger(UserInfoDAOImpl.class);
 	
 	private static final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
 			+ "users.user_email, users.department_department_id, departments.name, "
@@ -35,10 +39,15 @@ public class UserInfoDAOImpl {
 		return instance;
 	}
 
-	public void provideUserInfo(UserPageInfo userPageInfo) {
+	public void provideUserInfo(UserPageInfo userPageInfo) throws DAOException {
 
 		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = cp.getFreeConnection();
+		Connection conn = null;
+		try {
+			conn = cp.getFreeConnection();
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		}
 		
 		PreparedStatement ps = null;
 
@@ -112,28 +121,18 @@ public class UserInfoDAOImpl {
 			userPageInfo.setUserDateOfBirth(userDateOfBirth);
 
 		} catch (SQLException e) {
-			//logger.log(Level.ERROR, "Ошибка базы данных");
+
+			String message = "Проблема с выполнением запроса в базу данных.";
+			logger.error(message, e);
+			throw new DAOException(message , e);
 		}
 		
 		finally {
 			
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				cp.releaseConnection(conn);
+			try {
+				cp.closeConnection(rs, ps, conn);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e);
 			}
 		}
 

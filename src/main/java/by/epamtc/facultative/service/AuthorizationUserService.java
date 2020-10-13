@@ -1,5 +1,6 @@
 package by.epamtc.facultative.service;
 
+import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.AuthorizationDAOImpl;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 
@@ -18,8 +19,13 @@ public class AuthorizationUserService {
 	public boolean execute(UserAuthorizationInfo info) {
 		
 		AuthorizationDAOImpl authorizationDAO = AuthorizationDAOImpl.getInstance();
-		return authorizationDAO.authorizeUser(info);
-		
+		try {
+			return authorizationDAO.authorizeUser(info);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 		
 	}
 	

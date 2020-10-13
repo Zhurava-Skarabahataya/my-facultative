@@ -2,20 +2,34 @@ package by.epamtc.facultative.DAO.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
 
 import by.epamtc.facultative.DAO.DatabaseDAO;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
+import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
 
 public class DatabaseDAOImpl implements DatabaseDAO{
+	
+	private static final Logger logger = Logger.getLogger(DatabaseDAOImpl.class);
+
 
 	@Override
 	public String getDataFromDatabase() {
 		
 		ConnectionPool cp = ConnectionPool.getInstance();
-		cp.initPool();
+		try {
+			cp.initPool();
+		} catch (ConnectionPoolException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Pool inited in datbase DAO");
-		Connection conn = cp.getFreeConnection();
+//		try {
+//			//Connection conn = cp.getFreeConnection();
+//		} catch (ConnectionPoolException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		PreparedStatement ps = null;
 		

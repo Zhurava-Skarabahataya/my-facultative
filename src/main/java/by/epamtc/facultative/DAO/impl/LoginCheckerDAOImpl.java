@@ -5,12 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.DAO.InfoCheckerDAO;
+import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
+import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
 
 public class LoginCheckerDAOImpl implements InfoCheckerDAO {
 
 	private static final LoginCheckerDAOImpl instance = new LoginCheckerDAOImpl();
+
+	private static final Logger logger = Logger.getLogger(LoginCheckerDAOImpl.class);
 
 	private static final String QUERY_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE user_login = ?";
 
@@ -23,14 +29,22 @@ public class LoginCheckerDAOImpl implements InfoCheckerDAO {
 	}
 
 	@Override
-	public boolean checkInfoIfExists(String info) {
+	public boolean checkInfoIfExists(String info) throws DAOException {
+
 		String loginToCheck;
 		loginToCheck = info;
 
-		// ПОЗЖЕ ПРОВЕРЬ, СООТВЕТСТВУЕТ ЛИ НОРМАМ НАПИСНИЯ
-
 		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = cp.getFreeConnection();
+		Connection conn = null;
+
+		try {
+			conn = cp.getFreeConnection();
+
+		} catch (ConnectionPoolException e) {
+
+			throw new DAOException(e);
+		}
+
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 
@@ -45,28 +59,18 @@ public class LoginCheckerDAOImpl implements InfoCheckerDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+
+			String message = "Проблема с выполнением запроса в базу данных.";
+			logger.error(message, e);
+			throw new DAOException(message, e);
 
 		} finally {
 
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			try {
+				cp.closeConnection(rs, ps, conn);
 
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if (conn != null) {
-				cp.releaseConnection(conn);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e);
 			}
 
 		}

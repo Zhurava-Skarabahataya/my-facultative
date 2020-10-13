@@ -1,5 +1,6 @@
 package by.epamtc.facultative.service;
 
+import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.UserInfoDAOImpl;
 import by.epamtc.facultative.bean.UserPageInfo;
 
@@ -21,7 +22,12 @@ public class UserPageInfoProviderService {
 		String userLogin = userPageInfo.getUserLogin();
 
 		UserInfoDAOImpl userInfoDAOImpl = UserInfoDAOImpl.getInstance();
-		userInfoDAOImpl.provideUserInfo(userPageInfo);
+		try {
+			userInfoDAOImpl.provideUserInfo(userPageInfo);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		userPageInfo.setUserPhotoLink("user_photos/" + userLogin + ".jpg");
 		System.out.println("user_photos/" + userLogin + ".jpg");

@@ -5,13 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.DAO.InfoCheckerDAO;
+import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
-import javafx.css.PseudoClass;
+import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
 
 public class EmailCheckerDAOImlp implements InfoCheckerDAO {
 
 	private static final EmailCheckerDAOImlp instance = new EmailCheckerDAOImlp();
+	
+	private static final Logger logger = Logger.getLogger(EmailCheckerDAOImlp.class);
 	
 	private static final String QUERY_FIND_EMAIL_IN_DATABASE = "SELECT * FROM users WHERE user_email = ?";
 
@@ -24,15 +29,21 @@ public class EmailCheckerDAOImlp implements InfoCheckerDAO {
 	}
 
 	@Override
-	public boolean checkInfoIfExists(String email) {
+	public boolean checkInfoIfExists(String email) throws DAOException {
 
 		String emailToCkeck;
 		emailToCkeck = email;
 
-		// ПОЗЖЕ ПРОВЕРЬ, СООТВЕТСТВУЕТ ЛИ НОРМАМ НАПИСНИЯ
-
 		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = cp.getFreeConnection();
+		Connection conn = null;
+		
+		try {
+			conn = cp.getFreeConnection();
+			
+		} catch (ConnectionPoolException e) {
+
+			throw new DAOException(e);
+		}
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -48,28 +59,18 @@ public class EmailCheckerDAOImlp implements InfoCheckerDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			String message = "Проблема с выполнением запроса в базу данных.";
+			logger.error(message, e);
+			throw new DAOException(message , e);
 			
 		} finally {
 			
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			if (conn != null) {
-				cp.releaseConnection(conn);
+			try {
+				cp.closeConnection(rs, ps, conn);
+			} catch (ConnectionPoolException e) {
+
+				throw new DAOException(e);
 			}
 
 		}

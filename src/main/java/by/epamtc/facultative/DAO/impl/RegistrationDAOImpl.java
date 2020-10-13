@@ -5,14 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.DAO.RegistrationDAO;
+import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
+import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
 
 public class RegistrationDAOImpl implements RegistrationDAO {
 
 	private static final RegistrationDAOImpl instance = new RegistrationDAOImpl();
 
+	private static final Logger logger = Logger.getLogger(RegistrationDAOImpl.class);
 
 	private static final String QUERY_INSERT_NEW_USER_INTO_USERS = "INSERT into USERS(user_login, user_password, user_email,"
 			+ "first_name, second_name, patronymic, user_role_id, department_department_id"
@@ -31,10 +36,16 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 	}
 
 	@Override
-	public void registrateUser(UserRegistrationInfo userRegistrationInfo) {
+	public void registrateUser(UserRegistrationInfo userRegistrationInfo) throws DAOException {
 
 		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = cp.getFreeConnection();
+		Connection conn = null;
+		try {
+			conn = cp.getFreeConnection();
+			
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		}
 
 		PreparedStatement preparedStatementFirst = null;
 		PreparedStatement preparedStatementSecond = null;
@@ -88,15 +99,22 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			conn.setAutoCommit(true);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			String message = "Проблема с выполнением запроса в базу данных.";
+			logger.error(message, e);
+			throw new DAOException(message , e);
 
 		} finally {
 
 			if (rs != null) {
+				
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					
+					String message = "Проблема с закрытием результатов запроса в базу данных.";
+					logger.error(message, e);
+					throw new DAOException(message , e);
 				}
 			}
 
@@ -114,7 +132,10 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 				}
 
 			} catch (SQLException e) {
-				e.printStackTrace();
+				
+				String message = "Проблема с закрытием запроса в базу данных.";
+				logger.error(message, e);
+				throw new DAOException(message , e);
 			}
 
 			if (conn != null) {
