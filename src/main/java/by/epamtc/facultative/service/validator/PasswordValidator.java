@@ -5,14 +5,15 @@ import java.util.regex.Pattern;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
 
-public class PasswordValidator implements Validator{
+public class PasswordValidator implements Validator {
 
 	private static final PasswordValidator instance = new PasswordValidator();
-	
-	private static final String PASSWORD_PATTERN_REGEX = "[a-zA-Z0-9]{6,}$";
+
+	private final EmailValidator next = EmailValidator.getInstance();
+
+	private static final String PASSWORD_PATTERN_REGEX = "[а-яА-ЯйЙa-zA-Z0-9]{6,}$";
 	Pattern passwordPattern;
-	
-	
+
 	private PasswordValidator() {
 		passwordPattern = Pattern.compile(PASSWORD_PATTERN_REGEX);
 	}
@@ -20,29 +21,35 @@ public class PasswordValidator implements Validator{
 	public static PasswordValidator getInstance() {
 		return instance;
 	}
-	
+
 	public String validate(UserRegistrationInfo info) {
-		
+
 		String password = info.getUserPassword();
-		
-		if (password == null || password.length() <6) {
+
+		if (password == null || password.length() < 6) {
 			return "Пароль слишком короткий";
-		}
-		else if (!passwordPattern.matcher(password).find()) {
-				return "Пароль может содержать только букв и цифры";
-			}
 			
+		} 
 		
-		return null;
-		
+		if (!passwordPattern.matcher(password).find()) {
+			return "Пароль может содержать только букв и цифры";
+		}
+
+		return next.validate(info);
+
 	}
-	
+
 	public String validate(UserAuthorizationInfo data) {
 
-		if (data == null) {
-			return "Data is empty";
+		String password = data.getPassword();
+
+		if (password == null || password.length() < 6) {
+			return "Пароль слишком короткий";
 		}
-		return null;
+		if (!passwordPattern.matcher(password).find()) {
+			return "Пароль может содержать только букв и цифры";
+		}
+		return "OK";
 
 	}
 

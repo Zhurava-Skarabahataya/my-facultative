@@ -7,12 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style><%@include file="/css/style.css"%></style>
 
+<jsp:include page="/css/style.css" />
+
+<jsp:include page="header.jsp" />
 
 <fmt:setLocale value="${sessionScope.local}" />
 
-<fmt:setBundle basename="resources.localization" var="loc"
+<fmt:setBundle basename="localization.localization" var="loc"
 	scope="session" />
 <fmt:message bundle="${loc}" key="registration.message.enter_data"
 	var="message" />
@@ -70,80 +72,83 @@
 	var="jurisprudence" />
 
 
-<c:set var="adress" scope="session"
-	value="WEB-INF/jsp/registration-page.jsp" />
+<c:set var="commandToLanguageChanger" scope="session"
+	value="go_to_registration_page" />
+
 </head>
 <body>
+	<c:out value="${messageFromServlet}" />
 
-	<form action="Controller" method="post">
-		<input type="hidden" name="command" value="change_language" /> <input
-			type="hidden" name="local" value="ru" /> <input type="hidden"
-			name="uri" value="${adress}" /> <input type="submit"
-			value="${ru_button}" />
-	</form>
-	<form action="Controller" method="post">
-		<input type="hidden" name="command" value="change_language" /> <input
-			type="hidden" name="local" value="en" /> <input type="hidden"
-			name="uri" value="${adress}" /><input type="submit"
-			value="${en_button}" />
-	</form>
-	<form action="Controller" method="post">
-		<input type="hidden" name="command" value="change_language" /> <input
-			type="hidden" name="local" value="be" /> <input type="hidden"
-			name="uri" value="${adress}" /><input type="submit"
-			value="${by_button}" />
-	</form>
-
-
-	<form action="Controller" method="post">
+	<form action="Controller" method="post" autocomplete="on">
 		<input type="hidden" name="command" value="registration_command" />
-		<c:out value="${message}" />
+
+		<div class="welcome_message">
+			<c:out value="${message}" />
+		</div>
+
 		<br />
-		<c:out value="${userName}" />
-		<input type="text" name="userlogin" required value="" /><br /> <br />
-		<c:out value="${password}" />
-		<input type="password" name="password" required value="" /><br />
+		<table>
+			<tr>
+				<td><c:out value="${userName}" /></td>
+				<td><input type="text" name="userlogin" required value="" /><br />
+					<br /></td>
+			</tr>
+			<tr>
+				<td><c:out value="${password}" /></td>
+				<td><input type="password" name="password" required value="" /><br />
+				</td>
+			</tr>
+			<tr>
+				<td><c:out value="${email}" /></td>
+				<td><input type="email" name="user_email" required value="" /><br />
+					<br /></td>
+			</tr>
+			<tr>
+				<td><c:out value="${firstName}" /></td>
+				<td><input type="text" name="firstName" required value="" /><br />
+					<br /></td>
+			</tr>
+			<tr>
+				<td><c:out value="${secondName}" /></td>
+				<td><input type="text" name="secondName" required value="" /><br />
+					<br /></td>
+			</tr>
+			<tr>
+				<td><c:out value="${patronymic}" /></td>
+				<td><input type="text" name="patronymic" value="" /><br /> <br />
+				</td>
+			</tr>
+			<tr>
+				<td><c:out value="${position}" /></td>
+				<td><input type="radio" name=position value="1"> <c:out
+						value="${student}" /> <input type="radio" name="position"
+					value="2"> <c:out value="${lecturer}" /> <input
+					type="radio" name="position" value="3"> <c:out
+						value="${dean}" /> <br></td>
 
-		<c:out value="${email}" />
-		<input type="email" name="user_email" required value="" /><br /> <br />
-		<c:out value="${firstName}" />
-		<input type="text" name="firstName" required value="" /><br /> <br />
-		<c:out value="${secondName}" />
-		<input type="text" name="secondName" required value="" /><br /> <br />
-		<c:out value="${patronymic}" />
-		<input type="text" name="patronymic" value="" /><br /> <br />
+			</tr>
+			<tr>
+				<td><c:out value="${faculty}" /></td>
+				<td><br> <input type="radio" name=faculty value="1">
+					<c:out value="${herbology_and_potions}" /> <br> <input
+					type="radio" name=faculty value="2"> <c:out
+						value="${applied_magic}" /> <br> <input type="radio"
+					name=faculty value="3"> <c:out
+						value="${healing_witchcraft}" /> <br> <input type="radio"
+					name=faculty value="4"> <c:out value="${astrology}" /> <br>
+					<input type="radio" name=faculty value="5"> <c:out
+						value="${inhumanity}" /> <br> <input type="radio"
+					name=faculty value="6"> <c:out value="${shamanism}" /> <br>
+					<input type="radio" name=faculty value="7"> <c:out
+						value="${warlock}" /> <br> <input type="radio" name=faculty
+					value="8"> <c:out value="${jurisprudence}" /></td>
 
-		<c:out value="${position}" />
+			</tr>
 
-		<input type="radio" name=position value="1">
-		<c:out value="${student}" />
-		<input type="radio" name="position" value="2">
-		<c:out value="${lecturer}" />
-		<input type="radio" name="position" value="3">
-		<c:out value="${dean}" />
-		<br>
+		</table>
 
-
-		<c:out value="${faculty}" />
-		<br> <input type="radio" name=faculty value="1">
-		<c:out value="${herbology_and_potions}" />
-		<br> <input type="radio" name=faculty value="2">
-		<c:out value="${applied_magic}" />
-		<br> <input type="radio" name=faculty value="3">
-		<c:out value="${healing_witchcraft}" />
-		<br> <input type="radio" name=faculty value="4">
-		<c:out value="${astrology}" />
-		<br> <input type="radio" name=faculty value="5">
-		<c:out value="${inhumanity}" />
-		<br> <input type="radio" name=faculty value="6">
-		<c:out value="${shamanism}" />
-		<br> <input type="radio" name=faculty value="7">
-		<c:out value="${warlock}" />
-		<br> <input type="radio" name=faculty value="8">
-		<c:out value="${jurisprudence}" />
 		<br> <input type="submit" value="${send}" /><br />
 	</form>
-
 
 </body>
 </html>

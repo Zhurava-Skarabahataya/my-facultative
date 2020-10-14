@@ -30,7 +30,8 @@ public class GoToUserPageCommand implements Command {
 		UserPageInfoProviderService userPageInfoProviderService = UserPageInfoProviderService.getInstance();
 		userPageInfoProviderService.execute(userInfo);
 
-		System.out.println(userInfo.getUserFirstName());
+		System.out.println("user login in gotouserpagecommand "+ userLogin);
+		
 		request.setAttribute(REQUEST_ATTRIBUTE_BEAN, userInfo);
 		
 		

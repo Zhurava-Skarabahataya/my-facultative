@@ -35,11 +35,12 @@ public class NameValidator implements Validator {
 		if (!emailPattern.matcher(secondName).find()) {
 			return "В фамилии могут содержаться только буквы";
 		}
-		if (patronymic != null && !emailPattern.matcher(patronymic).find()) {
+		if (patronymic.length() > 0 && !emailPattern.matcher(patronymic).find()) {
+			System.out.println(patronymic);
 			return "В отчестве могут содержаться только буквы";
 		}
 
-		return "OK";
+		return null;
 	}
 
 }

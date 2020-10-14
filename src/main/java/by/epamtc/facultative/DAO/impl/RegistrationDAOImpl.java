@@ -38,6 +38,8 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 	@Override
 	public void registrateUser(UserRegistrationInfo userRegistrationInfo) throws DAOException {
 
+		System.out.println("МЫ В ДАО");
+		
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 		try {
@@ -68,11 +70,18 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			conn.setAutoCommit(false);
 
 			preparedStatementFirst = conn.prepareStatement(QUERY_INSERT_NEW_USER_INTO_USERS);
-
+System.out.println("пишем в бд");
 			preparedStatementFirst.setString(1, userLogin);
+			System.out.println(userLogin);
 			preparedStatementFirst.setString(2, userPassword);
+			System.out.println(userPassword);
+
 			preparedStatementFirst.setString(3, userEmail);
+			System.out.println(userEmail);
+
 			preparedStatementFirst.setString(4, userFirstName);
+			System.out.println(userFirstName);
+
 			preparedStatementFirst.setString(5, userSecondName);
 			preparedStatementFirst.setString(6, userPatronymic);
 			preparedStatementFirst.setInt(7, userRole);

@@ -2,6 +2,7 @@ package by.epamtc.facultative.controller.command.impl;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,7 +19,8 @@ public class AuthorizationCommand implements Command {
 	private static final String SESSION_ATTRIBUTE_USER_LOGIN = "userLogin";
 	private static final String SESSION_ATTRIBUTE_IS_LOGGED = "isLogged";
 
-	private static final String REDIRECT_PARAMETERS = "?command=go_to_student_page";
+	private static final String SUCCESS_REDIRECT_PARAMETERS = "?command=go_to_user_page";
+	private static final String AUTHORIZATION_PAGE_PATH = "WEB-INF/jsp/authorization-page.jsp";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -38,10 +40,27 @@ public class AuthorizationCommand implements Command {
 			session.setAttribute(SESSION_ATTRIBUTE_USER_LOGIN, login);
 			session.setAttribute(SESSION_ATTRIBUTE_IS_LOGGED, true);
 
+			System.out.println("setted " + SESSION_ATTRIBUTE_USER_LOGIN);
+			System.out.println("setted " + SESSION_ATTRIBUTE_IS_LOGGED);
+			
 			try {
-				response.sendRedirect(request.getRequestURI() + REDIRECT_PARAMETERS);
+				response.sendRedirect(request.getRequestURI() + SUCCESS_REDIRECT_PARAMETERS);
 				
 			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			request.setAttribute("messageFromServlet", "К сожалению, такого пользователя не найдено.");
+
+			
+			try {
+				request.getRequestDispatcher(AUTHORIZATION_PAGE_PATH).forward(request, response);
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

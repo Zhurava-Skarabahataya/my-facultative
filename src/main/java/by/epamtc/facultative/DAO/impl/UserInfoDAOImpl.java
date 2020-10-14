@@ -105,6 +105,7 @@ public class UserInfoDAOImpl {
 			}
 
 			userPageInfo.setUserFirstName(userFirstName);
+			System.out.println("username " + userFirstName);
 			userPageInfo.setUserSecondName(userSecondName);
 			userPageInfo.setUserPatronymic(userPatronymic);
 			userPageInfo.setUserEmail(userEmail);
@@ -117,7 +118,6 @@ public class UserInfoDAOImpl {
 
 			userPageInfo.setUserAdress(userAdress);
 			userPageInfo.setUserPhone(userPhone);
-			userPageInfo.setUserPhotoLink(userPhotoLink);
 			userPageInfo.setUserDateOfBirth(userDateOfBirth);
 
 		} catch (SQLException e) {

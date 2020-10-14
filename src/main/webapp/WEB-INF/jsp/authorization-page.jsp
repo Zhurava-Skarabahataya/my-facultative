@@ -10,12 +10,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style><%@include file="/css/style.css"%></style>
-
+<c:set var="commandToLanguageChanger" scope="session" value="go_to_authorization_page" />
 </head>
+
 <body>
-	AUTHHHHH
+	<jsp:include page="header.jsp" />
 
 	<hr>
+	<c:out value="${messageFromServlet}"/>
 	<form action="Controller" method="post">
 		<input type="hidden" name="command" value="authorization_command" />
 		Введите логин и пароль: <br> Логин <input type="text"

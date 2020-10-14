@@ -5,7 +5,9 @@ import java.util.Map;
 
 import by.epamtc.facultative.controller.command.impl.AuthorizationCommand;
 import by.epamtc.facultative.controller.command.impl.ChangeLanguageCommand;
+import by.epamtc.facultative.controller.command.impl.EditUserInfoCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAuthorizationPageCommand;
+import by.epamtc.facultative.controller.command.impl.GoToErrorPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationSuccessPage;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageCommand;
@@ -24,12 +26,14 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_WELCOME_PAGE, new GoToWelcomePageCommand());
 		commands.put(CommandName.GO_TO_AUTHORIZATION_PAGE, new GoToAuthorizationPageCommand());
 		commands.put(CommandName.GO_TO_REGISTRATION_PAGE, new GoToRegistrationPageCommand());
-		commands.put(CommandName.GO_TO_STUDENT_PAGE, new GoToUserPageCommand());
+		commands.put(CommandName.GO_TO_USER_PAGE, new GoToUserPageCommand());
 		commands.put(CommandName.AUTHORIZATION_COMMAND, new AuthorizationCommand());
 		commands.put(CommandName.REGISTRATION_COMMAND, new RegistrationCommand());
 		commands.put(CommandName.CHANGE_LANGUAGE, new ChangeLanguageCommand());
 		commands.put(CommandName.GO_TO_REGISTRATION_SUCCESS_PAGE, new GoToRegistrationSuccessPage());
 		commands.put(CommandName.UPLOAD_USER_PHOTO, new UploadUserPhotoCommand());
+		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPageCommand());
+		commands.put(CommandName.EDIT_USER_INFO, new EditUserInfoCommand());
 	}
 
 	public static CommandProvider getInstance() {

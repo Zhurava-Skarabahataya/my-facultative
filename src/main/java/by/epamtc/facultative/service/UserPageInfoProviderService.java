@@ -20,6 +20,8 @@ public class UserPageInfoProviderService {
 		
 		UserPageInfo userPageInfo = userInfo;
 		String userLogin = userPageInfo.getUserLogin();
+		
+		System.out.println("user login in userpageinfoprovider " + userLogin);
 
 		UserInfoDAOImpl userInfoDAOImpl = UserInfoDAOImpl.getInstance();
 		try {
@@ -29,8 +31,8 @@ public class UserPageInfoProviderService {
 			e.printStackTrace();
 		}
 		
-		userPageInfo.setUserPhotoLink("user_photos/" + userLogin + ".jpg");
-		System.out.println("user_photos/" + userLogin + ".jpg");
+//		userPageInfo.setUserPhotoLink("user_photos/" + userLogin + ".jpg");
+		userPageInfo.setUserPhotoLink("D:/Java/facultative-project/user_photos/" + userLogin + ".jpg");
 		
 		
 	}

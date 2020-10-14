@@ -20,9 +20,9 @@ public class UploadUserPhotoCommand implements Command {
 	private static final String REQUEST_PRAMETER_PART = "file";
 	private static final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 	private static final String FILENAME_EXTENSION = ".jpg";
-	private static final String PARAMETER_COMMAND_GO_TO_USER_PAGE = "?command=go_to_student_page";
-	private static final String PROJECT_PATH = "D:/Java/JavaWorkspace";
-	private static final String FOLDER_PATH = "/src/main/webapp/user_photos/";
+	private static final String PARAMETER_COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
+	private static final String PROJECT_PATH = "D:/Java";
+	private static final String FOLDER_PATH = "/user_photos/";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -41,12 +41,15 @@ public class UploadUserPhotoCommand implements Command {
 
 			HttpSession session = request.getSession();
 			String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
-
+			System.out.println("USER LOGIN     " + userLogin);
+			System.out.println("PATTHHHHHH " + PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);
+			
+			
 			File targetFile = new File(
 					PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);
 
 			if (!targetFile.exists()) {
-				targetFile.createNewFile();
+				targetFile.mkdir();
 			}
 
 			outStream = new FileOutputStream(targetFile);
