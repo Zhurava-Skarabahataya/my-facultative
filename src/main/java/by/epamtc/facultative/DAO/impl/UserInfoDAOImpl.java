@@ -24,7 +24,7 @@ public class UserInfoDAOImpl {
 	private static final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
 			+ "users.user_email, users.department_department_id, departments.name, "
 			+ "users.user_role_id, user_roles.role_name, "
-			+ " user_details.user_adress, user_details.user_photo_link,"
+			+ " user_details.user_adress,"
 			+ "user_details.user_mobile_number, user_details.user_date_of_birth "
 			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
 			+ "JOIN departments ON users.department_department_id = departments.department_id "
@@ -62,7 +62,6 @@ public class UserInfoDAOImpl {
 		String userFaculty = null;
 		String userAdress = null;
 		String userPhone = null;
-		String userPhotoLink = null;
 
 		LocalDate userDateOfBirth = null;
 
@@ -96,16 +95,14 @@ public class UserInfoDAOImpl {
 				userRole = rs.getString(8);
 
 				userAdress = rs.getString(9);
-				userPhotoLink = rs.getString(10);
-				userPhone = rs.getString(11);
+				userPhone = rs.getString(10);
 
-				java.sql.Date sqlDate = rs.getDate(12);
+				java.sql.Date sqlDate = rs.getDate(11);
 				if (sqlDate != null) {
 				userDateOfBirth = sqlDate.toLocalDate();}
 			}
 
 			userPageInfo.setUserFirstName(userFirstName);
-			System.out.println("username " + userFirstName);
 			userPageInfo.setUserSecondName(userSecondName);
 			userPageInfo.setUserPatronymic(userPatronymic);
 			userPageInfo.setUserEmail(userEmail);

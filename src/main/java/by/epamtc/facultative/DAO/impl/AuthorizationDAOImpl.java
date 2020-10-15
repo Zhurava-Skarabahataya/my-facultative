@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 
 import by.epamtc.facultative.DAO.exception.DAOException;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
@@ -18,7 +19,8 @@ public class AuthorizationDAOImpl {
 
 	private static final Logger logger = Logger.getLogger(AuthorizationDAOImpl.class);
 
-	private static final String QUERY_FIND_USER_IN_DATABASE = "SELECT * FROM users WHERE user_login = ? AND user_password = ?";
+	private static final String QUERY_FIND_USER_IN_DATABASE = "SELECT * FROM users WHERE user_login = ? ";
+//AND user_password = ?
 
 	private AuthorizationDAOImpl() {
 
@@ -30,29 +32,38 @@ public class AuthorizationDAOImpl {
 
 	public boolean authorizeUser(UserAuthorizationInfo info) throws DAOException {
 
-		String userLogin = info.getLogin();
-		String userPassword = info.getPassword();
+		String userLogin;
+		String userPasswordUnhashed;
+		String hashedPassword = null;
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		userLogin = info.getLogin();
+		userPasswordUnhashed = info.getPassword();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
+			connection = connectionPool.getFreeConnection();
 
-			ps = conn.prepareStatement(QUERY_FIND_USER_IN_DATABASE);
+			statement = connection.prepareStatement(QUERY_FIND_USER_IN_DATABASE);
 
-			ps.setString(1, userLogin);
-			ps.setString(2, userPassword);
+			statement.setString(1, userLogin);
 
-			rs = ps.executeQuery();
+			resultSet = statement.executeQuery();
 
-			if (rs.next()) {
-				return true;
+			if (resultSet.next()) {
+				
+				hashedPassword = resultSet.getString("user_password");
+				
+				if (BCrypt.checkpw(userPasswordUnhashed, hashedPassword)) {
+					return true;
+				}
+
 			}
-			
+
 		} catch (ConnectionPoolException e) {
 
 			String message = "Не удалось получить соединение.";
@@ -69,8 +80,8 @@ public class AuthorizationDAOImpl {
 		} finally {
 
 			try {
-				cp.closeConnection(rs, ps, conn);
-				
+				connectionPool.closeConnection(resultSet, statement, connection);
+
 			} catch (ConnectionPoolException e) {
 
 				String message = "Не удалось закрыть соединение.";

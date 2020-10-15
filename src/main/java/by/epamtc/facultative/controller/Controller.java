@@ -48,13 +48,8 @@ public class Controller extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String commandName;
-//	    final Logger logger = LogManager.getLogger();
-//	    logger.log(Level.ERROR, "First log");
-//	    logger.log(Level.ALL, "First log");
-//	    logger.log(Level.DEBUG, "First log");
 	    
 		commandName= request.getParameter("command");
-		System.out.println(commandName);
 		Command currentCommand = CommandProvider.getInstance().getCommand(commandName.toUpperCase());
 		currentCommand.execute(request, response);
 	}

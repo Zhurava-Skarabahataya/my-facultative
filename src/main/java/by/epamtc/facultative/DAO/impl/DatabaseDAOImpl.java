@@ -23,7 +23,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
 		} catch (ConnectionPoolException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Pool inited in datbase DAO");
 //		try {
 //			//Connection conn = cp.getFreeConnection();
 //		} catch (ConnectionPoolException e) {

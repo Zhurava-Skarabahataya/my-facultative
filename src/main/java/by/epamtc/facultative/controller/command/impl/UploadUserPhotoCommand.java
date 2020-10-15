@@ -49,7 +49,7 @@ public class UploadUserPhotoCommand implements Command {
 					PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);
 
 			if (!targetFile.exists()) {
-				targetFile.mkdir();
+				targetFile.createNewFile();
 			}
 
 			outStream = new FileOutputStream(targetFile);

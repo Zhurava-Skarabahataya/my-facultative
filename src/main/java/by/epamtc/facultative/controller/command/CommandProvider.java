@@ -11,6 +11,7 @@ import by.epamtc.facultative.controller.command.impl.GoToErrorPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationSuccessPage;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageCommand;
+import by.epamtc.facultative.controller.command.impl.GoToUserPageEditingCommand;
 import by.epamtc.facultative.controller.command.impl.GoToWelcomePageCommand;
 import by.epamtc.facultative.controller.command.impl.RegistrationCommand;
 import by.epamtc.facultative.controller.command.impl.UploadUserPhotoCommand;
@@ -34,6 +35,7 @@ public class CommandProvider {
 		commands.put(CommandName.UPLOAD_USER_PHOTO, new UploadUserPhotoCommand());
 		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPageCommand());
 		commands.put(CommandName.EDIT_USER_INFO, new EditUserInfoCommand());
+		commands.put(CommandName.GO_TO_EDIT_USER_INFO_COMMAND, new GoToUserPageEditingCommand());
 	}
 
 	public static CommandProvider getInstance() {

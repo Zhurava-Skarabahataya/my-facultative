@@ -11,7 +11,7 @@ public class PasswordValidator implements Validator {
 
 	private final EmailValidator next = EmailValidator.getInstance();
 
-	private static final String PASSWORD_PATTERN_REGEX = "[а-яА-ЯйЙa-zA-Z0-9]{6,}$";
+	private static final String PASSWORD_PATTERN_REGEX = "^[а-яА-ЯйЙa-zA-Z0-9]{6,}$";
 	Pattern passwordPattern;
 
 	private PasswordValidator() {

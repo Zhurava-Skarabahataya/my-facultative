@@ -19,10 +19,12 @@ public class AuthorizationUserService {
 	public boolean execute(UserAuthorizationInfo info) {
 		
 		AuthorizationDAOImpl authorizationDAO = AuthorizationDAOImpl.getInstance();
+		
 		try {
 			return authorizationDAO.authorizeUser(info);
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			// ОБРАБОООТАЙ
+			
 			e.printStackTrace();
 		}
 		return false;

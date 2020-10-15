@@ -30,9 +30,15 @@ public class RegistrationNewUserService {
 		
 		String email = userRegistrationInfo.getUserEmail();
 		String login = userRegistrationInfo.getUserLogin();
+		
 
 		UserDataValidator validator = UserDataValidator.getInstance();
 		String validatorMessage = validator.validate(userRegistrationInfo);
+
+		String unhashedPassword = userRegistrationInfo.getUserPassword();
+		String hashedPassword = PasswordEncryptor.getInstance().hashPassword(unhashedPassword);
+		
+		userRegistrationInfo.setUserPassword(hashedPassword);
 
 		if (validatorMessage != null){
 			return validatorMessage;

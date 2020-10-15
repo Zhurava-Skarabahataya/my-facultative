@@ -9,22 +9,37 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style><%@include file="/css/style.css"%></style>
-<c:set var="commandToLanguageChanger" scope="session" value="go_to_authorization_page" />
+
+<jsp:include page="/css/style.css" />
+
+<c:set var="commandToLanguageChanger" scope="session"
+	value="go_to_authorization_page" />
 </head>
 
 <body>
 	<jsp:include page="header.jsp" />
 
 	<hr>
-	<c:out value="${messageFromServlet}"/>
-	<form action="Controller" method="post">
-		<input type="hidden" name="command" value="authorization_command" />
-		Введите логин и пароль: <br> Логин <input type="text"
-			name="login" value="" /> <br> Пароль <input type="password"
-			name="password" value="" /> <br> <input type="submit"
-			value="Не помню пароль" /><br> <input type="submit" value="send" />
-	</form>
+	<div align="center">
+		<c:out value="${messageFromServlet}" />
+		
+		<form action="Controller" method="post">
+			<input type="hidden" name="command" value="authorization_command" />
+			Введите логин и пароль: <br>
+			<table>
+				<tr>
+					<td>Логин</td>
+					<td><input type="text" name="login" value="" /></td>
+				</tr>
+				<tr>
+					<td>Пароль</td>
+					<td><input type="password" name="password" value="" /></td>
+				</tr>
 
+			</table>
+			<br> <input type="submit" value="Отправить" /> <br> <br><input
+				type="submit" value="Не помню пароль" /><br>
+		</form>
+	</div>
 </body>
 </html>

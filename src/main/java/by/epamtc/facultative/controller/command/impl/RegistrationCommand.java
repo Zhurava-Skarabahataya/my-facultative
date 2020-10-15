@@ -26,7 +26,7 @@ public class RegistrationCommand implements Command {
 	private static final String PARAMETER_POSITION = "position";
 
 	private static final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
-	private static final String REQUEST_ATTRIBUTE_IS_LOGGED = "isLogged";
+	private static final String SESSION_ATTRIBUTE_IS_LOGGED = "isLogged";
 
 	private static final String COMMAND_GO_TO_SUCCESS_PAGE = "?command=go_to_registration_success_page";
 	private static final String COMMAND_GO_ERROR_PAGE = "?command=go_to_error_page";
@@ -38,9 +38,6 @@ public class RegistrationCommand implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-		System.out.println("МЫ В КОНТРЛЛЛЕРЕ");
-
-		
 		UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo();
 
 		RegistrationNewUserService rService = RegistrationNewUserService.getInstance();
@@ -77,6 +74,7 @@ public class RegistrationCommand implements Command {
 
 		} catch (ServiceException e1) {
 			try {
+				e1.printStackTrace();
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_ERROR_PAGE);
 
 			} catch (IOException e) {
@@ -88,11 +86,8 @@ public class RegistrationCommand implements Command {
 			HttpSession session = request.getSession();
 
 			session.setAttribute(SESSION_ATTRIBUTE_LOGIN, userlogin);
-			session.setAttribute(REQUEST_ATTRIBUTE_IS_LOGGED, true);
+			session.setAttribute(SESSION_ATTRIBUTE_IS_LOGGED, true);
 			
-			System.out.println("userlogin " + userlogin);
-			System.out.println("setted REG" + SESSION_ATTRIBUTE_LOGIN + " " + session.getAttribute(SESSION_ATTRIBUTE_LOGIN));
-			System.out.println("setted REG " + REQUEST_ATTRIBUTE_IS_LOGGED +  " " + session.getAttribute(REQUEST_ATTRIBUTE_IS_LOGGED));
 			try {
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE);
 			} catch (IOException e) {
@@ -100,8 +95,8 @@ public class RegistrationCommand implements Command {
 			}
 		} else {
 			try {
+				
 				request.setAttribute("messageFromServlet", message);
-				System.out.println(message);
 				request.getRequestDispatcher(REGISTRATION_PAGE_PATH).forward(request, response);
 			} catch (ServletException e) {
 				// TODO Auto-generated catch block
