@@ -36,8 +36,10 @@ public class NameValidator implements Validator {
 			return "В фамилии могут содержаться только буквы";
 		}
 		if (patronymic.length() > 0 && !emailPattern.matcher(patronymic).find()) {
-			System.out.println(patronymic);
 			return "В отчестве могут содержаться только буквы";
+		}
+		if (firstName.length() > 45 || secondName.length() > 45 || patronymic.length() > 45) {
+			return "В имени, фамилии и отчестве не должно быть больше 45 знаков.";
 		}
 
 		return null;

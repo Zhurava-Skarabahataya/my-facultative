@@ -38,6 +38,10 @@ public class LoginValidator implements Validator {
 		if (!loginPattern.matcher(login).find()) {
 			return "Можно использовать буквы, цифры, тире и знак подчёркивания";
 		}
+		
+		if (login.length() > 45) {
+			return "Логин слишком длинный.";
+		}
 
 		return nextRegistrationValidator.validate(info);
 	}

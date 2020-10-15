@@ -9,9 +9,9 @@ import by.epamtc.facultative.DAO.DatabaseDAO;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
 import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
 
-public class DatabaseDAOImpl implements DatabaseDAO{
+public class WelcomePageInfoDAOImpl implements DatabaseDAO{
 	
-	private static final Logger logger = Logger.getLogger(DatabaseDAOImpl.class);
+	private static final Logger logger = Logger.getLogger(WelcomePageInfoDAOImpl.class);
 
 
 	@Override

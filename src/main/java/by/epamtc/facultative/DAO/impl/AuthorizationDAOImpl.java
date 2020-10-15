@@ -20,7 +20,6 @@ public class AuthorizationDAOImpl {
 	private static final Logger logger = Logger.getLogger(AuthorizationDAOImpl.class);
 
 	private static final String QUERY_FIND_USER_IN_DATABASE = "SELECT * FROM users WHERE user_login = ? ";
-//AND user_password = ?
 
 	private AuthorizationDAOImpl() {
 

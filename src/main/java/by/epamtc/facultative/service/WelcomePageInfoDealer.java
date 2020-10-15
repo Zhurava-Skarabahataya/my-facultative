@@ -1,6 +1,6 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.DAO.impl.DatabaseDAOImpl;
+import by.epamtc.facultative.DAO.impl.WelcomePageInfoDAOImpl;
 
 public class WelcomePageInfoDealer {
 	
@@ -15,7 +15,7 @@ public class WelcomePageInfoDealer {
 	}
 	
 	public String getInfo() {
-		DatabaseDAOImpl dbi = new DatabaseDAOImpl();
+		WelcomePageInfoDAOImpl dbi = new WelcomePageInfoDAOImpl();
 		dbi.getDataFromDatabase();
 		
 		return "UIUNWISW";

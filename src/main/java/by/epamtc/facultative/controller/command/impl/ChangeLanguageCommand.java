@@ -21,6 +21,8 @@ public class ChangeLanguageCommand implements Command{
 		String command = (String) session.getAttribute(PARAMETER_COMMAND);
 
 		request.getSession(true).setAttribute(PARAMETER_LOCAL, request.getParameter(PARAMETER_LOCAL));
+
+		System.out.println(request.getParameter(PARAMETER_LOCAL));
 		
 		try {
 			response.sendRedirect(request.getRequestURI() + COMMAND_PREFIX + command);

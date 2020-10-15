@@ -31,6 +31,9 @@ public class EmailValidator implements Validator {
 		if (!emailPattern.matcher(email).find()) {
 			return "E-mail не соответствует нормам написания.";
 		}
+		if (email.length() > 45) {
+			return "E-mail слишком длинный";
+		}
 		
 		return next.validate(info);
 	}

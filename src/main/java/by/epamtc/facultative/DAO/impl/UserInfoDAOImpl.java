@@ -43,6 +43,7 @@ public class UserInfoDAOImpl {
 
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
+		
 		try {
 			conn = cp.getFreeConnection();
 		} catch (ConnectionPoolException e) {

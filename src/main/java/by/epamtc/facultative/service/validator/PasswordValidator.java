@@ -34,6 +34,10 @@ public class PasswordValidator implements Validator {
 		if (!passwordPattern.matcher(password).find()) {
 			return "Пароль может содержать только букв и цифры";
 		}
+		
+		if (password.length() > 45) {
+			return "Пароль слишком длинный.";
+		}
 
 		return next.validate(info);
 
