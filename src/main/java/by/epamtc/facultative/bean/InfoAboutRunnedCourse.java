@@ -19,33 +19,18 @@ public class InfoAboutRunnedCourse implements Serializable {
 	int runCourseId;
 	int courseStatus;
 	int classroomNumber;
+	int studentLimit;
 
 	public InfoAboutRunnedCourse() {
-		super();
+		
 	}
 
-	public int getRunCourseId() {
-		return runCourseId;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getCourseName() {
 		return courseName;
-	}
-
-	public int getCourseStatus() {
-		return courseStatus;
-	}
-
-	public LocalDate getDateOfStart() {
-		return dateOfStart;
-	}
-
-	public LocalDate getDateOfEnd() {
-		return dateOfEnd;
-	}
-
-	public int getClassroomNumber() {
-		return classroomNumber;
 	}
 
 	public String getShedule() {
@@ -64,28 +49,32 @@ public class InfoAboutRunnedCourse implements Serializable {
 		return coordinatorPhone;
 	}
 
-	public void setRunCourseId(int runCourseId) {
-		this.runCourseId = runCourseId;
+	public LocalDate getDateOfStart() {
+		return dateOfStart;
+	}
+
+	public LocalDate getDateOfEnd() {
+		return dateOfEnd;
+	}
+
+	public int getRunCourseId() {
+		return runCourseId;
+	}
+
+	public int getCourseStatus() {
+		return courseStatus;
+	}
+
+	public int getClassroomNumber() {
+		return classroomNumber;
+	}
+
+	public int getStudentLimit() {
+		return studentLimit;
 	}
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
-	}
-
-	public void setCourseStatus(int courseStatus) {
-		this.courseStatus = courseStatus;
-	}
-
-	public void setDateOfStart(LocalDate dateOfStart) {
-		this.dateOfStart = dateOfStart;
-	}
-
-	public void setDateOfEnd(LocalDate dateOfEnd) {
-		this.dateOfEnd = dateOfEnd;
-	}
-
-	public void setClassroomNumber(int classroomNumber) {
-		this.classroomNumber = classroomNumber;
 	}
 
 	public void setShedule(String shedule) {
@@ -104,6 +93,30 @@ public class InfoAboutRunnedCourse implements Serializable {
 		this.coordinatorPhone = coordinatorPhone;
 	}
 
+	public void setDateOfStart(LocalDate dateOfStart) {
+		this.dateOfStart = dateOfStart;
+	}
+
+	public void setDateOfEnd(LocalDate dateOfEnd) {
+		this.dateOfEnd = dateOfEnd;
+	}
+
+	public void setRunCourseId(int runCourseId) {
+		this.runCourseId = runCourseId;
+	}
+
+	public void setCourseStatus(int courseStatus) {
+		this.courseStatus = courseStatus;
+	}
+
+	public void setClassroomNumber(int classroomNumber) {
+		this.classroomNumber = classroomNumber;
+	}
+
+	public void setStudentLimit(int studentLimit) {
+		this.studentLimit = studentLimit;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,6 +131,7 @@ public class InfoAboutRunnedCourse implements Serializable {
 		result = prime * result + ((lecturerName == null) ? 0 : lecturerName.hashCode());
 		result = prime * result + runCourseId;
 		result = prime * result + ((shedule == null) ? 0 : shedule.hashCode());
+		result = prime * result + studentLimit;
 		return result;
 	}
 
@@ -171,15 +185,20 @@ public class InfoAboutRunnedCourse implements Serializable {
 				return false;
 		} else if (!shedule.equals(other.shedule))
 			return false;
+		if (studentLimit != other.studentLimit)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "InfoAboutRunnedCourse [runCourseId=" + runCourseId + ", courseName=" + courseName + ", courseStatus="
-				+ courseStatus + ", dateOfStart=" + dateOfStart + ", dateOfEnd=" + dateOfEnd + ", classroomNumber="
-				+ classroomNumber + ", shedule=" + shedule + ", lecturerName=" + lecturerName + ", coordinatorName="
-				+ coordinatorName + ", coordinatorPhone=" + coordinatorPhone + "]";
+		return "InfoAboutRunnedCourse [courseName=" + courseName + ", shedule=" + shedule + ", lecturerName="
+				+ lecturerName + ", coordinatorName=" + coordinatorName + ", coordinatorPhone=" + coordinatorPhone
+				+ ", dateOfStart=" + dateOfStart + ", dateOfEnd=" + dateOfEnd + ", runCourseId=" + runCourseId
+				+ ", courseStatus=" + courseStatus + ", classroomNumber=" + classroomNumber + ", studentLimit="
+				+ studentLimit + "]";
 	}
+	
+	
 
 }

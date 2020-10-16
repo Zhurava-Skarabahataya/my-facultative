@@ -21,6 +21,7 @@ public class UserPageInfo implements UserInfo, Serializable {
 
 	LocalDate userDateOfBirth;
 
+	int userId;
 	int userRoleId;
 	int userFacultyId;
 
@@ -28,6 +29,10 @@ public class UserPageInfo implements UserInfo, Serializable {
 
 	public UserPageInfo() {
 
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getUserFirstName() {
@@ -72,6 +77,10 @@ public class UserPageInfo implements UserInfo, Serializable {
 
 	public LocalDate getUserDateOfBirth() {
 		return userDateOfBirth;
+	}
+
+	public int getUserId() {
+		return userId;
 	}
 
 	public int getUserRoleId() {
@@ -130,6 +139,10 @@ public class UserPageInfo implements UserInfo, Serializable {
 		this.userDateOfBirth = userDateOfBirth;
 	}
 
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
 	public void setUserRoleId(int userRoleId) {
 		this.userRoleId = userRoleId;
 	}
@@ -153,6 +166,7 @@ public class UserPageInfo implements UserInfo, Serializable {
 		result = prime * result + ((userFaculty == null) ? 0 : userFaculty.hashCode());
 		result = prime * result + userFacultyId;
 		result = prime * result + ((userFirstName == null) ? 0 : userFirstName.hashCode());
+		result = prime * result + userId;
 		result = prime * result + ((userLogin == null) ? 0 : userLogin.hashCode());
 		result = prime * result + ((userPatronymic == null) ? 0 : userPatronymic.hashCode());
 		result = prime * result + ((userPhone == null) ? 0 : userPhone.hashCode());
@@ -204,6 +218,8 @@ public class UserPageInfo implements UserInfo, Serializable {
 				return false;
 		} else if (!userFirstName.equals(other.userFirstName))
 			return false;
+		if (userId != other.userId)
+			return false;
 		if (userLogin == null) {
 			if (other.userLogin != null)
 				return false;
@@ -245,8 +261,9 @@ public class UserPageInfo implements UserInfo, Serializable {
 				+ ", userPatronymic=" + userPatronymic + ", userLogin=" + userLogin + ", userEmail=" + userEmail
 				+ ", userRole=" + userRole + ", userFaculty=" + userFaculty + ", userAdress=" + userAdress
 				+ ", userPhone=" + userPhone + ", userPhotoLink=" + userPhotoLink + ", userDateOfBirth="
-				+ userDateOfBirth + ", userRoleId=" + userRoleId + ", userFacultyId=" + userFacultyId + ", courses="
-				+ courses + "]";
+				+ userDateOfBirth + ", userId=" + userId + ", userRoleId=" + userRoleId + ", userFacultyId="
+				+ userFacultyId + ", courses=" + courses + "]";
 	}
 
+	
 }

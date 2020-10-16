@@ -1,38 +1,22 @@
-package by.epamtc.facultative.DAO.impl;
+package by.epamtc.facultative.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
+import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 
-import org.apache.log4j.Logger;
+public class WelcomePageInfoDAOImpl {
 
-import by.epamtc.facultative.DAO.DatabaseDAO;
-import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
-import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
+	public void getDataFromDatabase() {
 
-public class WelcomePageInfoDAOImpl implements DatabaseDAO{
-	
-	private static final Logger logger = Logger.getLogger(WelcomePageInfoDAOImpl.class);
-
-
-	@Override
-	public String getDataFromDatabase() {
-		
-		ConnectionPool cp = ConnectionPool.getInstance();
+		ConnectionPool pool = ConnectionPool.getInstance();
 		try {
-			cp.initPool();
+			pool.initPool();
 		} catch (ConnectionPoolException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		try {
-//			//Connection conn = cp.getFreeConnection();
-//		} catch (ConnectionPoolException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
-		PreparedStatement ps = null;
-		
-		return "hey";
 	}
 
+	
+	
 }

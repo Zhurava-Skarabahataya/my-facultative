@@ -1,4 +1,4 @@
-package by.epamtc.facultative.DAO;
+package by.epamtc.facultative.dao;
 
 public interface DatabaseDAO {
 

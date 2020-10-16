@@ -1,6 +1,6 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.DAO.impl.WelcomePageInfoDAOImpl;
+import by.epamtc.facultative.dao.impl.WelcomePageInfoDAOImpl;
 
 public class WelcomePageInfoDealer {
 	

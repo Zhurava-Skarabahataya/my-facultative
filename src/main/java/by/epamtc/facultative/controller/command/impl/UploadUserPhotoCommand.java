@@ -41,9 +41,6 @@ public class UploadUserPhotoCommand implements Command {
 
 			HttpSession session = request.getSession();
 			String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
-			System.out.println("USER LOGIN     " + userLogin);
-			System.out.println("PATTHHHHHH " + PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);
-			
 			
 			File targetFile = new File(
 					PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);

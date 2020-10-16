@@ -1,4 +1,4 @@
-package by.epamtc.facultative.DAO.exception;
+package by.epamtc.facultative.dao.exception;
 
 public class DAOException extends Exception {
 

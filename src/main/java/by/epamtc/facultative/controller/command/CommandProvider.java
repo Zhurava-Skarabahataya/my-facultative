@@ -5,14 +5,19 @@ import java.util.Map;
 
 import by.epamtc.facultative.controller.command.impl.AuthorizationCommand;
 import by.epamtc.facultative.controller.command.impl.ChangeLanguageCommand;
+import by.epamtc.facultative.controller.command.impl.CreateCourseCommand;
 import by.epamtc.facultative.controller.command.impl.EditUserInfoCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAuthorizationPageCommand;
+import by.epamtc.facultative.controller.command.impl.GoToCreateCoursePage;
 import by.epamtc.facultative.controller.command.impl.GoToErrorPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationSuccessPage;
+import by.epamtc.facultative.controller.command.impl.GoToUserCoursesPage;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageEditingCommand;
+import by.epamtc.facultative.controller.command.impl.GoToUserRatingPage;
 import by.epamtc.facultative.controller.command.impl.GoToWelcomePageCommand;
+import by.epamtc.facultative.controller.command.impl.LogOutCommand;
 import by.epamtc.facultative.controller.command.impl.RegistrationCommand;
 import by.epamtc.facultative.controller.command.impl.UploadUserPhotoCommand;
 
@@ -36,6 +41,12 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPageCommand());
 		commands.put(CommandName.EDIT_USER_INFO, new EditUserInfoCommand());
 		commands.put(CommandName.GO_TO_EDIT_USER_INFO_COMMAND, new GoToUserPageEditingCommand());
+		commands.put(CommandName.GO_TO_USER_COURSES_PAGE, new GoToUserCoursesPage());
+		commands.put(CommandName.GO_TO_USER_RATING_PAGE, new GoToUserRatingPage());
+		commands.put(CommandName.GO_TO_CREATE_COURSE_PAGE, new GoToCreateCoursePage());
+		commands.put(CommandName.CREATE_COURSE_COMMAND, new CreateCourseCommand());
+		commands.put(CommandName.LOGOUT, new LogOutCommand());
+		
 	}
 
 	public static CommandProvider getInstance() {

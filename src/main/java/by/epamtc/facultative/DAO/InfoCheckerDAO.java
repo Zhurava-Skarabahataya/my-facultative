@@ -1,6 +1,6 @@
-package by.epamtc.facultative.DAO;
+package by.epamtc.facultative.dao;
 
-import by.epamtc.facultative.DAO.exception.DAOException;
+import by.epamtc.facultative.dao.exception.DAOException;
 
 public interface InfoCheckerDAO {
 	

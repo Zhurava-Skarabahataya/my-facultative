@@ -7,29 +7,108 @@
 <head>
 <meta charset="UTF-8">
 <title>User page</title>
+<style>
+<%@ include file="/css/style.css"%>
+</style>
 
-
-<jsp:include page="/css/style.css" />
 
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_user_page" />
 
+<fmt:setLocale value="${sessionScope.local}" />
+
+<fmt:setBundle basename="localization.user_page.user_page" var="loc"
+	scope="session" />
+<fmt:message bundle="${loc}" key="message.upload_user_photo"
+	var="upload_photo" />
+<fmt:message bundle="${loc}" key="button.upload_user_photo"
+	var="key_upload_photo" />
+<fmt:message bundle="${loc}" key="button.my_page"
+	var="my_page" />
+<fmt:message bundle="${loc}" key="button.my_courses"
+	var="my_courses" />
+<fmt:message bundle="${loc}" key="button.my_rating"
+	var="my_rating" />
+<fmt:message bundle="${loc}" key="button.create_course"
+	var="create_course" />
+<fmt:message bundle="${loc}" key="field.first_name"
+	var="first_name" />
+<fmt:message bundle="${loc}" key="field.second_name"
+	var="second_name" />
+<fmt:message bundle="${loc}" key="field.patronymic"
+	var="patronymic" />
+<fmt:message bundle="${loc}" key="field.role"
+	var="role" />
+<fmt:message bundle="${loc}" key="field.faculty"
+	var="faculty" />
+<fmt:message bundle="${loc}" key="field.adress"
+	var="adress" />
+<fmt:message bundle="${loc}" key="field.date_of_birth"
+	var="date_of_birth" />
+<fmt:message bundle="${loc}" key="field.tel_number"
+	var="tel_number" />
+<fmt:message bundle="${loc}" key="button.edit"
+	var="edit" />
+
+
+
 </head>
 <body>
 	<jsp:include page="header.jsp" />
-
-	<br>
+	
+	<div >
+	
+			<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_user_page" /> <input type="submit"
+					value="${my_page}" /><br />
+			</form>
+		
+			<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_user_courses_page" /> <input type="submit"
+					value="${my_courses}" /><br />
+			</form>
+		
+		<c:if test="${sessionScope.bean.userRoleId == 1}">
+		
+		<form style = "display:inline;  float:center" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_user_rating_page" /> <input type="submit"
+					value="${my_rating}" /><br />
+			</form>
+		
+		
+		</c:if>
+		<c:if test="${sessionScope.bean.userRoleId == 2}">
+		
+		<form style = "display:inline; float:center" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_create_course_page" /> <input type="submit"
+					value="${create_course}" /><br />
+			</form>
+		
+		</c:if>
+		<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="logout" /> <input type="submit"
+					value="Выйти" /><br />
+			</form>
+		</div>
 	<div class="user_photo"
+	
 		style="float: left; position: related; width: 40%; align: center">
-		<img src="${sessionScope.bean.userPhotoLink}" alt="Upload user photo."
+		<img src="${sessionScope.bean.userPhotoLink}"
+		onerror="this.src='D:/Java/facultative-project/user_photos/default.jpg'" alt="${upload_photo}"
 			height=200 width=200
 			style="display: block; margin-left: auto; margin-right: auto">
 		<br>
+		
 		<div align="center" style="text-align: center">
 			<form action="Controller" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="command" value="upload_user_photo" /> <input
 					type="file" id="image" name="file" accept="image/*" /><br> <input
-					type="submit" value="Загрузить фото" name="Загрузить фото" />
+					type="submit" value="${key_upload_photo}" name="${key_upload_photo}" />
 			</form>
 		</div>
 	</div>
@@ -39,53 +118,55 @@
 
 		<table>
 			<tr>
-				<td>Имя:</td>
-				<td><c:out value="${sessionScope.bean.userFirstName}" />
-				</td>
+				<td><c:out value="${first_name}"/></td>
+				<td><c:out value="${sessionScope.bean.userFirstName}" /></td>
 			</tr>
 			<tr>
-				<td>Фамилия:</td>
+				<td><c:out value="${second_name}"/></td>
 				<td><c:out value="${sessionScope.bean.userSecondName}" /></td>
 			</tr>
 			<tr>
-				<td>Отчество:</td>
+				<td><c:out value="${patronymic}"/></td>
 				<td><c:out value="${sessionScope.bean.userPatronymic}" /></td>
 			</tr>
 			<tr>
-				<td>Должность:</td>
+				<td><c:out value="${role}"/></td>
 				<td><c:out value="${sessionScope.bean.userRole}" /></td>
 			</tr>
 			<tr>
-				<td>Факультет:</td>
+				<td><c:out value="${faculty}"/></td>
 				<td><c:out value="${sessionScope.bean.userFaculty}" /></td>
 			</tr>
 			<tr>
-				<td>Адрес:</td>
+				<td><c:out value="${adress}"/></td>
 				<td><c:out value="${sessionScope.bean.userAdress}" /></td>
 			</tr>
 			<tr>
-				<td>Дата рождения:</td>
+				<td><c:out value="${date_of_birth}"/></td>
 				<td><c:out value="${sessionScope.bean.userDateOfBirth}" /></td>
 			</tr>
 			<tr>
-				<td>Номер телефона:</td>
+				<td><c:out value="${tel_number}"/></td>
 				<td><c:out value="${sessionScope.bean.userPhone}" /></td>
 			</tr>
 
 
 		</table>
 
-	
+
 		<br>
 		<div align="center">
 			<form action="Controller" method="post">
-				<input type="hidden" name="command" value="go_to_edit_user_info_command" /> <input
-					type="submit" value="Редактировать данные" /><br />
+				<input type="hidden" name="command"
+					value="go_to_edit_user_info_command" /> <input type="submit"
+					value="${edit}" /><br />
 			</form>
 		</div>
 
 
 	</div>
+	
+
 
 </body>
 </html>

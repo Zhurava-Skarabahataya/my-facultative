@@ -1,7 +1,7 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.DAO.exception.DAOException;
-import by.epamtc.facultative.DAO.impl.UserInfoDAOImpl;
+import by.epamtc.facultative.dao.exception.DAOException;
+import by.epamtc.facultative.dao.impl.UserInfoDAOImpl;
 import by.epamtc.facultative.bean.UserPageInfo;
 
 public class UserPageInfoProviderService {
@@ -21,8 +21,6 @@ public class UserPageInfoProviderService {
 		UserPageInfo userPageInfo = userInfo;
 		String userLogin = userPageInfo.getUserLogin();
 		
-		System.out.println("user login in userpageinfoprovider " + userLogin);
-
 		UserInfoDAOImpl userInfoDAOImpl = UserInfoDAOImpl.getInstance();
 		try {
 			userInfoDAOImpl.provideUserInfo(userPageInfo);
@@ -31,7 +29,6 @@ public class UserPageInfoProviderService {
 			e.printStackTrace();
 		}
 		
-//		userPageInfo.setUserPhotoLink("user_photos/" + userLogin + ".jpg");
 		userPageInfo.setUserPhotoLink("D:/Java/facultative-project/user_photos/" + userLogin + ".jpg");
 		
 		

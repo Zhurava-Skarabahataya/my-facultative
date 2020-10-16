@@ -9,13 +9,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Authorization</title>
-
+<style>
+<%@ include file="/css/style.css"%>
+</style>
 <fmt:setLocale value="${sessionScope.local}" />
 
-<fmt:setBundle basename="localization.localization" var="loc"
+<fmt:setBundle basename="localization.authorization_page.authorization" var="loc"
 	scope="session" />
 
-<jsp:include page="/css/style.css" />
+
 
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_authorization_page" />
@@ -28,11 +30,11 @@
 <fmt:message bundle="${loc}" key="authorization.button.send" var="send" />
 <fmt:message bundle="${loc}" key="authorization.button.forgot_password"
 	var="forgot_password" />
+	<jsp:include page="header.jsp" />
 
 </head>
 
 <body>
-	<jsp:include page="header.jsp" />
 
 	<hr>
 	<div align="center">
@@ -45,11 +47,11 @@
 			<table>
 				<tr>
 					<td><c:out value="${login}" /></td>
-					<td><input type="text" name="login" value="" /></td>
+					<td><input type="text" required name="login" value="" /></td>
 				</tr>
 				<tr>
 					<td><c:out value="${password}" /></td>
-					<td><input type="password" name="password" value="" /></td>
+					<td><input type="password" required name="password" value="" /></td>
 				</tr>
 
 			</table>

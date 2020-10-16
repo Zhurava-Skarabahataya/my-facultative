@@ -1,7 +1,7 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.DAO.exception.DAOException;
-import by.epamtc.facultative.DAO.impl.AuthorizationDAOImpl;
+import by.epamtc.facultative.dao.exception.DAOException;
+import by.epamtc.facultative.dao.impl.AuthorizationDAOImpl;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 
 public class AuthorizationUserService {

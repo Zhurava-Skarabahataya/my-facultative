@@ -2,13 +2,13 @@ package by.epamtc.facultative.service;
 
 import org.apache.log4j.Logger;
 
-import by.epamtc.facultative.DAO.InfoCheckerDAO;
-import by.epamtc.facultative.DAO.RegistrationDAO;
-import by.epamtc.facultative.DAO.exception.DAOException;
-import by.epamtc.facultative.DAO.impl.EmailCheckerDAOImlp;
-import by.epamtc.facultative.DAO.impl.LoginCheckerDAOImpl;
-import by.epamtc.facultative.DAO.impl.RegistrationDAOImpl;
+import by.epamtc.facultative.dao.exception.DAOException;
+import by.epamtc.facultative.dao.impl.EmailCheckerDAOImlp;
+import by.epamtc.facultative.dao.impl.LoginCheckerDAOImpl;
+import by.epamtc.facultative.dao.impl.RegistrationDAOImpl;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
+import by.epamtc.facultative.dao.InfoCheckerDAO;
+import by.epamtc.facultative.dao.RegistrationDAO;
 import by.epamtc.facultative.service.exception.ServiceException;
 import by.epamtc.facultative.service.validator.UserDataValidator;
 

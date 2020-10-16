@@ -12,19 +12,18 @@
 </style>
 <fmt:setLocale value="${sessionScope.local}" />
 
-<fmt:setBundle basename="localization.welcomepage" var="loc"
+<fmt:setBundle basename="localization.welcome_page.welcome_page" var="loc"
 	scope="session" />
 
-<fmt:message bundle="${loc}" key="message.welcome" var="message" />
-<fmt:message bundle="${loc}" key="button.name.ru" var="ru_button" />
-<fmt:message bundle="${loc}" key="button.name.en" var="en_button" />
-<fmt:message bundle="${loc}" key="button.name.by" var="by_button" />
+<fmt:message bundle="${loc}" key="welcomepage.message.welcome" var="message" />
 
-<fmt:message bundle="${loc}" key="message.choose_form" var="enter" />
-<fmt:message bundle="${loc}" key="button.name.registration"
+<fmt:message bundle="${loc}" key="welcomepage.message.choose_form" var="enter" />
+<fmt:message bundle="${loc}" key="welcomepage.button.name.registration"
 	var="reg_button" />
-<fmt:message bundle="${loc}" key="button.name.authorization"
+<fmt:message bundle="${loc}" key="welcomepage.button.name.authorization"
 	var="auth_button" />
+<fmt:message bundle="${loc}" key="welcomepage.button.name.go_to_user_page"
+	var="go_to_user_page" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_welcome_page" />
 </head>
@@ -35,23 +34,36 @@
 		style="background-image: url(image/main-page-photo.jpg); background-size: contain; background-repeat: no-repeat; height: 600px;">
 
 
-		<div>
-		<h1 align="left" style="color: white;">
+		<div style="margin:25px; padding:20px;">
+		<h1 align="left" style="color: white;  width:400px; opacity:0.9">
 			<c:out value="${message}" />
 		</h1>
 		</div>
-
-		<h2 align="center">
+		<c:if test="${sessionScope.userLogin == null}">
+		<div   style="text-aligh:center;width:300px;padding:30px; margin : 30px;">
+			<div style="text-align:center; opacity:0.8">
 			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_registration_page" />
 				<input type="submit" value="${reg_button}" /><br />
-			</form>
+			</form></br>
 			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_authorization_page" />
 				<input type="submit" value="${auth_button}" /><br />
 			</form>
-		</h2>
-
+			</div>
+		</div>
+		</c:if>
+		<c:if test="${sessionScope.userLogin != null}">
+<div   style="text-aligh:center;width:300px;padding:30px; margin : 30px;">
+			<div style="text-align:center; opacity:0.8">
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="go_to_user_page" />
+				<input type="submit" value="${go_to_user_page}" /><br />
+			</form></br>
+			
+			</div>
+		</div>
+</c:if>
 	</div>
 
 

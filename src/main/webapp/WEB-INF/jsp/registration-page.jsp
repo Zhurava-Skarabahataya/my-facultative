@@ -14,7 +14,7 @@
 
 <fmt:setLocale value="${sessionScope.local}" />
 
-<fmt:setBundle basename="localization.localization" var="loc"
+<fmt:setBundle basename="localization.registration_page.registration" var="loc"
 	scope="session" />
 <fmt:message bundle="${loc}" key="registration.message.enter_data"
 	var="message" />

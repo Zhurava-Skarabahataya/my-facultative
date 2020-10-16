@@ -1,6 +1,7 @@
-package by.epamtc.facultative.DAO.impl;
+package by.epamtc.facultative.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,9 +10,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import by.epamtc.facultative.DAO.exception.DAOException;
-import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
-import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
+import by.epamtc.facultative.dao.exception.DAOException;
+import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
+import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
 import by.epamtc.facultative.bean.UserPageInfo;
 
@@ -25,12 +26,19 @@ public class UserInfoDAOImpl {
 			+ "users.user_email, users.department_department_id, departments.name, "
 			+ "users.user_role_id, user_roles.role_name, "
 			+ " user_details.user_adress,"
-			+ "user_details.user_mobile_number, user_details.user_date_of_birth "
+			+ "user_details.user_mobile_number, user_details.user_date_of_birth, users.user_id"
 			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
 			+ "JOIN departments ON users.department_department_id = departments.department_id "
 			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_login = ?";
 
+	private static final String QUERY_UPDATE_USER_DATA_IN_USERS = "UPDATE users "
+			+ "SET users.first_name = ? , users.second_name = ?, users.patronymic = ?, "
+			+ " users.department_department_id = ? WHERE users.user_id = ?";
 
+	private static final String QUERY_UPDATE_USER_DATA_IN_USER_DETAILS = "UPDATE user_details "
+			+ "SET user_adress = ? , user_mobile_number = ?, user_date_of_birth = ?"
+			+ " WHERE users_user_id = ?";
+	
 	private UserInfoDAOImpl() {
 
 	}
@@ -63,6 +71,7 @@ public class UserInfoDAOImpl {
 		String userFaculty = null;
 		String userAdress = null;
 		String userPhone = null;
+		int userId =0;
 
 		LocalDate userDateOfBirth = null;
 
@@ -101,7 +110,11 @@ public class UserInfoDAOImpl {
 				java.sql.Date sqlDate = rs.getDate(11);
 				if (sqlDate != null) {
 				userDateOfBirth = sqlDate.toLocalDate();}
+				
+				userId = rs.getInt(12);
 			}
+			
+			userPageInfo.setUserId(userId);
 
 			userPageInfo.setUserFirstName(userFirstName);
 			userPageInfo.setUserSecondName(userSecondName);
@@ -134,6 +147,60 @@ public class UserInfoDAOImpl {
 			}
 		}
 
+	}
+
+	public void updateUserInfo(UserPageInfo userPageInfo) throws DAOException {
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+		
+		try {
+			conn = cp.getFreeConnection();
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		}
+		
+		
+		PreparedStatement statementFirst = null;
+		PreparedStatement statementSecond = null;
+		
+		try {
+			statementFirst = conn.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USERS);
+			statementSecond = conn.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
+			
+			statementFirst.setString(1, userPageInfo.getUserFirstName());
+			statementFirst.setString(2, userPageInfo.getUserSecondName());
+			statementFirst.setString(3, userPageInfo.getUserPatronymic());
+			statementFirst.setInt(4, userPageInfo.getUserFacultyId());
+			
+			statementSecond.setString(1, userPageInfo.getUserAdress());
+			statementSecond.setString(2, userPageInfo.getUserPhone());
+			if (userPageInfo.getUserDateOfBirth() != null) {
+			Date sqlDate = Date.valueOf(userPageInfo.getUserDateOfBirth());
+			statementSecond.setDate(3, sqlDate);}
+			else {
+				statementSecond.setDate(3, null);
+			}
+			
+			statementFirst.setInt(5, userPageInfo.getUserId());
+			statementSecond.setInt(4, userPageInfo.getUserId());
+			statementFirst.executeUpdate();
+			statementSecond.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		finally {
+			try {
+				statementFirst.close();
+				statementSecond.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			cp.releaseConnection(conn);
+		}
+		
 	}
 
 }

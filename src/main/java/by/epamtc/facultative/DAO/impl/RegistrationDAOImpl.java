@@ -1,4 +1,4 @@
-package by.epamtc.facultative.DAO.impl;
+package by.epamtc.facultative.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,11 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import by.epamtc.facultative.DAO.RegistrationDAO;
-import by.epamtc.facultative.DAO.exception.DAOException;
-import by.epamtc.facultative.DAO.impl.pool.ConnectionPool;
-import by.epamtc.facultative.DAO.impl.pool.ConnectionPoolException;
+import by.epamtc.facultative.dao.exception.DAOException;
+import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
+import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
+import by.epamtc.facultative.dao.RegistrationDAO;
 
 public class RegistrationDAOImpl implements RegistrationDAO {
 

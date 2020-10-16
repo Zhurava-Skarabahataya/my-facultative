@@ -18,7 +18,7 @@ public class AuthorizationCommand implements Command {
 
 	private static final String SESSION_ATTRIBUTE_USER_LOGIN = "userLogin";
 
-	private static final String SUCCESS_REDIRECT_PARAMETERS = "?command=go_to_user_page";
+	private static final String SUCCESS_REDIRECT_PARAMETERS = "?command=go_to_welcome_page";
 	private static final String AUTHORIZATION_PAGE_PATH = "WEB-INF/jsp/authorization-page.jsp";
 
 	@Override
