@@ -7,7 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<style>
+<%@ include file="/css/style.css"%>
+</style>
 <fmt:setLocale value="${sessionScope.local}" />
 
 
@@ -22,11 +24,19 @@
 	var="by_button" />
 <fmt:message bundle="${loc_header}" key="header.university_name"
 	var="university_name" />
+<fmt:message bundle="${loc_header}" key="header.menu.about_university"
+	var="about" />
+<fmt:message bundle="${loc_header}" key="header.menu.departments"
+	var="departments" />
+<fmt:message bundle="${loc_header}" key="header.menu.courses"
+	var="courses" />
+<fmt:message bundle="${loc_header}" key="header.menu.contacts"
+	var="contacts" />
+<fmt:message bundle="${loc_header}" key="header.menu.news"
+	var="news" />
 </head>
 <body>
-	<div
-		style="overflow: hidden; background-color: #f1f1f1; 
-		position: relative; padding: 15px; text-align: center; background: #1abc9c; color: white; font-size: 30px;">
+	<div class="header">
 		<div style="vertical-align: middle; display: inline;">
 			<form style="display: inline;" action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_welcome_page" /> <input
@@ -63,5 +73,13 @@
 
 
 	</div>
+	
+	<ul class="menu-main">
+  		<li><a href="Controller?command=go_to_about_university_page"><c:out value="${about}"/></a></li>
+  		<li><a href="Controller?command=go_to_departments_page"><c:out value="${departments}"/></a></li>
+  		<li><a href="Controller?command=go_to_univercity_courses_page"><c:out value="${courses}"/></a></li>
+  		<li><a href="Controller?command=go_to_contacts_page"><c:out value="${contacts}"/></a></li>
+  		<li><a href="Controller?command=go_to_news_page"><c:out value="${news}"/></a></li>
+	</ul>
 </body>
 </html>

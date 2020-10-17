@@ -36,7 +36,8 @@
 
 <body>
 
-	<hr>
+	<br>
+	<div class="div_with_grey_background">
 	<div align="center">
 		<c:out value="${messageFromServlet}" />
 
@@ -58,6 +59,7 @@
 			<br> <input type="submit" value="${send}" /> <br> <br>
 			<input type="submit" value="${forgot_password}" /><br>
 		</form>
+	</div>
 	</div>
 </body>
 </html>

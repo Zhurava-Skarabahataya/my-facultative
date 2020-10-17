@@ -1,5 +1,144 @@
-body{
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Condensed');
+
+body {
+	background-image: url(image/seamless-background.jpg);
+	background-color: #E0FFFF; 
+	  font-family: 'Ubuntu Condensed', sans-serif;
+	
+}
+
+.header {
+	  font-family: 'Ubuntu Condensed', sans-serif;
+	
+	overflow: hidden;
+	background-color: #f1f1f1;
+	padding: 15px;
+	text-align: center;
+	background: #1abc9c;
+	color: white;
+	font-size: 30px;
+	width:95%;
+	opacity:0.9;
+	border-radius: 10px;
 	
 	
-	background:#E0FFFF;
+}
+
+
+.menu-main {
+  list-style: none;
+    padding: 25px 0 5px;
+  text-align: center;
+  background: white;
+  opacity:0.7;
+  border-radius: 10px;
+}
+.menu-main li {display: inline-block;}
+.menu-main li:after {
+  content: "|";
+  color: #606060;
+  display: inline-block;
+  vertical-align:top;
+}
+.menu-main li:last-child:after {content: none;}
+.menu-main a {
+  text-decoration: none;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  letter-spacing: 2px;
+  position: relative;
+  padding-bottom: 20px;
+  margin: 0 34px 0 30px;
+  font-size: 15px;
+  text-transform: uppercase;
+  display: inline-block;
+  transition: color .2s;
+}
+.menu-main a, .menu-main a:visited {color: #9d999d;}
+.menu-main a.current, .menu-main a:hover{color: #1abc9c;}
+.menu-main a:before,
+.menu-main a:after {
+  content: "";
+  position: absolute;
+  height: 4px;
+  top: auto;
+  right: 50%;
+  bottom: -5px;
+  left: 50%;
+  background: #1abc9c;
+  transition: .8s;
+}
+.menu-main a:hover:before, .menu-main .current:before {left: 0;}
+.menu-main a:hover:after, .menu-main .current:after {right: 0;}   
+@media (max-width: 550px) {
+.menu-main {padding-top: 0;}
+.menu-main li {display: block;}
+.menu-main li:after {content: none;}
+.menu-main a {
+  padding: 25px 0 20px; 
+  margin: 0 30px;
+}
+}
+
+
+.courses_info_table {
+	background-color: #ced1d6;
+	opacity: 0.7;
+	border-radius: 10px;
+	
+	
+}
+.div_with_grey_background{
+	background-color: #ced1d6;
+	opacity: 0.7;
+	padding:15px;
+	margin:20px;
+		border-radius: 10px;
+	
+	
+}
+
+.main_user_info{
+	background-color: #1abc9c;
+	text-align:center;
+	align: center;
+	
+	border-radius: 10px;
+	 display: inline; 
+	 position: related ; 
+	height:300px;
+	 width:70%;
+	 float:rigth;
+	
+}
+
+.user_photo{
+	display: inline; 
+	float:left;
+	position: related; 
+	width: 40%; 
+	align: right;
+	text-aligh: center;
+	padding:15px;
+	margin:15px;
+}
+
+.table_user_info{
+	text-align: left;
+border-collapse: separate;
+border-spacing: 2px;
+background: #ECE9E0;
+color: #656665;
+border: 16px solid #ECE9E0;
+border-radius: 20px;
+	
+	
+}
+
+th {
+font-size: 18px;
+padding: 10px;
+}
+td {
+background: #F5D7BF;
+padding: 5px;
 }

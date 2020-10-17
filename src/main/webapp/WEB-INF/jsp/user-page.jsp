@@ -56,7 +56,7 @@
 <body>
 	<jsp:include page="header.jsp" />
 	
-	<div >
+	<div style="display: inline;" >
 	
 			<form style = "display:inline" action="Controller" method="post">
 				<input type="hidden" name="command"
@@ -95,16 +95,17 @@
 					value="Выйти" /><br />
 			</form>
 		</div>
-	<div class="user_photo"
+		
+		
+	<div class="user_photo" align="center">
 	
-		style="float: left; position: related; width: 40%; align: center">
 		<img src="${sessionScope.bean.userPhotoLink}"
 		onerror="this.src='D:/Java/facultative-project/user_photos/default.jpg'" alt="${upload_photo}"
 			height=200 width=200
-			style="display: block; margin-left: auto; margin-right: auto">
+			>
 		<br>
 		
-		<div align="center" style="text-align: center">
+		<div align="center">
 			<form action="Controller" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="command" value="upload_user_photo" /> <input
 					type="file" id="image" name="file" accept="image/*" /><br> <input
@@ -113,10 +114,9 @@
 		</div>
 	</div>
 
-	<div class="main_user_info" style="float: rigth; position: related">
+	<div class="main_user_info" style="background-color:green">
 
-
-		<table>
+		<table class="table_user_info">
 			<tr>
 				<td><c:out value="${first_name}"/></td>
 				<td><c:out value="${sessionScope.bean.userFirstName}" /></td>
@@ -154,14 +154,12 @@
 		</table>
 
 
-		<br>
-		<div align="center">
 			<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="go_to_edit_user_info_command" /> <input type="submit"
-					value="${edit}" /><br />
+					value="${edit}" />
 			</form>
-		</div>
+		
 
 
 	</div>

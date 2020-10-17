@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 
 public class GoToUserPageEditingCommand implements Command{

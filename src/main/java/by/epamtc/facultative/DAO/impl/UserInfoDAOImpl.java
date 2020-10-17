@@ -14,7 +14,7 @@ import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 
 public class UserInfoDAOImpl {
 
@@ -47,7 +47,7 @@ public class UserInfoDAOImpl {
 		return instance;
 	}
 
-	public void provideUserInfo(UserPageInfo userPageInfo) throws DAOException {
+	public void provideUserInfo(UserInfo userPageInfo) throws DAOException {
 
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
@@ -149,7 +149,7 @@ public class UserInfoDAOImpl {
 
 	}
 
-	public void updateUserInfo(UserPageInfo userPageInfo) throws DAOException {
+	public void updateUserInfo(UserInfo userPageInfo) throws DAOException {
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 		

@@ -1,15 +1,20 @@
 package by.epamtc.facultative.bean;
 
-public class InfoAboutCourse {
+import java.io.Serializable;
+
+public class InfoAboutCourse implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String courseName;
 	private String courseDescription;
 	private String courseProgram;
 	private String courseRequirement;
+	private String departmentName;
 
 	private int courseId;
-	private int courseDuration;
 	private int courseDepartment;
+	private int courseDuration;
 	
 	public InfoAboutCourse() {
 		
@@ -29,6 +34,10 @@ public class InfoAboutCourse {
 
 	public String getCourseRequirement() {
 		return courseRequirement;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
 	}
 
 	public int getCourseId() {
@@ -59,6 +68,10 @@ public class InfoAboutCourse {
 		this.courseRequirement = courseRequirement;
 	}
 
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
 	}
@@ -82,6 +95,7 @@ public class InfoAboutCourse {
 		result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
 		result = prime * result + ((courseProgram == null) ? 0 : courseProgram.hashCode());
 		result = prime * result + ((courseRequirement == null) ? 0 : courseRequirement.hashCode());
+		result = prime * result + ((departmentName == null) ? 0 : departmentName.hashCode());
 		return result;
 	}
 
@@ -120,16 +134,22 @@ public class InfoAboutCourse {
 				return false;
 		} else if (!courseRequirement.equals(other.courseRequirement))
 			return false;
+		if (departmentName == null) {
+			if (other.departmentName != null)
+				return false;
+		} else if (!departmentName.equals(other.departmentName))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "InfoAboutCourse [courseName=" + courseName + ", courseDescription=" + courseDescription
-				+ ", courseProgram=" + courseProgram + ", courseRequirement=" + courseRequirement + ", courseId="
-				+ courseId + ", courseDuration=" + courseDuration + ", courseDepartment=" + courseDepartment + "]";
+				+ ", courseProgram=" + courseProgram + ", courseRequirement=" + courseRequirement + ", departmentName="
+				+ departmentName + ", courseId=" + courseId + ", courseDuration=" + courseDuration
+				+ ", courseDepartment=" + courseDepartment + "]";
 	}
-	
+
 	
 
 }

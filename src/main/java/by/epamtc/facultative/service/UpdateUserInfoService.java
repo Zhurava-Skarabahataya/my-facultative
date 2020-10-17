@@ -1,6 +1,6 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.UserInfoDAOImpl;
 
@@ -16,7 +16,7 @@ public class UpdateUserInfoService {
 		return instance;
 	}
 
-	public void update(UserPageInfo userPageInfo) {
+	public void update(UserInfo userPageInfo) {
 		
 		UserInfoDAOImpl userInfoDAO = UserInfoDAOImpl.getInstance();
 		try {

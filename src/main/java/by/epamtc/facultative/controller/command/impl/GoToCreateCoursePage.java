@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.InfoAboutCourse;
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.CourseInfoProvider;
 
@@ -23,7 +23,7 @@ public class GoToCreateCoursePage implements Command {
 		HttpSession session = request.getSession();
 		String login = (String) session.getAttribute("userLogin");
 		
-		UserPageInfo userPageInfo = (UserPageInfo) session.getAttribute("bean");
+		UserInfo userPageInfo = (UserInfo) session.getAttribute("bean");
 		
 		int userDeparttmentId = userPageInfo.getUserFacultyId();
 		List<InfoAboutCourse> availableCoursesForDepartment = null;

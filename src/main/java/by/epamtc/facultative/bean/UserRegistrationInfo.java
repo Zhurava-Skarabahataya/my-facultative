@@ -2,7 +2,7 @@ package by.epamtc.facultative.bean;
 
 import java.io.Serializable;
 
-public class UserRegistrationInfo implements UserInfo, Serializable {
+public class UserRegistrationInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

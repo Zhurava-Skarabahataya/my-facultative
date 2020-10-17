@@ -54,7 +54,7 @@
 			<table>
 				<tr>
 					<td>Выберите название из списка доступных курсов</td>
-					<td><select name="course" size="1">
+					<td><select name="courseId" size="1">
 							<option selected="selected" disabled><c:out
 									value="Выберите курс" /></option>
 							<c:forEach var="course" items="${requestScope.listOfCourses}">

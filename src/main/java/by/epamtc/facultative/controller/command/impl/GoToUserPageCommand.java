@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.UserPageInfoProviderService;
 
@@ -29,7 +29,7 @@ public class GoToUserPageCommand implements Command {
 		
 		if (userLogin != null) {
 		
-		UserPageInfo userInfo = new UserPageInfo();
+		UserInfo userInfo = new UserInfo();
 		userInfo.setUserLogin(userLogin);
 		
 		UserPageInfoProviderService userPageInfoProviderService = UserPageInfoProviderService.getInstance();

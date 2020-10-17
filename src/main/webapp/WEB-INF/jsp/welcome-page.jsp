@@ -30,6 +30,8 @@
 <body>
 	<jsp:include page="header.jsp" />
 
+
+
 	<div
 		style="background-image: url(image/main-page-photo.jpg); background-size: contain; background-repeat: no-repeat; height: 600px;">
 

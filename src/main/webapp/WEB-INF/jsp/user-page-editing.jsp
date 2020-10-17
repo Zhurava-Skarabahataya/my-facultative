@@ -20,7 +20,7 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 
 	<br>
 	<div class="user_photo"
-		style="float: left; position: related; width: 40%; align: center">
+		style="float: left; position: related; width: 30%; align: center">
 		<img src="${sessionScope.bean.userPhotoLink}" alt="Upload user photo."
 			height=200 width=200
 			style="display: block; margin-left: auto; margin-right: auto">
@@ -38,7 +38,7 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 		<form action="Controller" method="post">
 			<input type="hidden" name="command" value="edit_user_info" />
 
-			<table>
+			<table  class="table_user_info">
 				<tr>
 					<td>Имя:</td>
 					<td><input type="text" name="userFirstName" required

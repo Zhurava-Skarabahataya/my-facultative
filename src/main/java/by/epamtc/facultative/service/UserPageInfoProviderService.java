@@ -2,7 +2,7 @@ package by.epamtc.facultative.service;
 
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.UserInfoDAOImpl;
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 
 public class UserPageInfoProviderService {
 
@@ -16,9 +16,9 @@ public class UserPageInfoProviderService {
 		return instance;
 	}
 	
-	public void execute(UserPageInfo userInfo) {
+	public void execute(UserInfo userInfo) {
 		
-		UserPageInfo userPageInfo = userInfo;
+		UserInfo userPageInfo = userInfo;
 		String userLogin = userPageInfo.getUserLogin();
 		
 		UserInfoDAOImpl userInfoDAOImpl = UserInfoDAOImpl.getInstance();

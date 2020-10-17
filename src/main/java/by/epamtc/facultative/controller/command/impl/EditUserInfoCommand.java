@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.bean.UserPageInfo;
+import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.UpdateUserInfoService;
 
@@ -29,7 +29,7 @@ public class EditUserInfoCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 
-		UserPageInfo userPageInfo = (UserPageInfo) session.getAttribute("bean");
+		UserInfo userPageInfo = (UserInfo) session.getAttribute("bean");
 
 		if (request.getParameter(PARAMETER_FIRST_NAME) != null) {
 			String userFirstName = request.getParameter(PARAMETER_FIRST_NAME);
