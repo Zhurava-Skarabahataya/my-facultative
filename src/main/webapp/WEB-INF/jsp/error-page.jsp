@@ -21,5 +21,8 @@ Sorry:(
 				<input type="hidden" name="command" value="go_to_welcome_page" />
 				<input type="submit" value="Перейти на главную страницу" /><br />
 			</form>
+			
+				<jsp:include page="footer.jsp" />
+			
 </body>
 </html>

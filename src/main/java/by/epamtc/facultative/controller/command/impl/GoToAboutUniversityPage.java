@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import by.epamtc.facultative.controller.command.Command;
 
 public class GoToAboutUniversityPage implements Command {
-private final String ABOUT_UNI_PAGE_PATH = "WEB-INF/jsp/abous-us-page.jsp";
+private final String ABOUT_UNI_PAGE_PATH = "WEB-INF/jsp/about-us-page.jsp";
 
 	
 	@Override

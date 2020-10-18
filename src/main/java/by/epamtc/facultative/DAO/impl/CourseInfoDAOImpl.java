@@ -18,6 +18,7 @@ import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.facultative.service.FullNameService;
 
 public class CourseInfoDAOImpl {
 
@@ -28,7 +29,16 @@ public class CourseInfoDAOImpl {
 	private final String QUERY_FOR_AVAILABLE_COURSES_IN_DEPARTMENT = "SELECT course_id,"
 			+ "title FROM courses WHERE department_id = ?";
 
-	private final String QUERY_FOR_AVAILABLE_COURSES_ALL = "SELECT courses.course.id, courses.title, courses.description, courses.course_program, course";
+	private final String QUERY_FOR_ALL_AVAILABLE_COURSES = "SELECT run_courses.run_courses_id, "
+			+ "run_courses.start_date, run_courses.end_date, run_courses.shcedule, "
+			+ "run_courses.student_limit, run_courses.classroom, run_courses.run_courses_status, run_courses.lecturer_user_id, "
+			+ "courses.course_id, courses.title, courses.description, courses.course_program, "
+			+ "courses.requirement, courses.duration_in_hours, courses.department_id, "
+			+ "run_courses_statuses.run_courses_statuses_title, users.first_name, "
+			+ "users.second.name, users.patronymic FROM courses JOIN run_courses "
+			+ "ON courses.course_id = run_courses.courses_course_id "
+			+ "JOIN run_courses_statuses ON run_courses_statuses.run_courses_statuses_id = "
+			+ "run_courses.run_courses_status JOIN users ON users.user_id = run_courses.lecturer_user_id";
 
 	private final String QUERY_FOR_CREATING_RUN_COURSE = "INSERT INTO run_courses (courses_course_id, "
 			+ " start_date, end_date, shcedule, student_limit, classroom, lecturer_user_id, run_courses_status) "
@@ -41,7 +51,7 @@ public class CourseInfoDAOImpl {
 			+ " run_courses.classroom, run_courses.run_courses_status, "
 			+ " courses.course_id, courses.title, courses.description, courses.course_program, "
 			+ "courses.requirement, courses.duration_in_hours, courses.department_id, run_courses_statuses.run_courses_statuses_title"
-			+ "  FROM courses JOIN" + " run_courses ON courses.course_id = run_courses.courses_course_id "
+			+ "  FROM courses JOIN run_courses ON courses.course_id = run_courses.courses_course_id "
 			+ "JOIN run_courses_statuses ON run_courses_statuses.run_courses_statuses_id = "
 			+ "run_courses.run_courses_status WHERE run_courses.lecturer_user_id = ? ";
 
@@ -257,6 +267,7 @@ public class CourseInfoDAOImpl {
 				infoAboutRunnedCourse.setStudentsOnCourse(students);
 
 				courses.add(infoAboutRunnedCourse);
+				System.out.println("дОБАВИЛИ курс");
 
 			}
 
@@ -293,18 +304,7 @@ public class CourseInfoDAOImpl {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		/*
-		 * "SELECT users.user_login, users.first_name, users.second_name, " +
-		 * "users.patronymic, users_has_run_course.users_user_id, " +
-		 * "users_has_run_course.user_result, users_has_run_course.approval_status, " +
-		 * "approval_statuses.approval_status_name FROM users_has_run_course JOIN users "
-		 * +
-		 * "ON users.user_id = users_has_run_course.users_user_id JOIN approval_statuses "
-		 * +
-		 * "ON users_has_run_course.approval_status = approval_statuses.approval_status_id"
-		 * + " WHERE users_has_run_course.run_courses_id = ?";
-		 * 
-		 */
+	
 		try {
 			ps = conn.prepareStatement(QUERY_FOR_STUDENTS_ON_COURSE);
 			
@@ -352,6 +352,108 @@ public class CourseInfoDAOImpl {
 		
 
 		return students;
+	}
+
+	public List<InfoAboutRunnedCourse> findAllAvailableRunCourses() throws DAOException {
+		
+		List<InfoAboutRunnedCourse> courses = new ArrayList<InfoAboutRunnedCourse>();
+		
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+
+		try {
+			conn = cp.getFreeConnection();
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		}
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement(QUERY_FOR_ALL_AVAILABLE_COURSES);
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				String courseTitle = rs.getString("courses.title");
+				String runCourseStatusName = rs.getString("run_courses_statuses.run_courses_statuses_title");
+				String courseDescription = rs.getString("courses.description");
+				String courseProgram = rs.getString("courses.course_program");
+				String courseRequirement = rs.getString("courses.requirement");
+				String shcedule = rs.getString("run_courses.shcedule");
+				String lecturerFirstName = rs.getString("users.first_name");
+				String lecturerSecondName = rs.getString("users.second_name");
+				String lecturerPatronymic = rs.getString("users.patronymic");
+
+				Date sqlDateStart = rs.getDate("run_courses.start_date");
+				LocalDate startDate = sqlDateStart.toLocalDate();
+				Date sqlDateEnd = rs.getDate("run_courses.end_date");
+				LocalDate endDate = sqlDateEnd.toLocalDate();
+				int studentLimit = rs.getInt("run_courses.student_limit");
+				int runCourseId = rs.getInt("run_courses.run_courses_id");
+				int classroom = rs.getInt("run_courses.classroom");
+				int runCourseStatusId = rs.getInt("run_courses.run_courses_status");
+				int courseId = rs.getInt("courses.course_id");
+				int courseDuration = rs.getInt("courses.duration_in_hours");
+				int departmentId = rs.getInt("courses.department_id");
+				int lecturerId = rs.getInt("run_courses.lecturer_user_id");
+				
+				String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName, lecturerSecondName, lecturerPatronymic);
+				
+				InfoAboutRunnedCourse infoAboutRunnedCourse = new InfoAboutRunnedCourse();
+				infoAboutRunnedCourse.setClassroomNumber(classroom);
+				infoAboutRunnedCourse.setCourseId(courseId);
+				infoAboutRunnedCourse.setCourseName(courseTitle);
+				infoAboutRunnedCourse.setCourseStatus(runCourseStatusId);
+				infoAboutRunnedCourse.setCourseStatusName(runCourseStatusName);
+				infoAboutRunnedCourse.setDateOfEnd(endDate);
+				infoAboutRunnedCourse.setDateOfStart(startDate);
+				infoAboutRunnedCourse.setLecturerId(lecturerId);
+				infoAboutRunnedCourse.setRunCourseId(runCourseId);
+				infoAboutRunnedCourse.setShedule(shcedule);
+				infoAboutRunnedCourse.setStudentLimit(studentLimit);
+				infoAboutRunnedCourse.setLecturerName(lecturerFullName);
+
+				InfoAboutCourse infoAbourCourse = new InfoAboutCourse();
+				infoAbourCourse.setCourseDepartment(departmentId);
+				infoAbourCourse.setCourseDescription(courseDescription);
+				infoAbourCourse.setCourseDuration(courseDuration);
+				infoAbourCourse.setCourseId(courseId);
+				infoAbourCourse.setCourseName(courseTitle);
+				infoAbourCourse.setCourseProgram(courseProgram);
+				infoAbourCourse.setCourseRequirement(courseRequirement);
+
+				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
+
+				
+				
+				List<CourseStudentInfo> students = findStudentsOnRunCourse(runCourseId);
+				
+
+				infoAboutRunnedCourse.setStudentsOnCourse(students);
+				
+				courses.add(infoAboutRunnedCourse);
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				cp.closeConnection(rs, ps, conn);
+			} catch (ConnectionPoolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		return courses;
 	}
 
 }

@@ -11,6 +11,7 @@ import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.CourseCreatorService;
+import by.epamtc.facultative.service.FullNameService;
 
 public class CreateCourseCommand implements Command {
 	
@@ -33,11 +34,17 @@ public class CreateCourseCommand implements Command {
 		HttpSession session = request.getSession();
 		UserInfo userInfo = (UserInfo) session.getAttribute("bean");
 		 int lecturerId = userInfo.getUserId();
+		 String lecturerFirstName = userInfo.getUserFirstName();
+		 String lecturerSecondName = userInfo.getUserSecondName();
+		 String lecturerPatronymic = userInfo.getUserPatronymic();
+		 
+		 String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName, lecturerSecondName, lecturerPatronymic);
 		
 		InfoAboutRunnedCourse infoAboutRunnedCourse = new InfoAboutRunnedCourse();
 		
 		infoAboutRunnedCourse.setCourseId(courseId);
 		infoAboutRunnedCourse.setLecturerId(lecturerId);
+		infoAboutRunnedCourse.setLecturerName(lecturerFullName);
 		infoAboutRunnedCourse.setShedule(shedule);
 		infoAboutRunnedCourse.setDateOfStart(startDate);
 		infoAboutRunnedCourse.setDateOfEnd(endDate);

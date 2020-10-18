@@ -94,4 +94,23 @@ public class CourseInfoProvider {
 
 	}
 
+	public List<InfoAboutRunnedCourse> findAllAvailableRunCourses() {
+		
+		CourseInfoDAOImpl courseInfoDAOImpl = CourseInfoDAOImpl.getInstance();
+
+		List<InfoAboutRunnedCourse> courses = null;
+		
+		try {
+			courses = courseInfoDAOImpl.findAllAvailableRunCourses();
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		countStudentsOnCourse(courses);
+		
+		return courses;
+	}
+	
+	
+
 }

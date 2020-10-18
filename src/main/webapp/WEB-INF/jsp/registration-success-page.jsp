@@ -23,5 +23,7 @@ You are successfully registered!<br>
 		<input type="hidden" name="command" value="go_to_welcome_page" />
 <input type="submit" value="Go to welcome page" />
 </form>
+	<jsp:include page="footer.jsp" />
+
 </body>
 </html>

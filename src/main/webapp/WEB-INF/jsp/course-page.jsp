@@ -7,6 +7,14 @@
 <title>Карточка предмета</title>
 </head>
 <body>
+
+
 ПРЕДМЕТ
+
+
+
+
+	<jsp:include page="footer.jsp" />
+
 </body>
 </html>

@@ -8,7 +8,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<jsp:include page="/css/style.css" />
+<style>
+<%@ include file="/css/footer.css"%>
+</style>
 
 <jsp:include page="header.jsp" />
 
@@ -124,7 +126,7 @@
 						value="${student}" /> <input type="radio" name="position"
 					value="2"> <c:out value="${lecturer}" /> <input
 					type="radio" name="position" value="3"> <c:out
-						value="${dean}" /> <br></td>
+						value="${dean}" /><br></td>
 
 			</tr>
 			<tr>
@@ -149,6 +151,7 @@
 
 		<br> <input type="submit" value="${send}" /><br />
 	</form>
+	<jsp:include page="footer.jsp" />
 
 </body>
 </html>

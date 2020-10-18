@@ -9,6 +9,7 @@ import by.epamtc.facultative.controller.command.impl.CreateCourseCommand;
 import by.epamtc.facultative.controller.command.impl.EditUserInfoCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAboutUniversityPage;
 import by.epamtc.facultative.controller.command.impl.GoToAuthorizationPageCommand;
+import by.epamtc.facultative.controller.command.impl.GoToAvailableRunCoursesPage;
 import by.epamtc.facultative.controller.command.impl.GoToContactsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToCoursePageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToCreateCoursePage;
@@ -53,6 +54,7 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_CONTACTS_PAGE, new GoToContactsPageCommand());
 		commands.put(CommandName.GO_TO_NEWS_PAGE, new GoToNewsPage());
 		commands.put(CommandName.GO_TO_ABOUT_UNIVERSITY_PAGE, new GoToAboutUniversityPage());
+		commands.put(CommandName.GO_TO_AVAILABLE_RUN_COURSES_PAGE, new GoToAvailableRunCoursesPage());
 
 		commands.put(CommandName.REGISTRATION_COMMAND, new RegistrationCommand());
 		commands.put(CommandName.AUTHORIZATION_COMMAND, new AuthorizationCommand());

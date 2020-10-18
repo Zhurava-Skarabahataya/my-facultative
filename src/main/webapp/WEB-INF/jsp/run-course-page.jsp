@@ -8,5 +8,9 @@
 </head>
 <body>
 	КУРССС
+	
+	
+		<jsp:include page="footer.jsp" />
+	
 </body>
 </html>

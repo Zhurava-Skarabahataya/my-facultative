@@ -100,10 +100,11 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 			<div align="center">
 				<input type="submit" value="Сохранить данные" /><br />
 		</form>
-	</div>
+			</div>
 
 
 	</div>
+	<jsp:include page="footer.jsp" />
 
 </body>
 </html>

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Курсы</title>
+<title>Мои Курсы</title>
 
 
 <c:set var="commandToLanguageChanger" scope="session"
@@ -84,6 +84,12 @@
 				Максимальное количество студентов
 					
 				</th>
+				<c:if test="sessionScope.bean.userRoleId == 1">
+				<th>
+				Преподаватель
+				</th>
+			</c:if>
+				
 				<th>Прочее
 				</th>
 			</tr>
@@ -122,6 +128,12 @@
 				<td>
 								<c:out value="${course.studentLimit}"/>
 				</td>
+				<c:if test="sessionScope.bean.userRoleId == 1">
+				<td>
+												<c:out value="${course.lecturerName}"/>
+				
+				</td>
+				</c:if>
 				<td>
 								
 				<form action="Controller" method="post">
@@ -137,12 +149,28 @@
 		
 		</table>
 	</c:if>
-	Тут будут курсыыыы
+	<br>
+	<div style="padding:15px">
+		<c:if test="${sessionScope.bean.courses == null}"> 
+	Пока нету курсов...<br><br>
 	
+		</c:if>
+	
+			<c:if test="${sessionScope.bean.userRoleId == 1}"> 
+			
+				<form action="Controller" method="post">
+					<input type="hidden" name="command" value="go_to_available_run_courses_page" />
+					<input type="submit" value="Просмотреть доступные курсы" />
+					</form>
+			
+			</c:if>
+	</div>
 	
 	</div>
 
+	
 
+	<jsp:include page="footer.jsp" />
 
 </body>
 </html>
