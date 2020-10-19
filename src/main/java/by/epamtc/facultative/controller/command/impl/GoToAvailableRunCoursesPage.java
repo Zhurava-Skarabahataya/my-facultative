@@ -17,14 +17,9 @@ private static final String AVAILABLE_RUN_COURSES_PATH = "WEB-INF/jsp/available-
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("Мы в команде");
 		List <InfoAboutRunnedCourse> courses = null;
 		
 		courses = CourseInfoProvider.getInstance().findAllAvailableRunCourses();
-		
-		for (InfoAboutRunnedCourse i : courses) {
-			System.out.println(i);
-		}
 		
 		request.setAttribute("courses", courses);
 		try {

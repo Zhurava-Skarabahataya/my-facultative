@@ -25,6 +25,7 @@
 <fmt:message bundle="${loc}" key="duration" var="duration" />
 <fmt:message bundle="${loc}" key="vacant_places" var="vacant_places" />
 <fmt:message bundle="${loc}" key="status" var="status" />
+<fmt:message bundle="${loc}" key="more" var="more" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_available_run_courses_page" />
 
@@ -45,7 +46,7 @@
 				<th><c:out value="${duration}"/></th>
 				<th><c:out value="${vacant_places}"/></th>
 				<th><c:out value="${status}"/></th>
-				<th><c:out value="${course_name}"/></th>
+				<th><c:out value="${more}"/></th>
 			</tr>
 			
 			
@@ -58,7 +59,11 @@
 					<td><c:out value="${run_course.infoAboutCourse.courseDuration}"/></td>
 					<td><c:out value="${run_course.studentLimit - run_course.studentAmount}"/></td>
 					<td><c:out value="${run_course.courseStatusName}"/></td>
-					<td><c:out value="${run_course.courseName}"/></td>
+					<td><form action="Controller" method="post">
+					<input type="hidden" name="command" value="go_to_run_course_page" />
+					<input type="hidden" name="run_course_id" value = "${run_course.runCourseId}"/>
+					<input type="submit" value="${more}" />
+					</form></td>
 					
 				
 				</tr>

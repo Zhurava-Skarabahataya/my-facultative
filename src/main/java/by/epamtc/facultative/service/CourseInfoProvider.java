@@ -1,5 +1,6 @@
 package by.epamtc.facultative.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import by.epamtc.facultative.bean.CourseStudentInfo;
@@ -93,6 +94,27 @@ public class CourseInfoProvider {
 		}
 
 	}
+	
+	private void countStudentsOnCourse(InfoAboutRunnedCourse course) {
+		int approvedStudentsAmount = 0;
+		if (course != null) {
+			
+				List<CourseStudentInfo> students = course.getStudentsOnCourse();
+				if (students != null) {
+					System.out.println("НЕ НУЛ");
+					for (CourseStudentInfo student : students) {
+						int approvalStatusId = student.getUserApprovalStatusId();
+						if (approvalStatusId == 2) {
+							approvedStudentsAmount++;
+						}
+					}
+				}
+
+				course.setStudentAmount(approvedStudentsAmount);
+			
+		}
+
+	}
 
 	public List<InfoAboutRunnedCourse> findAllAvailableRunCourses() {
 		
@@ -107,8 +129,79 @@ public class CourseInfoProvider {
 			e.printStackTrace();
 		}
 		countStudentsOnCourse(courses);
+		defineCourseLaunchStatus(courses);
 		
 		return courses;
+	}
+
+	private void defineCourseLaunchStatus(List<InfoAboutRunnedCourse> courses) {
+		
+		for (InfoAboutRunnedCourse runnedCourse : courses) {
+			int runnedCourseStatusId = runnedCourse.getCourseStatus();
+			if (runnedCourseStatusId == 2) {
+				runnedCourse.setCourseStatusName("Курс отменён");
+			}
+			else if (runnedCourseStatusId == 1){
+				
+				LocalDate today = LocalDate.now();
+				LocalDate startDay = runnedCourse.getDateOfStart();
+				LocalDate endDate = runnedCourse.getDateOfEnd();
+				
+				if (startDay.isAfter(today)) {
+					runnedCourse.setCourseStatusName("Идёт набор");
+				}
+				else if (endDate.isBefore(today)) {
+					runnedCourse.setCourseStatusName("Курс завершён");
+				}
+				else {
+					runnedCourse.setCourseStatusName("Курс запущен");
+				}
+				
+			}
+		}
+		
+	}
+	
+private void defineCourseLaunchStatus(InfoAboutRunnedCourse runnedCourse) {
+				
+			int runnedCourseStatusId = runnedCourse.getCourseStatus();
+			if (runnedCourseStatusId == 2) {
+				runnedCourse.setCourseStatusName("Курс отменён");
+			}
+			else if (runnedCourseStatusId == 1){
+				
+				LocalDate today = LocalDate.now();
+				LocalDate startDay = runnedCourse.getDateOfStart();
+				LocalDate endDate = runnedCourse.getDateOfEnd();
+				
+				if (startDay.isAfter(today)) {
+					runnedCourse.setCourseStatusName("Идёт набор");
+				}
+				else if (endDate.isBefore(today)) {
+					runnedCourse.setCourseStatusName("Курс завершён");
+				}
+				else {
+					runnedCourse.setCourseStatusName("Курс запущен");
+				}
+				
+			}
+		
+		
+	}
+
+	public InfoAboutRunnedCourse findRunCourseById(int runCourseId) {
+		
+		InfoAboutRunnedCourse info  = null;
+		try {
+			info = CourseInfoDAOImpl.getInstance().findRunCourse(runCourseId);
+			System.out.println(info);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		countStudentsOnCourse(info);
+		defineCourseLaunchStatus(info);
+		return info;
 	}
 	
 	
