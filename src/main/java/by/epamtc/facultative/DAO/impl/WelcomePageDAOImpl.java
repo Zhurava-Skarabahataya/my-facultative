@@ -3,7 +3,7 @@ package by.epamtc.facultative.dao.impl;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 
-public class WelcomePageInfoDAOImpl {
+public class WelcomePageDAOImpl {
 
 	public void getDataFromDatabase() {
 

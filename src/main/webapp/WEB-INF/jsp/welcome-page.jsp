@@ -71,7 +71,7 @@
 
 
 	<img src="image/welcome-cat.png" alt="Здесь должен был быть кот."
-		height=200 align="center">
+		height=200 >
 
 
 

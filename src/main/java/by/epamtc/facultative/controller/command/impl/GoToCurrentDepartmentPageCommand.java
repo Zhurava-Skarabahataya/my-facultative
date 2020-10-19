@@ -1,7 +1,6 @@
 package by.epamtc.facultative.controller.command.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,21 +10,30 @@ import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.DepartmentInfoProviderService;
 
-public class GoToDepartmentsPageCommand implements Command {
-
-private final String DEPARTMENTS_PAGE_PATH = "WEB-INF/jsp/departments-page.jsp";
-
+public class GoToCurrentDepartmentPageCommand implements Command {
 	
+	private final String DEPARTMENTS_PAGE_PATH = "WEB-INF/jsp/department-page.jsp";
+
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
-		List <Department> departments;
-		departments = null;
+
+		int departmentId = Integer.parseInt(request.getParameter("department_id"));
+		String deanName = request.getParameter("dean_name");
+		String deanPhotoLink = request.getParameter("dean_photo_link");
+		String departmentName = request.getParameter("department_name");
 		
 		DepartmentInfoProviderService departmentService = DepartmentInfoProviderService.getInstance();
-		departments = departmentService.findAllDepartmentsInfo();
+		Department department = new Department();
+		department.setDepartmentID(departmentId);
+		department.setDeanName(deanName);
+		department.setDeanImagePath(deanPhotoLink);
+		department.setDepartmentName(departmentName);
 		
-		request.setAttribute("departments", departments);
+		departmentService.findLecturersAndCoursesForDepartment(department);
+		
+		request.setAttribute("department", department);
+		System.out.println(department);
 		
 		
 		try {
@@ -35,7 +43,7 @@ private final String DEPARTMENTS_PAGE_PATH = "WEB-INF/jsp/departments-page.jsp";
 		} catch (IOException e) {
 			// Я обработаю, честное слово
 		}
-		
 
 	}
+
 }

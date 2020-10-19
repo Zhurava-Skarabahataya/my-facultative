@@ -114,7 +114,7 @@
 		</div>
 	</div>
 
-	<div class="main_user_info" style="background-color:green">
+	<div class="main_user_info" >
 
 		<table class="table_user_info">
 			<tr>

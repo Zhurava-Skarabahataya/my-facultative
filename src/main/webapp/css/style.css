@@ -9,7 +9,7 @@ body {
 }
 
 .header {
-	  font-family: 'Ubuntu Condensed', sans-serif;
+	 font-family: 'Ubuntu Condensed', sans-serif;
 	
 	overflow: hidden;
 	background-color: #f1f1f1;
@@ -38,6 +38,16 @@ body {
 	opacity:0.9;
 	border-radius: 10px;
 	
+}
+
+.inscription{
+	text-align:center;
+	background-color: #f1f1f1;
+	opacity:0.9;
+	border-radius: 10px;
+	padding: 15px;
+	margin: 15px;
+	font-family: 'Ubuntu Condensed', sans-serif;
 }
 
 .about_university{
@@ -124,6 +134,32 @@ body {
 }
 }
 
+.departmnent_table{
+	background-color: #ced1d6;
+	opacity: 0.9;
+	border-radius: 10px;
+	margin:15px;
+	
+}
+
+.departmnent_table tr{
+	background-color: #9298a3;
+	
+}
+
+.courses_table{
+	background-color: #ced1d6;
+	opacity: 0.9;
+	border-radius: 10px;
+	margin:15px;
+}
+
+.courses_table tr{
+	background-color: #9298a3;
+	
+	border-radius: 10px;
+	
+}
 
 .courses_info_table {
 	background-color: #ced1d6;
@@ -171,8 +207,8 @@ body {
 	text-align: left;
 border-collapse: separate;
 border-spacing: 2px;
-background: #ECE9E0;
-color: #656665;
+background: #808080;
+color: #ffffff;
 border: 16px solid #ECE9E0;
 border-radius: 20px;
 	
@@ -180,7 +216,7 @@ border-radius: 20px;
 }
 
 th {
-font-size: 18px;
+font-size: 12px;
 padding: 10px;
 }
 td {

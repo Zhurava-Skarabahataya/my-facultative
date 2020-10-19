@@ -77,7 +77,7 @@
 	<ul class="menu-main">
   		<li><a href="Controller?command=go_to_about_university_page"><c:out value="${about}"/></a></li>
   		<li><a href="Controller?command=go_to_departments_page"><c:out value="${departments}"/></a></li>
-  		<li><a href="Controller?command=go_to_univercity_courses_page"><c:out value="${courses}"/></a></li>
+  		<li><a href="Controller?command=go_to_available_run_courses_page"><c:out value="${courses}"/></a></li>
   		<li><a href="Controller?command=go_to_contacts_page"><c:out value="${contacts}"/></a></li>
   		<li><a href="Controller?command=go_to_news_page"><c:out value="${news}"/></a></li>
 	</ul>

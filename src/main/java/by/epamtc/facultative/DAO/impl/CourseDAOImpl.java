@@ -20,11 +20,11 @@ import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.service.FullNameService;
 
-public class CourseInfoDAOImpl {
+public class CourseDAOImpl {
 
-	private static final CourseInfoDAOImpl instance = new CourseInfoDAOImpl();
+	private static final CourseDAOImpl instance = new CourseDAOImpl();
 
-	private static final Logger logger = Logger.getLogger(CourseInfoDAOImpl.class);
+	private static final Logger logger = Logger.getLogger(CourseDAOImpl.class);
 
 	private final String QUERY_FOR_AVAILABLE_COURSES_IN_DEPARTMENT = "SELECT course_id,"
 			+ "title FROM courses WHERE department_id = ?";
@@ -51,10 +51,11 @@ public class CourseInfoDAOImpl {
 			+ "courses.course_id, courses.title, courses.description, courses.course_program, "
 			+ "courses.requirement, courses.duration_in_hours, courses.department_id, "
 			+ "run_courses_statuses.run_courses_statuses_title, users.first_name, "
-			+ "users.second_name, users.patronymic FROM courses JOIN run_courses "
+			+ "users.second_name, users.patronymic, departments.name FROM courses JOIN run_courses "
 			+ "ON courses.course_id = run_courses.courses_course_id "
 			+ "JOIN run_courses_statuses ON run_courses_statuses.run_courses_statuses_id = "
 			+ "run_courses.run_courses_status JOIN users ON users.user_id = run_courses.lecturer_user_id"
+			+ " JOIN departments ON courses.department_id = departments.department_id"
 			+ " WHERE run_courses.run_courses_id = ?";
 
 	private final String QUERY_FOR_LECTURER_RUN_COURSE = "SELECT run_courses.run_courses_id,"
@@ -65,6 +66,23 @@ public class CourseInfoDAOImpl {
 			+ "  FROM courses JOIN run_courses ON courses.course_id = run_courses.courses_course_id "
 			+ "JOIN run_courses_statuses ON run_courses_statuses.run_courses_statuses_id = "
 			+ "run_courses.run_courses_status WHERE run_courses.lecturer_user_id = ? ";
+	
+	private final String QUERY_FOR_STUDENT_RUN_COURSES = "SELECT "
+			+ "run_courses.run_courses_id, run_courses.start_date, "
+			+ "run_courses.end_date, run_courses.shcedule, "
+			+ "run_courses.student_limit, run_courses.classroom, "
+			+ "run_courses.run_courses_status, courses.course_id, "
+			+ "courses.title, courses.description, courses.course_program, "
+			+ "courses.requirement, courses.duration_in_hours, courses.department_id, "
+			+ "users_has_run_courses.approval_status_id, approval_statuses.approval_status_name "
+			+ "FROM courses "
+			+ "JOIN run_courses ON courses.course_id = run_courses.courses_course_id "
+			+ "JOIN run_courses_statuses "
+			+ "ON run_courses_statuses.run_courses_statuses_id = run_courses.run_courses_status "
+			+ "JOIN users_has_run_courses "
+			+ "ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
+			+ "JOIN approval_statuses ON approval_statuses.approval_status_id = users_has_run_courses.approval_status_id"
+			+ " WHERE users_has_run_courses.users_user_id = ?";
 
 	private final String QUERY_FOR_STUDENTS_ON_COURSE = "SELECT users.user_login, users.first_name, users.second_name, "
 			+ "users.patronymic, users_has_run_courses.users_user_id, "
@@ -74,11 +92,14 @@ public class CourseInfoDAOImpl {
 			+ "ON users_has_run_courses.approval_status_id = approval_statuses.approval_status_id"
 			+ " WHERE users_has_run_courses.run_courses_id = ?";
 
-	private CourseInfoDAOImpl() {
+	private final String QUERY_FOR_APPLYING_STUDENT_FOR_RUN_COURSE = "INSERT INTO users_has_run_courses "
+			+ "(users_user_id, run_courses_id, approval_status_id) VALUES (?, ?, ?);";
+
+	private CourseDAOImpl() {
 
 	}
 
-	public static CourseInfoDAOImpl getInstance() {
+	public static CourseDAOImpl getInstance() {
 		return instance;
 	}
 
@@ -119,8 +140,7 @@ public class CourseInfoDAOImpl {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				cp.closeConnection(rs, ps, conn);
 			} catch (ConnectionPoolException e) {
@@ -177,8 +197,7 @@ public class CourseInfoDAOImpl {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				cp.closeConnection(ps, conn);
 			} catch (ConnectionPoolException e) {
@@ -191,6 +210,8 @@ public class CourseInfoDAOImpl {
 
 	public List<InfoAboutRunnedCourse> getRunCoursesOfStudent(int userId) throws DAOException {
 
+		List<InfoAboutRunnedCourse> courses = new ArrayList<InfoAboutRunnedCourse>();
+
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 
@@ -201,8 +222,89 @@ public class CourseInfoDAOImpl {
 		}
 
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-		return null;
+		try {
+			ps = conn.prepareStatement(QUERY_FOR_STUDENT_RUN_COURSES);
+			ps.setInt(1, userId);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int runCourseId = rs.getInt("run_courses.run_courses_id");
+				
+				Date sqlDateStart = rs.getDate("run_courses.start_date");
+				LocalDate startDate = sqlDateStart.toLocalDate();
+				Date sqlDateEnd = rs.getDate("run_courses.end_date");
+				LocalDate endDate = sqlDateEnd.toLocalDate();
+				
+				String shcedule = rs.getString("run_courses.shcedule");
+				
+				int studentLimit = rs.getInt("run_courses.student_limit");
+				
+				int classroom = rs.getInt("run_courses.classroom");
+				
+				int runCourseStatusId = rs.getInt("run_courses.run_courses_status");
+				
+				int courseId = rs.getInt("courses.course_id");
+				
+				String courseTitle = rs.getString("courses.title");
+				String courseDescription = rs.getString("courses.description");
+				String courseProgram = rs.getString("courses.course_program");
+				String courseRequirement = rs.getString("courses.requirement");
+				int courseDuration = rs.getInt("courses.duration_in_hours");
+				int departmentId = rs.getInt("courses.department_id");
+				
+				String studentStatusOnCourse = rs.getString("approval_statuses.approval_status_name");
+
+								
+				InfoAboutRunnedCourse infoAboutRunnedCourse = new InfoAboutRunnedCourse();
+				infoAboutRunnedCourse.setClassroomNumber(classroom);
+				infoAboutRunnedCourse.setCourseId(courseId);
+				infoAboutRunnedCourse.setCourseName(courseTitle);
+				infoAboutRunnedCourse.setCourseStatus(runCourseStatusId);
+				infoAboutRunnedCourse.setDateOfEnd(endDate);
+				infoAboutRunnedCourse.setDateOfStart(startDate);
+				infoAboutRunnedCourse.setLecturerId(userId);
+				infoAboutRunnedCourse.setRunCourseId(runCourseId);
+				infoAboutRunnedCourse.setShedule(shcedule);
+				infoAboutRunnedCourse.setStudentLimit(studentLimit);
+				infoAboutRunnedCourse.setStudentStatusName(studentStatusOnCourse);
+
+				InfoAboutCourse infoAbourCourse = new InfoAboutCourse();
+				infoAbourCourse.setCourseDepartment(departmentId);
+				infoAbourCourse.setCourseDescription(courseDescription);
+				infoAbourCourse.setCourseDuration(courseDuration);
+				infoAbourCourse.setCourseId(courseId);
+				infoAbourCourse.setCourseName(courseTitle);
+				infoAbourCourse.setCourseProgram(courseProgram);
+				infoAbourCourse.setCourseRequirement(courseRequirement);
+
+				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
+
+				List<CourseStudentInfo> students = findStudentsOnRunCourse(runCourseId);
+
+				infoAboutRunnedCourse.setStudentsOnCourse(students);
+
+				courses.add(infoAboutRunnedCourse);
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		finally {
+			try {
+				cp.closeConnection(rs, ps, conn);
+			} catch (ConnectionPoolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return courses;
 	}
 
 	public List<InfoAboutRunnedCourse> getRunCoursesOfLecturer(int userId) throws DAOException {
@@ -267,10 +369,8 @@ public class CourseInfoDAOImpl {
 				infoAbourCourse.setCourseRequirement(courseRequirement);
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
-			
-				
+
 				List<CourseStudentInfo> students = findStudentsOnRunCourse(runCourseId);
-				
 
 				infoAboutRunnedCourse.setStudentsOnCourse(students);
 
@@ -290,16 +390,15 @@ public class CourseInfoDAOImpl {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 		}
 		return courses;
 	}
 
 	private List<CourseStudentInfo> findStudentsOnRunCourse(int runCourseId) throws DAOException {
-		
+
 		List<CourseStudentInfo> students = new ArrayList<CourseStudentInfo>();
-		
+
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 
@@ -311,24 +410,24 @@ public class CourseInfoDAOImpl {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-	
+
 		try {
 			ps = conn.prepareStatement(QUERY_FOR_STUDENTS_ON_COURSE);
-			
+
 			ps.setInt(1, runCourseId);
-			
+
 			rs = ps.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				String userLogin = rs.getString("users.user_login");
 				String firstName = rs.getString("users.first_name");
 				String secondName = rs.getString("users.second_name");
 				String patronymic = rs.getString("users.patronymic");
-				int userId = rs.getInt("users_has_run_course.users_user_id");
-				int userResult = rs.getInt("users_has_run_course.user_result");
-				int userApprovalStatusId = rs.getInt("users_has_run_course.approval_status_id");
+				int userId = rs.getInt("users_has_run_courses.users_user_id");
+				int userResult = rs.getInt("users_has_run_courses.user_result");
+				int userApprovalStatusId = rs.getInt("users_has_run_courses.approval_status_id");
 				String userApprovalStatusName = rs.getString("approval_statuses.approval_status_name");
-				
+
 				CourseStudentInfo student = new CourseStudentInfo();
 				student.setUserLogin(userLogin);
 				student.setUserFirstName(firstName);
@@ -338,36 +437,31 @@ public class CourseInfoDAOImpl {
 				student.setResult(userResult);
 				student.setUserApprovalStatusId(userApprovalStatusId);
 				student.setUserApprovalStatusName(userApprovalStatusName);
-				
+
 				students.add(student);
-				}
-			
-			
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		finally {
 			try {
 				cp.closeConnection(rs, ps, conn);
 			} catch (ConnectionPoolException e) {
-				
+
 				e.printStackTrace();
 			}
 		}
-		
 
 		return students;
 	}
-	
-	
-	
 
 	public List<InfoAboutRunnedCourse> findAllAvailableRunCourses() throws DAOException {
-		
+
 		List<InfoAboutRunnedCourse> courses = new ArrayList<InfoAboutRunnedCourse>();
-		
+
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 
@@ -379,10 +473,10 @@ public class CourseInfoDAOImpl {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
 			ps = conn.prepareStatement(QUERY_FOR_ALL_AVAILABLE_COURSES);
-			
+
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				String courseTitle = rs.getString("courses.title");
@@ -406,9 +500,10 @@ public class CourseInfoDAOImpl {
 				int courseDuration = rs.getInt("courses.duration_in_hours");
 				int departmentId = rs.getInt("courses.department_id");
 				int lecturerId = rs.getInt("run_courses.lecturer_user_id");
-				
-				String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName, lecturerSecondName, lecturerPatronymic);
-				
+
+				String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName,
+						lecturerSecondName, lecturerPatronymic);
+
 				InfoAboutRunnedCourse infoAboutRunnedCourse = new InfoAboutRunnedCourse();
 				infoAboutRunnedCourse.setClassroomNumber(classroom);
 				infoAboutRunnedCourse.setCourseId(courseId);
@@ -433,23 +528,18 @@ public class CourseInfoDAOImpl {
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
 
-				
-				
 				List<CourseStudentInfo> students = findStudentsOnRunCourse(runCourseId);
-				
 
 				infoAboutRunnedCourse.setStudentsOnCourse(students);
-				
+
 				courses.add(infoAboutRunnedCourse);
-				
+
 			}
-			
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				cp.closeConnection(rs, ps, conn);
 			} catch (ConnectionPoolException e) {
@@ -457,17 +547,14 @@ public class CourseInfoDAOImpl {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
-		
+
 		return courses;
 	}
 
 	public InfoAboutRunnedCourse findRunCourse(int runCourseId) throws DAOException {
-		
+
 		InfoAboutRunnedCourse infoAboutRunnedCourse = null;
-		
+
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 
@@ -479,12 +566,12 @@ public class CourseInfoDAOImpl {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
 			ps = conn.prepareStatement(QUERY_FOR_RUN_COURSE_INFO);
 			ps.setInt(1, runCourseId);
 			rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				String courseTitle = rs.getString("courses.title");
 				String courseDescription = rs.getString("courses.description");
@@ -494,6 +581,7 @@ public class CourseInfoDAOImpl {
 				String lecturerFirstName = rs.getString("users.first_name");
 				String lecturerSecondName = rs.getString("users.second_name");
 				String lecturerPatronymic = rs.getString("users.patronymic");
+				String departmentName = rs.getString("departments.name");
 
 				Date sqlDateStart = rs.getDate("run_courses.start_date");
 				LocalDate startDate = sqlDateStart.toLocalDate();
@@ -506,15 +594,15 @@ public class CourseInfoDAOImpl {
 				int courseDuration = rs.getInt("courses.duration_in_hours");
 				int departmentId = rs.getInt("courses.department_id");
 				int lecturerId = rs.getInt("run_courses.lecturer_user_id");
-				
-				String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName, lecturerSecondName, lecturerPatronymic);
-				
+
+				String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName,
+						lecturerSecondName, lecturerPatronymic);
+
 				infoAboutRunnedCourse = new InfoAboutRunnedCourse();
 				infoAboutRunnedCourse.setClassroomNumber(classroom);
 				infoAboutRunnedCourse.setCourseId(courseId);
 				infoAboutRunnedCourse.setCourseName(courseTitle);
 				infoAboutRunnedCourse.setCourseStatus(runCourseStatusId);
-				System.out.println(runCourseStatusId + "!!!!!!!!");
 				infoAboutRunnedCourse.setDateOfEnd(endDate);
 				infoAboutRunnedCourse.setDateOfStart(startDate);
 				infoAboutRunnedCourse.setLecturerId(lecturerId);
@@ -531,21 +619,20 @@ public class CourseInfoDAOImpl {
 				infoAbourCourse.setCourseName(courseTitle);
 				infoAbourCourse.setCourseProgram(courseProgram);
 				infoAbourCourse.setCourseRequirement(courseRequirement);
+				infoAbourCourse.setDepartmentName(departmentName);
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
 
-							
 				List<CourseStudentInfo> students = findStudentsOnRunCourse(runCourseId);
-				
+
 				infoAboutRunnedCourse.setStudentsOnCourse(students);
-				
+
 			}
-						
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				cp.closeConnection(rs, ps, conn);
 			} catch (ConnectionPoolException e) {
@@ -553,10 +640,44 @@ public class CourseInfoDAOImpl {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		// TODO Auto-generated method stub
+
 		return infoAboutRunnedCourse;
+	}
+
+	public void applyStudentForRunCourse(int userId, int runCourseId) throws DAOException {
+
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		try {
+			conn = cp.getFreeConnection();
+			
+			ps = conn.prepareStatement(QUERY_FOR_APPLYING_STUDENT_FOR_RUN_COURSE);
+			
+			ps.setInt(1, userId);
+			ps.setInt(2, runCourseId);
+			ps.setInt(3, 1);
+			
+			ps.executeUpdate();
+			
+		} catch (ConnectionPoolException e) {
+			e.printStackTrace();
+			throw new DAOException(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				cp.closeConnection(ps, conn);
+			} catch (ConnectionPoolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+
 	}
 
 }

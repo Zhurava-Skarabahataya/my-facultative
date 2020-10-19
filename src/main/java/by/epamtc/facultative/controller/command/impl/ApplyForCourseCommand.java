@@ -1,49 +1,39 @@
 package by.epamtc.facultative.controller.command.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.CourseInfoProvider;
 
-public class GoToUserCoursesPage implements Command {
-
-	private final String USER_COURSES_PAGE_PATH = "WEB-INF/jsp/user-courses-page.jsp";
+public class ApplyForCourseCommand implements Command {
+	
+	private final String APPLICATION_SUCCESS_PAGE = "WEB-INF/jsp/error-page.jsp";
 	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
+
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+		
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute("userLogin");
-		UserInfo userPageInfo = (UserInfo) session.getAttribute("bean");
-
-		int userId = userPageInfo.getUserId();
-		int userRoleId = userPageInfo.getUserRoleId();
-
-		CourseInfoProvider courseInfoProvider = CourseInfoProvider.getInstance();
-		List<InfoAboutRunnedCourse> courses = null;
 		
-		if (userRoleId == 1) {
-			courses = courseInfoProvider.findStudentRunCourses(userId);
-		}
-		if (userRoleId == 2) {
-			courses = courseInfoProvider.findLecturerRunCourses(userId);
-
-		}
-		userPageInfo.setCourses(courses);
-
 		if (userLogin != null) {
-
+			System.out.println("логин не налл");
+			
+			int runCourseId = Integer.parseInt(request.getParameter("run_course_id"));
+			UserInfo user = (UserInfo) session.getAttribute("bean");
+			int userId = user.getUserId();
+							
 			try {
-				request.getRequestDispatcher(USER_COURSES_PAGE_PATH).forward(request, response);
+				CourseInfoProvider courseInfoProvider = CourseInfoProvider.getInstance();
+				courseInfoProvider.applyStudentForRunCourse(userId, runCourseId);
+				request.getRequestDispatcher(APPLICATION_SUCCESS_PAGE).forward(request, response);
 			} catch (ServletException e) {
 				// Я обработаю, честное слово
 			} catch (IOException e) {

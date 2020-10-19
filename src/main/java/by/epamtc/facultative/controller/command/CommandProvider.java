@@ -3,6 +3,7 @@ package by.epamtc.facultative.controller.command;
 import java.util.HashMap;
 import java.util.Map;
 
+import by.epamtc.facultative.controller.command.impl.ApplyForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.AuthorizationCommand;
 import by.epamtc.facultative.controller.command.impl.ChangeLanguageCommand;
 import by.epamtc.facultative.controller.command.impl.CreateCourseCommand;
@@ -13,6 +14,7 @@ import by.epamtc.facultative.controller.command.impl.GoToAvailableRunCoursesPage
 import by.epamtc.facultative.controller.command.impl.GoToContactsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToCoursePageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToCreateCoursePage;
+import by.epamtc.facultative.controller.command.impl.GoToCurrentDepartmentPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToDepartmentsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToErrorPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToNewsPage;
@@ -55,6 +57,7 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_NEWS_PAGE, new GoToNewsPage());
 		commands.put(CommandName.GO_TO_ABOUT_UNIVERSITY_PAGE, new GoToAboutUniversityPage());
 		commands.put(CommandName.GO_TO_AVAILABLE_RUN_COURSES_PAGE, new GoToAvailableRunCoursesPage());
+		commands.put(CommandName.GO_TO_CURRENT_DEPARTMENT_PAGE_COMMAND, new GoToCurrentDepartmentPageCommand());
 
 		commands.put(CommandName.REGISTRATION_COMMAND, new RegistrationCommand());
 		commands.put(CommandName.AUTHORIZATION_COMMAND, new AuthorizationCommand());
@@ -63,6 +66,7 @@ public class CommandProvider {
 		commands.put(CommandName.EDIT_USER_INFO, new EditUserInfoCommand());
 		commands.put(CommandName.CREATE_COURSE_COMMAND, new CreateCourseCommand());
 		commands.put(CommandName.LOGOUT, new LogOutCommand());
+		commands.put(CommandName.APPLY_FOR_COURSE, new ApplyForCourseCommand());
 		
 	}
 

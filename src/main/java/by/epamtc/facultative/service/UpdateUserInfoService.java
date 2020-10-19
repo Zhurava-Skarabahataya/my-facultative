@@ -2,7 +2,7 @@ package by.epamtc.facultative.service;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
-import by.epamtc.facultative.dao.impl.UserInfoDAOImpl;
+import by.epamtc.facultative.dao.impl.UserDAOImpl;
 
 public class UpdateUserInfoService {
 	
@@ -18,7 +18,7 @@ public class UpdateUserInfoService {
 
 	public void update(UserInfo userPageInfo) {
 		
-		UserInfoDAOImpl userInfoDAO = UserInfoDAOImpl.getInstance();
+		UserDAOImpl userInfoDAO = UserDAOImpl.getInstance();
 		try {
 			userInfoDAO.updateUserInfo(userPageInfo);
 		} catch (DAOException e) {

@@ -16,11 +16,11 @@ import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 
-public class UserInfoDAOImpl {
+public class UserDAOImpl {
 
-	private static final UserInfoDAOImpl instance = new UserInfoDAOImpl();
+	private static final UserDAOImpl instance = new UserDAOImpl();
 	
-	private static final Logger logger = Logger.getLogger(UserInfoDAOImpl.class);
+	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
 	
 	private static final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
 			+ "users.user_email, users.department_department_id, departments.name, "
@@ -39,11 +39,11 @@ public class UserInfoDAOImpl {
 			+ "SET user_adress = ? , user_mobile_number = ?, user_date_of_birth = ?"
 			+ " WHERE users_user_id = ?";
 	
-	private UserInfoDAOImpl() {
+	private UserDAOImpl() {
 
 	}
 
-	public static UserInfoDAOImpl getInstance() {
+	public static UserDAOImpl getInstance() {
 		return instance;
 	}
 

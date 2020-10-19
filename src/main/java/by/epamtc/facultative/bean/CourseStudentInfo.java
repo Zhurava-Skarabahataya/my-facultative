@@ -14,6 +14,8 @@ public class CourseStudentInfo implements Serializable {
 	private int result;
 	private int userApprovalStatusId;
 	private String userApprovalStatusName;
+	
+	InfoAboutRunnedCourse infoAboutRunnedCourse;
 
 	public int getUserId() {
 		return userId;

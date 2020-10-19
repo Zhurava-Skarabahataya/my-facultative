@@ -1,6 +1,7 @@
 package by.epamtc.facultative.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class InfoAboutCourse implements Serializable{
 	
@@ -16,9 +17,25 @@ public class InfoAboutCourse implements Serializable{
 	private int courseDepartment;
 	private int courseDuration;
 	
+	private List<InfoAboutRunnedCourse> runCourses;
+	
 	public InfoAboutCourse() {
 		
 	}
+
+	
+	
+	public List<InfoAboutRunnedCourse> getRunCourses() {
+		return runCourses;
+	}
+
+
+
+	public void setRunCourses(List<InfoAboutRunnedCourse> runCourses) {
+		this.runCourses = runCourses;
+	}
+
+
 
 	public String getCourseName() {
 		return courseName;

@@ -14,6 +14,7 @@ public class InfoAboutRunnedCourse implements Serializable {
 	String shedule;
 	String lecturerName;
 	String courseStatusName;
+	String studentStatusName;
 
 	LocalDate dateOfStart;
 	LocalDate dateOfEnd;
@@ -31,6 +32,20 @@ public class InfoAboutRunnedCourse implements Serializable {
 	public InfoAboutRunnedCourse() {
 		
 	}
+	
+	
+
+	public String getStudentStatusName() {
+		return studentStatusName;
+	}
+
+
+
+	public void setStudentStatusName(String studentStatusName) {
+		this.studentStatusName = studentStatusName;
+	}
+
+
 
 	public InfoAboutCourse getInfoAboutCourse() {
 		return infoAboutCourse;

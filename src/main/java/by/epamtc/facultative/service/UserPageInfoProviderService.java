@@ -1,7 +1,7 @@
 package by.epamtc.facultative.service;
 
 import by.epamtc.facultative.dao.exception.DAOException;
-import by.epamtc.facultative.dao.impl.UserInfoDAOImpl;
+import by.epamtc.facultative.dao.impl.UserDAOImpl;
 import by.epamtc.facultative.bean.UserInfo;
 
 public class UserPageInfoProviderService {
@@ -21,7 +21,7 @@ public class UserPageInfoProviderService {
 		UserInfo userPageInfo = userInfo;
 		String userLogin = userPageInfo.getUserLogin();
 		
-		UserInfoDAOImpl userInfoDAOImpl = UserInfoDAOImpl.getInstance();
+		UserDAOImpl userInfoDAOImpl = UserDAOImpl.getInstance();
 		try {
 			userInfoDAOImpl.provideUserInfo(userPageInfo);
 		} catch (DAOException e) {
