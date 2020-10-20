@@ -11,15 +11,12 @@ import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.CourseInfoService;
 
-public class ApplyForCourseCommand implements Command {
-	
+public class RemoveApplicationForCourseCommand implements Command {
+
+	private static final String COMMAND_GO_TO_SUCCESS_PAGE = "?command=go_to_success_page_command";
+	private static final String MESSAGE_GO_TO_SUCCESS_PAGE = "&message=success_remove_apply";
 	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
 	
-	private static final String COMMAND_GO_TO_SUCCESS_PAGE = "?command=go_to_success_page_command";
-	private static final String MESSAGE_GO_TO_SUCCESS_PAGE = "&message=success_apply";
-
-
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -34,9 +31,9 @@ public class ApplyForCourseCommand implements Command {
 							
 			try {
 				CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
-				courseInfoProvider.applyStudentForRunCourse(userId, runCourseId);
+				courseInfoProvider.removeApplicationStudentForRunCourse(userId, runCourseId);
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE + MESSAGE_GO_TO_SUCCESS_PAGE);
-			} catch (IOException e) {
+			}  catch (IOException e) {
 				// Я обработаю, честное слово
 			}
 		} else {
@@ -52,6 +49,7 @@ public class ApplyForCourseCommand implements Command {
 			}
 		}
 
+		
 	}
 
 }

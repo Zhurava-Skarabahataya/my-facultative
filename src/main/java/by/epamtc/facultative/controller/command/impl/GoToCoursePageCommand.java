@@ -6,17 +6,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.controller.command.Command;
+import by.epamtc.facultative.service.CourseInfoService;
 
 public class GoToCoursePageCommand implements Command {
 
-	private final String COURSE_PAGE_PATH = "WEB-INF/jsp/run-course-page.jsp";
+	private final String COURSE_PAGE_PATH = "WEB-INF/jsp/course-page.jsp";
 
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
 		
+		Course course = new Course();
+		course.setCourseId(courseId);
+		
+		CourseInfoService courseInfoService = CourseInfoService.getInstance();
+		courseInfoService.findInfoAboutCourse(course);
+		
+		request.setAttribute("course", course);
 		
 		try {
 			request.getRequestDispatcher(COURSE_PAGE_PATH).forward(request, response);

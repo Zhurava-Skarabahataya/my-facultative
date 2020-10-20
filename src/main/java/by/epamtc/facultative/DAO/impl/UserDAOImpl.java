@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
-import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
+import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 
 public class UserDAOImpl {
@@ -22,7 +22,7 @@ public class UserDAOImpl {
 	
 	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
 	
-	private static final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
+	private  final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
 			+ "users.user_email, users.department_department_id, departments.name, "
 			+ "users.user_role_id, user_roles.role_name, "
 			+ " user_details.user_adress,"
@@ -31,13 +31,16 @@ public class UserDAOImpl {
 			+ "JOIN departments ON users.department_department_id = departments.department_id "
 			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_login = ?";
 
-	private static final String QUERY_UPDATE_USER_DATA_IN_USERS = "UPDATE users "
+	private  final String QUERY_UPDATE_USER_DATA_IN_USERS = "UPDATE users "
 			+ "SET users.first_name = ? , users.second_name = ?, users.patronymic = ?, "
 			+ " users.department_department_id = ? WHERE users.user_id = ?";
 
-	private static final String QUERY_UPDATE_USER_DATA_IN_USER_DETAILS = "UPDATE user_details "
+	private  final String QUERY_UPDATE_USER_DATA_IN_USER_DETAILS = "UPDATE user_details "
 			+ "SET user_adress = ? , user_mobile_number = ?, user_date_of_birth = ?"
 			+ " WHERE users_user_id = ?";
+	
+	private  final String  QUERY_FOR_STAFF_IN_DEPARTMENT = "";
+	
 	
 	private UserDAOImpl() {
 
@@ -78,7 +81,7 @@ public class UserDAOImpl {
 		int userRoleId = 0;
 		int userFacultyId = 0;
 
-		List<InfoAboutRunnedCourse> courses = null;
+		List<RunnedCourse> courses = null;
 		
 		ResultSet rs = null;
 
@@ -201,6 +204,34 @@ public class UserDAOImpl {
 			cp.releaseConnection(conn);
 		}
 		
+	}
+
+	public List<UserInfo> findStaffFromDepartment(int userDepartment) throws DAOException {
+		List<UserInfo> staff = null;
+		
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+		PreparedStatement statement = null;
+		
+		try {
+			conn = cp.getFreeConnection();
+		//	statement = conn.prepareStatement(sql);
+			
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		}
+		
+		
+		
+		
+		return staff;
+	}
+
+	public List<UserInfo> findStaffFromAllDeratments() {
+		List<UserInfo> staff = null;
+
+		
+		return staff;
 	}
 
 }

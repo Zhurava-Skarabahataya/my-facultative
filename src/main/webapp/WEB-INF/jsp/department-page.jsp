@@ -24,7 +24,7 @@
 <fmt:message bundle="${loc}" key="our_dean" var="our_dean" />
 <fmt:message bundle="${loc}" key="our_lecturers" var="our_lecturers" />
 <fmt:message bundle="${loc}" key="our_courses" var="our_courses" />
-<fmt:message bundle="${loc}" key="title" var="title" />
+<fmt:message bundle="${loc}" key="about_course" var="about_course" />
 </head>
 <body>
 <jsp:include page="header.jsp" />
@@ -32,27 +32,27 @@
 	<div class="inscription"><c:out value="${requestScope.department.departmentName}"/></div>
 	
 	<div class="inscription"><c:out value="${our_dean}"/></div>
-	<table>
+	<table class="dept_table">
 		<tr>
 			<td><c:out value="${requestScope.department.deanName}"/>
 			</td>
-			<td><img src="${requestScope.department.deanImagePath}">
+			<td><img src="${requestScope.department.deanImagePath}" width=200px>
 			</td>
 		</tr>
 	</table>
 	
 	<div class="inscription"><c:out value="${our_lecturers}"/></div>
-	<table>
+	<table  class="dept_table">
 		<c:forEach var="lecturer" items="${requestScope.department.lecturers}">
 			<tr>
-				<td><c:out value="${lecturer.userFirstName}"/><br>
+				<td><c:out value="${lecturer.userFirstName}"/> 
 					<c:if test="${lecturer.userPatronymic != null}">
-						<c:out value="${lecturer.userPatronymic}"/><br> 
+						<c:out value="${lecturer.userPatronymic}"/> 
 					</c:if>
 				
 				<c:out value="${lecturer.userSecondName}"/>
 				</td>
-				<td><img src="${lecturer.userPhotoLink}">
+				<td><img src="${lecturer.userPhotoLink}"  width=200px>
 				</td>
 			</tr>
 		
@@ -63,14 +63,19 @@
 	
 	
 	<div class="inscription"><c:out value="${our_courses}"/></div>
-	<table>
+	<table class="dept_table">
 		<c:forEach var="course" items="${requestScope.department.courses}">
 			<tr>
 				<td><c:out value="${course.courseName}"/>
 					</td>
 				<td><c:out value="${course.courseDescription}"/>
 				</td>
-				<td>КНОПАСЬКА
+				<td>
+				<form  action="Controller"	method="post">
+					<input type="hidden" name="command" value="go_to_course_page_command" /> 
+					<input type = "hidden" name="courseId" value="${course.courseId}"/>
+					<input type="submit" value="${about_course}" />
+					</form>
 				</td>
 			</tr>
 		

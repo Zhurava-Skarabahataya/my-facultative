@@ -56,7 +56,7 @@
 				</tr>
 
 			</table>
-			<br> <input type="submit" value="${send}" /> <br> <br>
+			 <input type="submit" value="${send}" /> 
 			<input type="submit" value="${forgot_password}" /><br>
 		</form>
 	</div>

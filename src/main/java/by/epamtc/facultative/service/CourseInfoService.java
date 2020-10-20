@@ -3,27 +3,27 @@ package by.epamtc.facultative.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import by.epamtc.facultative.bean.CourseStudentInfo;
-import by.epamtc.facultative.bean.InfoAboutCourse;
-import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
+import by.epamtc.facultative.bean.StudentOnCourse;
+import by.epamtc.facultative.bean.Course;
+import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.CourseDAOImpl;
 
-public class CourseInfoProvider {
+public class CourseInfoService {
 
-	private static final CourseInfoProvider instance = new CourseInfoProvider();
+	private static final CourseInfoService instance = new CourseInfoService();
 
-	private CourseInfoProvider() {
+	private CourseInfoService() {
 
 	}
 
-	public static CourseInfoProvider getInstance() {
+	public static CourseInfoService getInstance() {
 		return instance;
 	}
 
-	public List<InfoAboutCourse> findAvailableCoursesForDepartment(int userDeparttmentId) {
+	public List<Course> findAvailableCoursesForDepartment(int userDeparttmentId) {
 
-		List<InfoAboutCourse> courses = null;
+		List<Course> courses = null;
 		int departmentId = userDeparttmentId;
 
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
@@ -38,9 +38,9 @@ public class CourseInfoProvider {
 		return courses;
 	}
 
-	public List<InfoAboutRunnedCourse> findStudentRunCourses(int userId) {
+	public List<RunnedCourse> findStudentRunCourses(int userId) {
 
-		List<InfoAboutRunnedCourse> courses = null;
+		List<RunnedCourse> courses = null;
 
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
 
@@ -58,9 +58,9 @@ public class CourseInfoProvider {
 		return courses;
 	}
 
-	public List<InfoAboutRunnedCourse> findLecturerRunCourses(int userId) {
+	public List<RunnedCourse> findLecturerRunCourses(int userId) {
 
-		List<InfoAboutRunnedCourse> courses = null;
+		List<RunnedCourse> courses = null;
 
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
 
@@ -78,15 +78,15 @@ public class CourseInfoProvider {
 		return courses;
 	}
 
-	private void countStudentsOnCourse(List<InfoAboutRunnedCourse> courses) {
+	private void countStudentsOnCourse(List<RunnedCourse> courses) {
 		int approvedStudentsAmount = 0;
 		if (courses != null) {
-			for (InfoAboutRunnedCourse course : courses) {
+			for (RunnedCourse course : courses) {
 
-				List<CourseStudentInfo> students = course.getStudentsOnCourse();
+				List<StudentOnCourse> students = course.getStudentsOnCourse();
 				if (students != null) {
 
-					for (CourseStudentInfo student : students) {
+					for (StudentOnCourse student : students) {
 
 						int approvalStatusId = student.getUserApprovalStatusId();
 						if (approvalStatusId == 2) {
@@ -101,14 +101,14 @@ public class CourseInfoProvider {
 
 	}
 
-	private void countStudentsOnCourse(InfoAboutRunnedCourse course) {
+	private void countStudentsOnCourse(RunnedCourse course) {
 		int approvedStudentsAmount = 0;
 		if (course != null) {
 
-			List<CourseStudentInfo> students = course.getStudentsOnCourse();
+			List<StudentOnCourse> students = course.getStudentsOnCourse();
 			if (students != null) {
 				System.out.println("НЕ НУЛ");
-				for (CourseStudentInfo student : students) {
+				for (StudentOnCourse student : students) {
 					int approvalStatusId = student.getUserApprovalStatusId();
 					if (approvalStatusId == 2) {
 						approvedStudentsAmount++;
@@ -122,11 +122,11 @@ public class CourseInfoProvider {
 
 	}
 
-	public List<InfoAboutRunnedCourse> findAllAvailableRunCourses() {
+	public List<RunnedCourse> findAllAvailableRunCourses() {
 
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
 
-		List<InfoAboutRunnedCourse> courses = null;
+		List<RunnedCourse> courses = null;
 
 		try {
 			courses = courseInfoDAOImpl.findAllAvailableRunCourses();
@@ -140,9 +140,9 @@ public class CourseInfoProvider {
 		return courses;
 	}
 
-	private void defineCourseLaunchStatus(List<InfoAboutRunnedCourse> courses) {
+	private void defineCourseLaunchStatus(List<RunnedCourse> courses) {
 
-		for (InfoAboutRunnedCourse runnedCourse : courses) {
+		for (RunnedCourse runnedCourse : courses) {
 			int runnedCourseStatusId = runnedCourse.getCourseStatus();
 			if (runnedCourseStatusId == 2) {
 				runnedCourse.setCourseStatusName("Курс отменён");
@@ -165,7 +165,7 @@ public class CourseInfoProvider {
 
 	}
 
-	private void defineCourseLaunchStatus(InfoAboutRunnedCourse runnedCourse) {
+	private void defineCourseLaunchStatus(RunnedCourse runnedCourse) {
 
 		int runnedCourseStatusId = runnedCourse.getCourseStatus();
 		if (runnedCourseStatusId == 2) {
@@ -188,9 +188,9 @@ public class CourseInfoProvider {
 
 	}
 
-	public InfoAboutRunnedCourse findRunCourseById(int runCourseId) {
+	public RunnedCourse findRunCourseById(int runCourseId) {
 
-		InfoAboutRunnedCourse info = null;
+		RunnedCourse info = null;
 		try {
 			info = CourseDAOImpl.getInstance().findRunCourse(runCourseId);
 
@@ -215,11 +215,11 @@ public class CourseInfoProvider {
 
 	}
 
-	public boolean isStudentOnRunCourse(int userId, InfoAboutRunnedCourse info) {
-		List<CourseStudentInfo> studentsOnCourse;
+	public boolean isStudentOnRunCourse(int userId, RunnedCourse info) {
+		List<StudentOnCourse> studentsOnCourse;
 		studentsOnCourse = info.getStudentsOnCourse();
 
-		for (CourseStudentInfo student : studentsOnCourse) {
+		for (StudentOnCourse student : studentsOnCourse) {
 			int studentId = student.getUserId();
 			if (studentId == userId) {
 				return true;
@@ -228,18 +228,47 @@ public class CourseInfoProvider {
 		return false;
 	}
 
-	public int getUserOnCourseApprovalStatusId(int userId, InfoAboutRunnedCourse info) {
+	public int getUserOnCourseApprovalStatusId(int userId, RunnedCourse info) {
 		
-		List<CourseStudentInfo> studentsOnCourse;
+		List<StudentOnCourse> studentsOnCourse;
 		studentsOnCourse = info.getStudentsOnCourse();
 
-		for (CourseStudentInfo student : studentsOnCourse) {
+		for (StudentOnCourse student : studentsOnCourse) {
 			int studentId = student.getUserId();
 			if (studentId == userId) {
 				return student.getUserApprovalStatusId();
 			}
 		}
 		return 0;
+	}
+
+	public void findInfoAboutCourse(Course course) {
+		
+		CourseDAOImpl courseDAO = CourseDAOImpl.getInstance();
+		try {
+			courseDAO.finsInfoAboutCourse(course);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<RunnedCourse> runnedCourses = course.getRunCourses();
+		defineCourseLaunchStatus(runnedCourses);
+		countStudentsOnCourse(runnedCourses);
+		
+		course.setRunCourses(runnedCourses);
+		
+	}
+
+	public void removeApplicationStudentForRunCourse(int userId, int runCourseId) {
+		CourseDAOImpl courseDAOImpl = CourseDAOImpl.getInstance();
+		try {
+			courseDAOImpl.removeApplicationForRunCourse(userId, runCourseId);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

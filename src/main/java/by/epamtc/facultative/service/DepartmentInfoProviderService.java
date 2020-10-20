@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.epamtc.facultative.bean.Department;
-import by.epamtc.facultative.bean.InfoAboutCourse;
+import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.DepartmentDAOImpl;
@@ -69,7 +69,7 @@ public class DepartmentInfoProviderService {
 		DepartmentDAOImpl departmentDAOImpl = DepartmentDAOImpl.getInstance();
 		int departmentId = department.getDepartmentID();
 		List<UserInfo> lecturers = null;
-		List<InfoAboutCourse> courses = null;
+		List<Course> courses = null;
 
 		try {
 			lecturers = departmentDAOImpl.findLecturersInDepartment(departmentId);

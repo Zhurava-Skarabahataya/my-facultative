@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.epamtc.facultative.bean.Department;
-import by.epamtc.facultative.bean.InfoAboutCourse;
+import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
@@ -24,7 +24,7 @@ public class DepartmentDAOImpl {
 			+ " users.first_name, users.second_name, users.patronymic, users.user_login"
 			+ " FROM departments JOIN users ON departments.dean_id = users.user_id";
 	
-	private final String QUERY_FOR_COURSES_IN_DEPARTMENT = "SELECT courses.title, courses.description "
+	private final String QUERY_FOR_COURSES_IN_DEPARTMENT = "SELECT * "
 			+ "FROM courses WHERE courses.department_id = ?";
 	
 	private final String QUERY_FOR_LECTURERS_IN_DEPARTMENT = "SELECT "
@@ -158,9 +158,9 @@ public class DepartmentDAOImpl {
 		return lecturers;
 	}
 
-	public List<InfoAboutCourse> findCoursesInDepartment(int departmentId) throws DAOException {
+	public List<Course> findCoursesInDepartment(int departmentId) throws DAOException {
 		
-		List<InfoAboutCourse> courses = new ArrayList<InfoAboutCourse>();
+		List<Course> courses = new ArrayList<Course>();
 
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
@@ -188,10 +188,12 @@ public class DepartmentDAOImpl {
 			while (rs.next()) {
 				String courseTitle = rs.getString("courses.title");
 				String courseDescription = rs.getString("courses.description");
+				int courseId = rs.getInt("courses.course_id");
 								
-				InfoAboutCourse course = new InfoAboutCourse();
+				Course course = new Course();
 				course.setCourseName(courseTitle);
 				course.setCourseDescription(courseDescription);
+				course.setCourseId(courseId);
 				
 				courses.add(course);
 				}

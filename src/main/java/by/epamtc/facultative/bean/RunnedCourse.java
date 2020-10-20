@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public class InfoAboutRunnedCourse implements Serializable {
+public class RunnedCourse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	InfoAboutCourse infoAboutCourse;
+	Course infoAboutCourse;
 	
 	String courseName;
 	String shedule;
@@ -27,9 +27,9 @@ public class InfoAboutRunnedCourse implements Serializable {
 	int studentLimit;
 	int studentAmount;
 	
-	List<CourseStudentInfo> studentsOnCourse;
+	List<StudentOnCourse> studentsOnCourse;
 
-	public InfoAboutRunnedCourse() {
+	public RunnedCourse() {
 		
 	}
 	
@@ -47,7 +47,7 @@ public class InfoAboutRunnedCourse implements Serializable {
 
 
 
-	public InfoAboutCourse getInfoAboutCourse() {
+	public Course getInfoAboutCourse() {
 		return infoAboutCourse;
 	}
 
@@ -103,11 +103,11 @@ public class InfoAboutRunnedCourse implements Serializable {
 		return studentAmount;
 	}
 
-	public List<CourseStudentInfo> getStudentsOnCourse() {
+	public List<StudentOnCourse> getStudentsOnCourse() {
 		return studentsOnCourse;
 	}
 
-	public void setInfoAboutCourse(InfoAboutCourse infoAboutCourse) {
+	public void setInfoAboutCourse(Course infoAboutCourse) {
 		this.infoAboutCourse = infoAboutCourse;
 	}
 
@@ -163,7 +163,7 @@ public class InfoAboutRunnedCourse implements Serializable {
 		this.studentAmount = studentAmount;
 	}
 
-	public void setStudentsOnCourse(List<CourseStudentInfo> studentsOnCourse) {
+	public void setStudentsOnCourse(List<StudentOnCourse> studentsOnCourse) {
 		this.studentsOnCourse = studentsOnCourse;
 	}
 
@@ -197,7 +197,7 @@ public class InfoAboutRunnedCourse implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		InfoAboutRunnedCourse other = (InfoAboutRunnedCourse) obj;
+		RunnedCourse other = (RunnedCourse) obj;
 		if (classroomNumber != other.classroomNumber)
 			return false;
 		if (courseId != other.courseId)

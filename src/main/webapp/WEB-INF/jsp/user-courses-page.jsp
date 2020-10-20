@@ -11,7 +11,7 @@
 
 <fmt:setLocale value="${sessionScope.local}" />
 
-<fmt:setBundle basename="localization.user_courses_page" var="loc"
+<fmt:setBundle basename="localization.user_courses_page.user_courses_page" var="loc"
 	scope="session" />
 
 <fmt:message bundle="${loc}" key="my_page" var="my_page" />
@@ -61,7 +61,7 @@
 	</div>
 
 	<div>
-		<c:if test="${sessionScope.bean.courses != null}"> 
+		<c:if test="${!empty sessionScope.bean.courses}"> 
 	МОИ КУРСЫ:
 		<table class="courses_info_table">
 				<tr>
@@ -71,8 +71,9 @@
 					<th>Дата окончания</th>
 					<th>Статус курса</th>
 					<th>Расписание</th>
-					<th>Аудитория</th>
+					
 					<c:if test="${sessionScope.bean.userRoleId > 1}">
+					<th>Аудитория</th>
 						<th>Количество студентов на курсе</th>
 						<th>Максимальное количество студентов</th>
 					</c:if>
@@ -90,19 +91,17 @@
 				<c:forEach var="course" items="${sessionScope.bean.courses}">
 					<tr>
 						<td>
-							<form action="Controller" method="post">
-								<input type="hidden" name="command" value="go_to_course_page" />
-								<c:out value="${course.courseName}" />
-							</form>
-
+							<c:out value="${course.courseName}" />
+						
 						</td>
 						<td><c:out value="${course.dateOfStart}" /></td>
 						<td><c:out value="${course.dateOfEnd}" /></td>
 						<td><c:out value="${course.courseStatusName}" /></td>
 
 						<td><c:out value="${course.shedule}" /></td>
-						<td><c:out value="${course.classroomNumber}" /></td>
+						
 						<c:if test="${sessionScope.bean.userRoleId > 1}">
+						<td><c:out value="${course.classroomNumber}" /></td>
 							<td><c:out value="${course.studentAmount}" /></td>
 							<td><c:out value="${course.studentLimit}" /></td>
 						</c:if>
@@ -122,7 +121,7 @@
 									value="go_to_run_course_page" /> 
 									<input type="hidden" name="run_course_id"
 									value="${course.runCourseId}" /><input type="submit"
-									value="Подробности о курсе" />
+									value="Подробности" />
 							</form>
 
 						</td>
@@ -136,7 +135,7 @@
 	</div>
 	<br>
 	<div style="padding: 15px">
-		<c:if test="${sessionScope.bean.courses == null}"> 
+		<c:if test="${empty sessionScope.bean.courses}"> 
 	Пока нету курсов...<br>
 			<br>
 

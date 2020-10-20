@@ -1,6 +1,6 @@
 package by.epamtc.facultative.bean;
 
-public class FacultyInfo {
+public class Faculty {
 	
 	private String facultyName;
 	private String facultyDescription;
@@ -8,7 +8,7 @@ public class FacultyInfo {
 	private int faculteId;
 	private int dean_id;
 	
-	public FacultyInfo() {
+	public Faculty() {
 		
 	}
 
@@ -63,7 +63,7 @@ public class FacultyInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FacultyInfo other = (FacultyInfo) obj;
+		Faculty other = (Faculty) obj;
 		if (dean_id != other.dean_id)
 			return false;
 		if (faculteId != other.faculteId)

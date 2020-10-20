@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
+import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoProvider;
+import by.epamtc.facultative.service.CourseInfoService;
 
 public class GoToUserCoursesPage implements Command {
 
@@ -28,8 +28,8 @@ public class GoToUserCoursesPage implements Command {
 		int userId = userPageInfo.getUserId();
 		int userRoleId = userPageInfo.getUserRoleId();
 
-		CourseInfoProvider courseInfoProvider = CourseInfoProvider.getInstance();
-		List<InfoAboutRunnedCourse> courses = null;
+		CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
+		List<RunnedCourse> courses = null;
 		
 		if (userRoleId == 1) {
 			courses = courseInfoProvider.findStudentRunCourses(userId);

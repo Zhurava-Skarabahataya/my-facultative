@@ -47,8 +47,8 @@
 	var="date_of_birth" />
 <fmt:message bundle="${loc}" key="field.tel_number"
 	var="tel_number" />
-<fmt:message bundle="${loc}" key="button.edit"
-	var="edit" />
+<fmt:message bundle="${loc}" key="button.edit"	var="edit" />
+<fmt:message bundle="${loc}" key="button.go_to_staff_page"	var="go_to_staff_page" />
 
 
 
@@ -84,11 +84,22 @@
 		
 		<form style = "display:inline; float:center" action="Controller" method="post">
 				<input type="hidden" name="command"
-					value="go_to_create_course_page" /> <input type="submit"
+					value="go_to_create_run_course_page" /> <input type="submit"
 					value="${create_course}" /><br />
 			</form>
 		
 		</c:if>
+		<c:if test="${sessionScope.bean.userRoleId >2 && sessionScope.bean.userStatusId == 2}">
+		
+		<form style = "display:inline; float:center" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_staff_page" /> <input type="submit"
+					value="${go_to_staff_page}" /><br />
+			</form>
+		
+		</c:if>
+		
+	
 		<form style = "display:inline" action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="logout" /> <input type="submit"

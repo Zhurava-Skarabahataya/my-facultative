@@ -20,8 +20,8 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 	private static final Logger logger = Logger.getLogger(RegistrationDAOImpl.class);
 
 	private static final String QUERY_INSERT_NEW_USER_INTO_USERS = "INSERT into USERS(user_login, user_password, user_email,"
-			+ "first_name, second_name, patronymic, user_role_id, department_department_id"
-			+ ") VALUES (?, ?,?,?,?,?,?,?)";
+			+ "first_name, second_name, patronymic, user_role_id, department_department_id, status"
+			+ ") VALUES (?, ?,?,?,?,?,?,?, 1)";
 
 	private static final String QUERY_FIND_USER_ID_BY_LOGIN = "SELECT user_id FROM users WHERE user_login = ?";
 

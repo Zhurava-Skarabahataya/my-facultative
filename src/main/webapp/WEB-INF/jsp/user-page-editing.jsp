@@ -51,7 +51,7 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 				</tr>
 				<tr>
 					<td>Отчество:</td>
-					<td><input type="text" name="userPatronymic" required
+					<td><input type="text" name="userPatronymic" 
 						value="${sessionScope.bean.userPatronymic}" /></td>
 				</tr>
 				<tr>

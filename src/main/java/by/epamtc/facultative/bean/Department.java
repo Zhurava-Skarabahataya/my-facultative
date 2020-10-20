@@ -17,7 +17,7 @@ public class Department implements Serializable{
 	private int deanId;
 	
 	private List<UserInfo> lecturers;
-	private List<InfoAboutCourse> courses;
+	private List<Course> courses;
 	
 	
 	
@@ -45,7 +45,7 @@ public class Department implements Serializable{
 
 
 
-	public List<InfoAboutCourse> getCourses() {
+	public List<Course> getCourses() {
 		return courses;
 	}
 
@@ -57,7 +57,7 @@ public class Department implements Serializable{
 
 
 
-	public void setCourses(List<InfoAboutCourse> courses) {
+	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
 

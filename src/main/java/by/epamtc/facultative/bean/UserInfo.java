@@ -23,16 +23,13 @@ public class UserInfo implements Serializable {
 
 	int userId;
 	int userRoleId;
+	int userStatusId;
 	int userFacultyId;
 
-	List<InfoAboutRunnedCourse> courses;
+	List<RunnedCourse> courses;
 
 	public UserInfo() {
 
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	public String getUserFirstName() {
@@ -87,11 +84,15 @@ public class UserInfo implements Serializable {
 		return userRoleId;
 	}
 
+	public int getUserStatusId() {
+		return userStatusId;
+	}
+
 	public int getUserFacultyId() {
 		return userFacultyId;
 	}
 
-	public List<InfoAboutRunnedCourse> getCourses() {
+	public List<RunnedCourse> getCourses() {
 		return courses;
 	}
 
@@ -147,11 +148,15 @@ public class UserInfo implements Serializable {
 		this.userRoleId = userRoleId;
 	}
 
+	public void setUserStatusId(int userStatusId) {
+		this.userStatusId = userStatusId;
+	}
+
 	public void setUserFacultyId(int userFacultyId) {
 		this.userFacultyId = userFacultyId;
 	}
 
-	public void setCourses(List<InfoAboutRunnedCourse> courses) {
+	public void setCourses(List<RunnedCourse> courses) {
 		this.courses = courses;
 	}
 
@@ -174,6 +179,7 @@ public class UserInfo implements Serializable {
 		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
 		result = prime * result + userRoleId;
 		result = prime * result + ((userSecondName == null) ? 0 : userSecondName.hashCode());
+		result = prime * result + userStatusId;
 		return result;
 	}
 
@@ -252,18 +258,20 @@ public class UserInfo implements Serializable {
 				return false;
 		} else if (!userSecondName.equals(other.userSecondName))
 			return false;
+		if (userStatusId != other.userStatusId)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "UserPageInfo [userFirstName=" + userFirstName + ", userSecondName=" + userSecondName
-				+ ", userPatronymic=" + userPatronymic + ", userLogin=" + userLogin + ", userEmail=" + userEmail
-				+ ", userRole=" + userRole + ", userFaculty=" + userFaculty + ", userAdress=" + userAdress
-				+ ", userPhone=" + userPhone + ", userPhotoLink=" + userPhotoLink + ", userDateOfBirth="
-				+ userDateOfBirth + ", userId=" + userId + ", userRoleId=" + userRoleId + ", userFacultyId="
-				+ userFacultyId + ", courses=" + courses + "]";
+		return "UserInfo [userFirstName=" + userFirstName + ", userSecondName=" + userSecondName + ", userPatronymic="
+				+ userPatronymic + ", userLogin=" + userLogin + ", userEmail=" + userEmail + ", userRole=" + userRole
+				+ ", userFaculty=" + userFaculty + ", userAdress=" + userAdress + ", userPhone=" + userPhone
+				+ ", userPhotoLink=" + userPhotoLink + ", userDateOfBirth=" + userDateOfBirth + ", userId=" + userId
+				+ ", userRoleId=" + userRoleId + ", userStatusId=" + userStatusId + ", userFacultyId=" + userFacultyId
+				+ ", courses=" + courses + "]";
 	}
 
-	
+		
 }

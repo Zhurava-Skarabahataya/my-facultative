@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sound.midi.MidiDevice.Info;
 
-import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
+import by.epamtc.facultative.bean.RunnedCourse;
+import by.epamtc.facultative.bean.StudentOnCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoProvider;
+import by.epamtc.facultative.service.CourseInfoService;
 
 public class GoToRunCoursePageCommand implements Command {
 
@@ -24,11 +25,15 @@ public class GoToRunCoursePageCommand implements Command {
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute("userLogin");
 
-		CourseInfoProvider courseInfoProvider = CourseInfoProvider.getInstance();
+		CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
 		int runCourseId = Integer.parseInt(request.getParameter("run_course_id"));
-		InfoAboutRunnedCourse info = courseInfoProvider.findRunCourseById(runCourseId);
+		RunnedCourse runCourse = courseInfoProvider.findRunCourseById(runCourseId);
 
-		request.setAttribute("run_course", info);
+		request.setAttribute("run_course", runCourse);
+		
+		for(StudentOnCourse s: runCourse.getStudentsOnCourse()) {
+			System.out.println(s);
+		}
 		
 		if (userLogin != null) {
 			UserInfo userInfo = (UserInfo) session.getAttribute("bean");
@@ -40,9 +45,7 @@ public class GoToRunCoursePageCommand implements Command {
 
 			if (userRoleId == 1) {
 
-				int userStatusOnCourse = courseInfoProvider.getUserOnCourseApprovalStatusId(userId, info);
-
-				System.out.println(userStatusOnCourse + " статус на курсе");
+				int userStatusOnCourse = courseInfoProvider.getUserOnCourseApprovalStatusId(userId, runCourse);
 
 				request.setAttribute("user_approval_status_id", userStatusOnCourse);
 			} else {

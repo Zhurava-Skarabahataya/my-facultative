@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.UserPageInfoProviderService;
+import by.epamtc.facultative.service.UserInfoService;
 
 public class GoToUserPageCommand implements Command {
 	
@@ -32,7 +32,7 @@ public class GoToUserPageCommand implements Command {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUserLogin(userLogin);
 		
-		UserPageInfoProviderService userPageInfoProviderService = UserPageInfoProviderService.getInstance();
+		UserInfoService userPageInfoProviderService = UserInfoService.getInstance();
 		userPageInfoProviderService.execute(userInfo);
 
 		session.setAttribute(REQUEST_ATTRIBUTE_BEAN, userInfo);

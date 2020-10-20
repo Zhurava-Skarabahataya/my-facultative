@@ -2,7 +2,7 @@ package by.epamtc.facultative.bean;
 
 import java.io.Serializable;
 
-public class CourseStudentInfo implements Serializable {
+public class StudentOnCourse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +15,7 @@ public class CourseStudentInfo implements Serializable {
 	private int userApprovalStatusId;
 	private String userApprovalStatusName;
 	
-	InfoAboutRunnedCourse infoAboutRunnedCourse;
+	RunnedCourse infoAboutRunnedCourse;
 
 	public int getUserId() {
 		return userId;
@@ -104,7 +104,7 @@ public class CourseStudentInfo implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CourseStudentInfo other = (CourseStudentInfo) obj;
+		StudentOnCourse other = (StudentOnCourse) obj;
 		if (result != other.result)
 			return false;
 		if (userApprovalStatusId != other.userApprovalStatusId)

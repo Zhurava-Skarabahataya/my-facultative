@@ -50,7 +50,7 @@
 			</form></br>
 			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_authorization_page" />
-				<input type="submit" value="${auth_button}" /><br />
+				<input type="submit"  value="${auth_button}" /><br />
 			</form>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 			<div style="text-align:center; opacity:0.8">
 			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_user_page" />
-				<input type="submit" value="${go_to_user_page}" /><br />
+				<input type="submit"  value="${go_to_user_page}" /><br />
 			</form></br>
 			
 			</div>

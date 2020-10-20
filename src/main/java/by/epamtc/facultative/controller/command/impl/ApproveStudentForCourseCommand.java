@@ -10,32 +10,37 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.StudentStatusService;
 
-public class ApplyForCourseCommand implements Command {
+public class ApproveStudentForCourseCommand implements Command {
 	
+	private final String APPLICATION_SUCCESS_PAGE = "WEB-INF/jsp/application-success-page.jsp";
 	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
 	
-	private static final String COMMAND_GO_TO_SUCCESS_PAGE = "?command=go_to_success_page_command";
-	private static final String MESSAGE_GO_TO_SUCCESS_PAGE = "&message=success_apply";
-
-
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute("userLogin");
 		
 		if (userLogin != null) {
 			
-			int runCourseId = Integer.parseInt(request.getParameter("run_course_id"));
-			UserInfo user = (UserInfo) session.getAttribute("bean");
-			int userId = user.getUserId();
-							
+			int runCourseId = Integer.parseInt(request.getParameter("runCourseId"));
+			int studentId = Integer.parseInt(request.getParameter("studentId"));
+					
+			StudentStatusService studentStatusService = StudentStatusService.getInstance();
+			studentStatusService.approveStudentOnCourse(studentId, runCourseId);
+			System.out.println(studentId);
+			System.out.println("course " + runCourseId);
+										
 			try {
-				CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
-				courseInfoProvider.applyStudentForRunCourse(userId, runCourseId);
-				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE + MESSAGE_GO_TO_SUCCESS_PAGE);
+				
+				request.setAttribute("message", "student_approved");
+				request.setAttribute("run_course_id", runCourseId);
+				request.getRequestDispatcher(APPLICATION_SUCCESS_PAGE).forward(request, response);
+				
+			} catch (ServletException e) {
+				// Я обработаю, честное слово
 			} catch (IOException e) {
 				// Я обработаю, честное слово
 			}
@@ -51,7 +56,7 @@ public class ApplyForCourseCommand implements Command {
 				e.printStackTrace();
 			}
 		}
-
+		
 	}
 
 }

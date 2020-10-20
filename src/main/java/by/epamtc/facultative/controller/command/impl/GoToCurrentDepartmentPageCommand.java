@@ -33,7 +33,6 @@ public class GoToCurrentDepartmentPageCommand implements Command {
 		departmentService.findLecturersAndCoursesForDepartment(department);
 		
 		request.setAttribute("department", department);
-		System.out.println(department);
 		
 		
 		try {

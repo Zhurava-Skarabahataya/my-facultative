@@ -35,7 +35,7 @@
 		<c:forEach var="department" items="${requestScope.departments}"> 
 			<tr>
 				<td><c:out value="${department.departmentName}"/></td>
-				<td><img src="${logo}" width=150px></td>
+				<td><img src="image/dep${department.departmentID}.jpg" width=150px></td>
 				<td style="font-size:12px"><c:out value="${department.departmentDescription}"/></td>
 				
 				<td><form  action="Controller"	method="post">

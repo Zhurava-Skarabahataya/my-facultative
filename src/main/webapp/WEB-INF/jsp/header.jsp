@@ -40,7 +40,7 @@
 		<div style="vertical-align: middle; display: inline;">
 			<form style="display: inline;" action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_welcome_page" /> <input
-					type="image" src="image/logo.png" width="100" />
+					type="image" src="image/logo.png" width="100px" height = "300px"/>
 			</form>
 
 

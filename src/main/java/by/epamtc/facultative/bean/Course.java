@@ -3,7 +3,7 @@ package by.epamtc.facultative.bean;
 import java.io.Serializable;
 import java.util.List;
 
-public class InfoAboutCourse implements Serializable{
+public class Course implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -17,21 +17,21 @@ public class InfoAboutCourse implements Serializable{
 	private int courseDepartment;
 	private int courseDuration;
 	
-	private List<InfoAboutRunnedCourse> runCourses;
+	private List<RunnedCourse> runCourses;
 	
-	public InfoAboutCourse() {
+	public Course() {
 		
 	}
 
 	
 	
-	public List<InfoAboutRunnedCourse> getRunCourses() {
+	public List<RunnedCourse> getRunCourses() {
 		return runCourses;
 	}
 
 
 
-	public void setRunCourses(List<InfoAboutRunnedCourse> runCourses) {
+	public void setRunCourses(List<RunnedCourse> runCourses) {
 		this.runCourses = runCourses;
 	}
 
@@ -124,7 +124,7 @@ public class InfoAboutCourse implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		InfoAboutCourse other = (InfoAboutCourse) obj;
+		Course other = (Course) obj;
 		if (courseDepartment != other.courseDepartment)
 			return false;
 		if (courseDescription == null) {

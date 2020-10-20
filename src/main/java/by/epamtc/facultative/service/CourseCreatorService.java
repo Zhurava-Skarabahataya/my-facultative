@@ -1,6 +1,6 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.bean.InfoAboutRunnedCourse;
+import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.CourseDAOImpl;
 
@@ -16,7 +16,7 @@ public class CourseCreatorService {
 		return instance;
 	}
 
-	public void createRunCourse(InfoAboutRunnedCourse infoAboutRunnedCourse) {
+	public void createRunCourse(RunnedCourse infoAboutRunnedCourse) {
 		
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
 		try {
