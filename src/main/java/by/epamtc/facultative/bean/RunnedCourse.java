@@ -22,6 +22,7 @@ public class RunnedCourse implements Serializable {
 	int courseId;
 	int runCourseId;
 	int courseStatus;
+	int currentState;
 	int lecturerId;
 	int classroomNumber;
 	int studentLimit;
@@ -34,6 +35,21 @@ public class RunnedCourse implements Serializable {
 	}
 	
 	
+
+	
+	public int getCurrentState() {
+		return currentState;
+	}
+
+
+
+
+	public void setCurrentState(int currentState) {
+		this.currentState = currentState;
+	}
+
+
+
 
 	public String getStudentStatusName() {
 		return studentStatusName;

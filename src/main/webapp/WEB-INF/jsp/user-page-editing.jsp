@@ -83,7 +83,7 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 				</tr>
 				<tr>
 					<td>Дата рождения:</td>
-					<td><input type="date" id="userDateOfBirth"
+					<td><input type="date"  id="userDateOfBirth"
 						name="userDateOfBirth"
 						value="${sessionScope.bean.userDateOfBirth}" />
 				</tr>

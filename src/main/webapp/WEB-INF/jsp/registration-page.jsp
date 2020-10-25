@@ -6,20 +6,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title><c:out value="${title}"/></title>
 
 <style>
-<%@ include file="/css/footer.css"%>
+<%@ include file="/css/style.css"%>
 </style>
 
 <jsp:include page="header.jsp" />
 
 <fmt:setLocale value="${sessionScope.local}" />
 
-<fmt:setBundle basename="localization.registration_page.registration" var="loc"
-	scope="session" />
+<fmt:setBundle basename="localization.registration_page.registration"
+	var="loc" scope="session" />
+	
 <fmt:message bundle="${loc}" key="registration.message.enter_data"
 	var="message" />
+<fmt:message bundle="${loc}" key="title"
+	var="title" />
 <fmt:message bundle="${loc}" key="registration.parameter.userName"
 	var="userName" />
 <fmt:message bundle="${loc}" key="registration.parameter.password"
@@ -72,6 +75,39 @@
 <fmt:message bundle="${loc}"
 	key="registration.parameter.faculty_variant.jurisprudence"
 	var="jurisprudence" />
+	
+<fmt:message bundle="${loc}" key="Email_is_empty" var="Email_is_empty" />
+<fmt:message bundle="${loc}"
+	key="Email_does_not_correspond_to_the_norms"
+	var="Email_does_not_correspond_to_the_norms" />
+<fmt:message bundle="${loc}" key="Email_is_too_long"
+	var="Email_is_too_long" />
+<fmt:message bundle="${loc}" key="password_is_too_short"
+	var="password_is_too_short" />
+<fmt:message bundle="${loc}"
+	key="password_contains_only_letters_and_numbers"
+	var="password_contains_only_letters_and_numbers" />
+<fmt:message bundle="${loc}" key="password_is_too_long"
+	var="password_is_too_long" />
+<fmt:message bundle="${loc}"
+	key="first_and_second_name_must_not_be_empty"
+	var="first_and_second_name_must_not_be_empty" />
+<fmt:message bundle="${loc}" key="first_name_must_contain_only_letters"
+	var="first_name_must_contain_only_letters" />
+<fmt:message bundle="${loc}" key="second_name_must_contain_only_letters"
+	var="second_name_must_contain_only_letters" />
+<fmt:message bundle="${loc}" key="patronymic_must_contain_only_letters"
+	var="patronymic_must_contain_only_letters" />
+<fmt:message bundle="${loc}"
+	key="first_and_second_name_must_be_shorter_45_symbols"
+	var="first_and_second_name_must_be_shorter_45_symbols" />
+<fmt:message bundle="${loc}" key="login_is_empty" var="login_is_empty" />
+<fmt:message bundle="${loc}"
+	key="login_must_contain_letters_numbers_and_underscore"
+	var="login_must_contain_letters_numbers_and_underscore" />
+<fmt:message bundle="${loc}" key="login_is_too_long"
+	var="login_is_too_long" />
+<fmt:message bundle="${loc}" key="data_is_empty" var="data_is_empty" />
 
 
 <c:set var="commandToLanguageChanger" scope="session"
@@ -79,12 +115,79 @@
 
 </head>
 <body>
-	<c:out value="${messageFromServlet}" />
+	<c:if test="${requestScope.message_from_registration != null}">
 
+		<div class="inscription">
+			<c:choose>
+				<c:when
+					test="${requestScope.message_from_registration == 'Email_is_empty'}">
+					<c:out value="${Email_is_empty}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'Email_does_not_correspond_to_the_norms'}">
+					<c:out value="${Email_does_not_correspond_to_the_norms}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'Email_is_too_long'}">
+					<c:out value="${Email_is_too_long}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'password_is_too_short'}">
+					<c:out value="${password_is_too_short}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'password_contains_only_letters_and_numbers'}">
+					<c:out value="${password_contains_only_letters_and_numbers}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'password_is_too_long'}">
+					<c:out value="${password_is_too_long}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'first_and_second_name_must_not_be_empty'}">
+					<c:out value="${first_and_second_name_must_not_be_empty}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'first_name_must_contain_only_letters'}">
+					<c:out value="${first_name_must_contain_only_letters}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'second_name_must_contain_only_letters'}">
+					<c:out value="${second_name_must_contain_only_letters}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'patronymic_must_contain_only_letters'}">
+					<c:out value="${patronymic_must_contain_only_letters}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'first_and_second_name_must_be_shorter_45_symbols'}">
+					<c:out value="${first_and_second_name_must_be_shorter_45_symbols}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'login_is_empty'}">
+					<c:out value="${login_is_empty}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'login_must_contain_letters_numbers_and_underscore'}">
+					<c:out value="${login_must_contain_letters_numbers_and_underscore}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'login_is_too_long'}">
+					<c:out value="${login_is_too_long}" />
+				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'data_is_empty'}">
+					<c:out value="${data_is_empty}" />
+				</c:when>
+
+			</c:choose>
+
+		</div>
+	</c:if>
 	<form action="Controller" method="post" autocomplete="on">
 		<input type="hidden" name="command" value="registration_command" />
 
-		<div class="welcome_message">
+		<div class="inscription">
 			<c:out value="${message}" />
 		</div>
 

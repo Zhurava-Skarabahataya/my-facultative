@@ -12,17 +12,17 @@ import by.epamtc.facultative.dao.RegistrationDAO;
 import by.epamtc.facultative.service.exception.ServiceException;
 import by.epamtc.facultative.service.validator.UserDataValidator;
 
-public class RegistrationNewUserService {
+public class RegistrationService {
 
-	private static final RegistrationNewUserService instance = new RegistrationNewUserService();
+	private static final RegistrationService instance = new RegistrationService();
 	
-	private static final Logger logger = Logger.getLogger(RegistrationNewUserService.class);
+	private static final Logger logger = Logger.getLogger(RegistrationService.class);
 
-	private RegistrationNewUserService() {
+	private RegistrationService() {
 
 	}
 
-	public static RegistrationNewUserService getInstance() {
+	public static RegistrationService getInstance() {
 		return instance;
 	}
 

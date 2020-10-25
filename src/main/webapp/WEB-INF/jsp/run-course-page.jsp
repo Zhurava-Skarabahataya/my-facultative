@@ -47,6 +47,8 @@
 <fmt:message bundle="${loc}" key="disapprove" var="disapprove" />
 <fmt:message bundle="${loc}" key="drop_out" var="drop_out" />
 <fmt:message bundle="${loc}" key="no_places" var="no_places" />
+<fmt:message bundle="${loc}" key="course_ended" var="course_ended" />
+<fmt:message bundle="${loc}" key="course_cancelled" var="course_cancelled" />
 <fmt:message bundle="${loc}" key="no_vacant_places"
 	var="no_vacant_places" />
 
@@ -125,7 +127,7 @@
 	</table>
 	<c:choose>
 		
-		<c:when test="${sessionScope.bean.userRoleId == 1}">
+		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState >2)}">
 			<c:choose>
 				<c:when test="${requestScope.user_approval_status_id == 0}">
 					<c:choose>
@@ -152,8 +154,7 @@
 							</form>
 				</c:when>
 				<c:when test="${requestScope.user_approval_status_id == 2}">
-					<c:out value="${successfully_enrolled}"/>
-					ТУТ ФОРМА ОТЗЫВА, ЕСЛИ КУРС ОКОНЧЕН
+					<div class="inscription"><c:out value="${successfully_enrolled}"/></div>
 				</c:when>
 				<c:when test="${requestScope.user_approval_status_id == 3}">
 					<div class="inscription"><c:out value="${dropped}"/></div>
@@ -161,6 +162,21 @@
 
 			</c:choose>
 
+		</c:when>
+		
+		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState == 2)}">
+			
+			<c:choose>
+				<c:when test="${requestScope.user_approval_status_id == 2}"> ОТЗЫВ </c:when>
+				<c:otherwise><div class="inscription"><c:out value="${course_ended}"/></div></c:otherwise>				
+			</c:choose>
+		
+		
+		</c:when>
+		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState == 1)}">
+			
+				<div class="inscription"><c:out value="${course_cancelled}"/></div>
+		
 		</c:when>
 		
 		<c:when test="${sessionScope.bean.userRoleId > 1}">

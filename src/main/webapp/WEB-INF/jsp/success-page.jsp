@@ -24,6 +24,9 @@
 <fmt:message bundle="${loc}" key="return_to_user_courses_page" var="return_to_user_courses_page" />
 <fmt:message bundle="${loc}" key="return_to_user_page" var="return_to_user_page" />
 <fmt:message bundle="${loc}" key="success_created_course_message" var="success_created_course_message" />
+<fmt:message bundle="${loc}" key="success_registration" var="success_registration" />
+<fmt:message bundle="${loc}" key="success_authorization" var="success_authorization" />
+<fmt:message bundle="${loc}" key="success_student_approved" var="success_student_approved" />
 
 </head>
 <body>
@@ -43,6 +46,18 @@
 					<c:out value="${success_created_course_message}" />
 				
 			</c:when>
+			<c:when test="${requestScope.message =='success_registration'}">
+					<c:out value="${success_registration}" />
+				
+			</c:when>
+			<c:when test="${requestScope.message =='success_authorization'}">
+					<c:out value="${success_authorization}" />
+				
+			</c:when>
+			<c:when test="${requestScope.message =='success_student_approved'}">
+					<c:out value="${success_student_approved}" />
+				
+			</c:when>
 			<c:when test="${requestScope.message=='student_approved'}">
 					<c:out value="${approve_student_message}" />
 					<form action="Controller" method="post">
@@ -57,11 +72,13 @@
 				
 		
 	</div>
+	<form action="Controller" method="post">
+				<input type="hidden" name="command" value="go_to_welcome_page" />
+				<input type="submit" value="Перейти на главную страницу" /><br />
+			</form>
+			
 	
-					<form action="Controller" method="post">
-						<input type="hidden" name="command" value="go_to_user_courses_page"/>
-						<input type="submit" value="${return_to_user_courses_page}"/>
-					</form>
+					
 					
 					<form action="Controller" method="post">
 						<input type="hidden" name="command" value="go_to_user_page"/>

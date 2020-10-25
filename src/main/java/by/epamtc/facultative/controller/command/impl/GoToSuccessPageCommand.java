@@ -19,6 +19,7 @@ public class GoToSuccessPageCommand implements Command {
 		
 		String message = request.getParameter("message");
 		System.out.println(message);
+		
 		try {
 			request.setAttribute("message", message);
 			request.getRequestDispatcher(APPLICATION_SUCCESS_PAGE).forward(request, response);

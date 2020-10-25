@@ -1,5 +1,9 @@
 package by.epamtc.facultative.service;
 
+import java.util.List;
+
+import by.epamtc.facultative.bean.UserInfo;
+
 public class FullNameService {
 
 	private static final FullNameService instance = new FullNameService();
@@ -28,5 +32,13 @@ public class FullNameService {
 		return fullName.toString();
 		
 	}
+
+//	public void createFullNames(List<UserInfo> users) {
+//		
+//		for (UserInfo user: users) {
+//			
+//		}
+//		
+//	}
 	
 }

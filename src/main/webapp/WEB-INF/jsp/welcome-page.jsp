@@ -58,6 +58,8 @@
 		<c:if test="${sessionScope.userLogin != null}">
 <div   style="text-aligh:center;width:300px;padding:30px; margin : 30px;">
 			<div style="text-align:center; opacity:0.8">
+			<div class="inscription"> GREETINGS, <c:out value="${sessionScope.bean.userFirstName}"/>
+			 <c:if test="${sessionScope.bean.userPatronymic!=null}"><c:out value="${sessionScope.bean.userPatronymic}"/>  </c:if> </div>
 			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_user_page" />
 				<input type="submit"  value="${go_to_user_page}" /><br />

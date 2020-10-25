@@ -31,6 +31,8 @@ public class GoToStaffPageCommand implements Command {
 			
 			UserInfo userInfo = (UserInfo) session.getAttribute("bean");
 			int userInfoStatusId = userInfo.getUserStatusId();
+			
+			System.out.println("USER STATUS" + userInfoStatusId);
 			int userRoleId = userInfo.getUserRoleId();
 			
 			if(userInfoStatusId != 2) {
@@ -49,11 +51,34 @@ public class GoToStaffPageCommand implements Command {
 			else {
 				
 				UserInfoService userService = UserInfoService.getInstance();
-			//	List<UserInfo> staff = userService.findStaffForUser(userInfo);
+				List<UserInfo> staff = userService.findStaffForUser(userInfo);
 				
+				request.setAttribute("staff", staff);
+				try {
+					request.getRequestDispatcher(STAFF_PAGE_PATH).forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
 			}
 			
 			
+		}
+		else {
+			
+			try {
+				request.setAttribute("errorMessage", "Необходимо войти в систему.");
+				request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

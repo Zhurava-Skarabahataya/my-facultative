@@ -76,5 +76,35 @@ public class UserInfoService {
 			
 		}
 	}
+
+	public List<UserInfo> findStaffForUser(UserInfo userInfo) {
+		UserDAOImpl userDAO = UserDAOImpl.getInstance();
+		
+		List<UserInfo> staff = null;
+		
+		int userRoleId = userInfo.getUserRoleId();
+		
+		
+		//Для декана
+		if (userRoleId == 3) {
+			
+			int userDepartment = userInfo.getUserFacultyId(); 
+			try {
+				staff = userDAO.findStaffFromDepartment(userDepartment);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//Для ректора
+		else {
+			staff = userDAO.findStaffFromAllDeratments();
+		}
+		
+		addPhotoLinks(staff);
+		
+		return staff;
+	}
 	
 }

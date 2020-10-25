@@ -36,14 +36,19 @@
 	var="news" />
 </head>
 <body>
-	<div class="header">
-		<div style="vertical-align: middle; display: inline;">
+
+	
+	
+	<div class="header" >
+		<div class="immage" style="display: inline;">
+		
 			<form style="display: inline;" action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_welcome_page" /> <input
-					type="image" src="image/logo.png" width="100px" height = "300px"/>
+					type="image" src="image/logo.png"  width=100/>
 			</form>
 
-
+		</div>
+		<div style="display: inline;">
 			<c:out value="${university_name}" />
 
 		</div>

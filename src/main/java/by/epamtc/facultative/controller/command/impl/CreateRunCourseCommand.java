@@ -38,7 +38,7 @@ public class CreateRunCourseCommand implements Command {
 			String shedule = request.getParameter("shedule");
 			int classroom = Integer.parseInt(request.getParameter("classroom"));
 			int studentLimit = Integer.parseInt(request.getParameter("student_limit"));
-			int courseStatus = 2;
+			int courseStatus = 1;
 
 			int lecturerId = userInfo.getUserId();
 			String lecturerFirstName = userInfo.getUserFirstName();

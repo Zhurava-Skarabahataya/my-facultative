@@ -41,7 +41,7 @@
 
 			<form style="display: inline; float: center" action="Controller"
 				method="post">
-				<input type="hidden" name="command" value="go_to_create_course_page" />
+				<input type="hidden" name="command" value="go_to_create_run_course_page" />
 				<input type="submit" value="${create_course}" /><br />
 			</form>
 

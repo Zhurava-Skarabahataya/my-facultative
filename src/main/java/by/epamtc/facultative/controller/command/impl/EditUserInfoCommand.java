@@ -57,7 +57,8 @@ public class EditUserInfoCommand implements Command {
 			String userPhone = request.getParameter("userPhone");
 			userPageInfo.setUserPhone(userPhone);
 		}
-		if (request.getParameter("userDateOfBirth") != null) {
+		if (!request.getParameter("userDateOfBirth").isEmpty()) {
+			System.out.println("date" + request.getParameter("userDateOfBirth"));
 			try {
 				LocalDate userDateOfBirth = LocalDate.parse(request.getParameter("userDateOfBirth"));
 				userPageInfo.setUserDateOfBirth(userDateOfBirth);
@@ -68,6 +69,7 @@ public class EditUserInfoCommand implements Command {
 
 		UpdateUserInfoService updateUserInfoService = UpdateUserInfoService.getInstance();
 		updateUserInfoService.update(userPageInfo);
+		
 		try {
 			response.sendRedirect(request.getRequestURI() + PARAMETER_COMMAND_GO_TO_USER_PAGE);
 		} catch (IOException e) {

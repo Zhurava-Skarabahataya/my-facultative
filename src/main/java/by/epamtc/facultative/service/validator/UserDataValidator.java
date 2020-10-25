@@ -9,6 +9,8 @@ public class UserDataValidator implements Validator{
 
 	private LoginValidator nextRegistrationValidator = LoginValidator.getInstance();
 	private LoginValidator nextAuthoricationValidator = LoginValidator.getInstance();
+	
+	private final String MESSAGE_DATA_IS_EMPTY = "data_is_empty";
 
 	private UserDataValidator() {
 
@@ -21,7 +23,7 @@ public class UserDataValidator implements Validator{
 	public String validate(UserRegistrationInfo data) {
 
 		if (data == null) {
-			return "Data is empty";
+			return MESSAGE_DATA_IS_EMPTY;
 		}
 
 		return nextRegistrationValidator.validate(data);
@@ -31,7 +33,7 @@ public class UserDataValidator implements Validator{
 	public String validate(UserAuthorizationInfo data) {
 
 		if (data == null) {
-			return "Data is empty";
+			return MESSAGE_DATA_IS_EMPTY;
 		}
 
 		return nextAuthoricationValidator.validate(data);

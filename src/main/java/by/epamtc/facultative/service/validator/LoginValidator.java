@@ -1,6 +1,5 @@
 package by.epamtc.facultative.service.validator;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
@@ -10,11 +9,16 @@ public class LoginValidator implements Validator {
 
 	private static final LoginValidator instance = new LoginValidator();
 
-	private PasswordValidator nextRegistrationValidator = PasswordValidator.getInstance();
-	private PasswordValidator nextAuthoricationValidator = PasswordValidator.getInstance();
+	private final PasswordValidator nextRegistrationValidator = PasswordValidator.getInstance();
+	private final PasswordValidator nextAuthoricationValidator = PasswordValidator.getInstance();
 	
-	private static final String LOGIN_PATTERN_REGEX = "[а-яА-ЯйЙa-zA-Z0-9-_]$";
-	Pattern loginPattern;
+	private final String MESSAGE_LOGIN_IS_EMPTY = "login_is_empty";
+	private final String MESSAGE_LOGIN_MUST_CONTAIN_SYMBOLS = "login_must_contain_letters_numbers_and_underscore";
+	private final String MESSAGE_LOGIN_IS_TOO_LONG = "login_is_too_long";
+	
+	private final String LOGIN_PATTERN_REGEX = "[а-яА-ЯйЙa-zA-Z0-9-_]$";
+	
+	private Pattern loginPattern;
 	
 	
 
@@ -26,39 +30,45 @@ public class LoginValidator implements Validator {
 		return instance;
 	}
 
-	public String validate(UserRegistrationInfo info) {
+	public String validate(UserRegistrationInfo user) {
 
-		String login = info.getUserLogin();
+		String login = user.getUserLogin();
 
 		if (login == null) {
 
-			return "Login is empty.";
+			return MESSAGE_LOGIN_IS_EMPTY;
 
 		}
 		if (!loginPattern.matcher(login).find()) {
-			return "Можно использовать буквы, цифры, тире и знак подчёркивания";
+			return MESSAGE_LOGIN_MUST_CONTAIN_SYMBOLS;
 		}
 		
 		if (login.length() > 45) {
-			return "Логин слишком длинный.";
+			return MESSAGE_LOGIN_IS_TOO_LONG;
 		}
 
-		return nextRegistrationValidator.validate(info);
+		return nextRegistrationValidator.validate(user);
 	}
 
-	public String validate(UserAuthorizationInfo data) {
+	public String validate(UserAuthorizationInfo user) {
 
-		String login = data.getLogin();
+		String login = user.getLogin();
 
 		if (login == null) {
 
-			return "Login is empty.";
+			return MESSAGE_LOGIN_IS_EMPTY;
 
 		}
 		if (!loginPattern.matcher(login).find()) {
-			return "Можно использовать буквы, цифры, тире и знак подчёркивания";
+			return MESSAGE_LOGIN_MUST_CONTAIN_SYMBOLS;
 		}
-		return nextAuthoricationValidator.validate(data);
+		
+		if (login.length() > 45) {
+			return MESSAGE_LOGIN_IS_TOO_LONG;
+		}
+
+		
+		return nextAuthoricationValidator.validate(user);
 
 	}
 

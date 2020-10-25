@@ -30,16 +30,33 @@
 <fmt:message bundle="${loc}" key="authorization.button.send" var="send" />
 <fmt:message bundle="${loc}" key="authorization.button.forgot_password"
 	var="forgot_password" />
+<fmt:message bundle="${loc}" key="no_user_found"	var="no_user_found" />
 	<jsp:include page="header.jsp" />
 
 </head>
 
 <body>
 
-	<br>
+	<body>
+	<c:if test="${requestScope.message_from_authorization != null}">
+
+		<div class="inscription">
+			<c:choose>
+				<c:when
+					test="${requestScope.message_from_authorization == 'no_user_found'}">
+					<c:out value="${no_user_found}" />
+				</c:when>
+				
+
+			</c:choose>
+
+		</div>
+	</c:if>
+
+	
 	<div class="div_with_grey_background">
 	<div align="center">
-		<c:out value="${messageFromServlet}" />
+		
 
 		<form action="Controller" method="post">
 			<input type="hidden" name="command" value="authorization_command" />

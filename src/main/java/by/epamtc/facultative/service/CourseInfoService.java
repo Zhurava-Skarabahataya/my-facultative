@@ -145,7 +145,9 @@ public class CourseInfoService {
 		for (RunnedCourse runnedCourse : courses) {
 			int runnedCourseStatusId = runnedCourse.getCourseStatus();
 			if (runnedCourseStatusId == 2) {
-				runnedCourse.setCourseStatusName("Курс отменён");
+				//runnedCourse.setCourseStatusName("Курс отменён");
+				runnedCourse.setCurrentState(1);
+
 			} else if (runnedCourseStatusId == 1) {
 
 				LocalDate today = LocalDate.now();
@@ -153,11 +155,17 @@ public class CourseInfoService {
 				LocalDate endDate = runnedCourse.getDateOfEnd();
 
 				if (startDay.isAfter(today)) {
-					runnedCourse.setCourseStatusName("Идёт набор");
+				//	runnedCourse.setCourseStatusName("Идёт набор");
+					runnedCourse.setCurrentState(3);
+
 				} else if (endDate.isBefore(today)) {
-					runnedCourse.setCourseStatusName("Курс завершён");
+					runnedCourse.setCurrentState(2);
+
+					//runnedCourse.setCourseStatusName("Курс завершён");
 				} else {
-					runnedCourse.setCourseStatusName("Курс запущен");
+					runnedCourse.setCurrentState(4);
+
+					//runnedCourse.setCourseStatusName("Курс запущен");
 				}
 
 			}
@@ -169,7 +177,8 @@ public class CourseInfoService {
 
 		int runnedCourseStatusId = runnedCourse.getCourseStatus();
 		if (runnedCourseStatusId == 2) {
-			runnedCourse.setCourseStatusName("Курс отменён");
+		//	runnedCourse.setCourseStatusName("Курс отменён");
+			runnedCourse.setCurrentState(1);
 		} else if (runnedCourseStatusId == 1) {
 
 			LocalDate today = LocalDate.now();
@@ -177,11 +186,17 @@ public class CourseInfoService {
 			LocalDate endDate = runnedCourse.getDateOfEnd();
 
 			if (startDay.isAfter(today)) {
-				runnedCourse.setCourseStatusName("Идёт набор");
+				//runnedCourse.setCourseStatusName("Идёт набор");
+				runnedCourse.setCurrentState(3);
+
 			} else if (endDate.isBefore(today)) {
-				runnedCourse.setCourseStatusName("Курс завершён");
+				//runnedCourse.setCourseStatusName("Курс завершён");
+				runnedCourse.setCurrentState(2);
+
 			} else {
-				runnedCourse.setCourseStatusName("Курс запущен");
+				//runnedCourse.setCourseStatusName("Курс запущен");
+				runnedCourse.setCurrentState(4);
+
 			}
 
 		}

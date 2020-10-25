@@ -8,9 +8,15 @@ public class NameValidator implements Validator {
 
 	private static final NameValidator instance = new NameValidator();
 
-	private static final String NAME_PATTERN_REGEX = "[a-zA-Zа-яА-ЯйЙ]";
+	private final String NAME_PATTERN_REGEX = "[a-zA-Zа-яА-ЯйЙ]";
 
-	Pattern emailPattern;
+	private final String MESSAGE_NAMES_ARE_EMPTY = "first_and_second_name_must_not_be_empty";
+	private final String MESSAGE_FIRST_NAME_MUST_CONTAIN_ONLY_LETTERS = "first_name_must_contain_only_letters";
+	private final String MESSAGE_SECOND_NAME_MUST_CONTAIN_ONLY_LETTERS = "second_name_must_contain_only_letters";
+	private final String MESSAGE_PATRONYMIC_NAME_MUST_CONTAIN_ONLY_LETTERS = "patronymic_must_contain_only_letters";
+	private final String MESSAGE_NAMES_ARE_LOO_LONG = "first_and_second_name_must_be_shorter_45_symbols";
+
+	private Pattern emailPattern;
 
 	private NameValidator() {
 		emailPattern = Pattern.compile(NAME_PATTERN_REGEX);
@@ -27,19 +33,19 @@ public class NameValidator implements Validator {
 		String patronymic = info.getPatromynic();
 
 		if (firstName == null || secondName == null) {
-			return "Поля имени и фамилии должны быть заполнены";
+			return MESSAGE_NAMES_ARE_EMPTY;
 		}
 		if (!emailPattern.matcher(firstName).find()) {
-			return "В имени могут содержаться только буквы";
+			return MESSAGE_FIRST_NAME_MUST_CONTAIN_ONLY_LETTERS;
 		}
 		if (!emailPattern.matcher(secondName).find()) {
-			return "В фамилии могут содержаться только буквы";
+			return MESSAGE_SECOND_NAME_MUST_CONTAIN_ONLY_LETTERS;
 		}
 		if (patronymic.length() > 0 && !emailPattern.matcher(patronymic).find()) {
-			return "В отчестве могут содержаться только буквы";
+			return MESSAGE_PATRONYMIC_NAME_MUST_CONTAIN_ONLY_LETTERS;
 		}
 		if (firstName.length() > 45 || secondName.length() > 45 || patronymic.length() > 45) {
-			return "В имени, фамилии и отчестве не должно быть больше 45 знаков.";
+			return MESSAGE_NAMES_ARE_LOO_LONG;
 		}
 
 		return null;

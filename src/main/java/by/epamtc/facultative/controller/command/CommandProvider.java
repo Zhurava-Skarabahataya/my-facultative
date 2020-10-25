@@ -5,14 +5,11 @@ import java.util.Map;
 
 import by.epamtc.facultative.controller.command.impl.ApplyForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.ApproveStudentForCourseCommand;
-import by.epamtc.facultative.controller.command.impl.AuthorizationCommand;
-import by.epamtc.facultative.controller.command.impl.ChangeLanguageCommand;
 import by.epamtc.facultative.controller.command.impl.CreateRunCourseCommand;
 import by.epamtc.facultative.controller.command.impl.DisapproveStudentForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.DropOutStudentFromCourseCommand;
 import by.epamtc.facultative.controller.command.impl.EditUserInfoCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAboutUniversityPage;
-import by.epamtc.facultative.controller.command.impl.GoToAuthorizationPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAvailableRunCoursesPage;
 import by.epamtc.facultative.controller.command.impl.GoToContactsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToCoursePageCommand;
@@ -21,7 +18,6 @@ import by.epamtc.facultative.controller.command.impl.GoToCurrentDepartmentPageCo
 import by.epamtc.facultative.controller.command.impl.GoToDepartmentsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToErrorPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToNewsPage;
-import by.epamtc.facultative.controller.command.impl.GoToRegistrationPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationSuccessPage;
 import by.epamtc.facultative.controller.command.impl.GoToRunCoursePageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToStaffPageCommand;
@@ -32,10 +28,14 @@ import by.epamtc.facultative.controller.command.impl.GoToUserPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageEditingCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserRatingPage;
 import by.epamtc.facultative.controller.command.impl.GoToWelcomePageCommand;
-import by.epamtc.facultative.controller.command.impl.LogOutCommand;
-import by.epamtc.facultative.controller.command.impl.RegistrationCommand;
 import by.epamtc.facultative.controller.command.impl.RemoveApplicationForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.UploadUserPhotoCommand;
+import by.epamtc.facultative.controller.command.impl.authorization.AuthorizationCommand;
+import by.epamtc.facultative.controller.command.impl.authorization.GoToAuthorizationPageCommand;
+import by.epamtc.facultative.controller.command.impl.authorization.LogOutCommand;
+import by.epamtc.facultative.controller.command.impl.localization.ChangeLanguageCommand;
+import by.epamtc.facultative.controller.command.impl.registration.GoToRegistrationPageCommand;
+import by.epamtc.facultative.controller.command.impl.registration.RegistrationCommand;
 
 public class CommandProvider {
 	

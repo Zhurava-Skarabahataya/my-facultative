@@ -1,4 +1,4 @@
-package by.epamtc.facultative.controller.command.impl;
+package by.epamtc.facultative.controller.command.impl.localization;
 
 import java.io.IOException;
 

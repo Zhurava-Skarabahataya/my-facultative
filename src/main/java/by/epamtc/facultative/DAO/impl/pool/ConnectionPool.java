@@ -84,6 +84,8 @@ public class ConnectionPool {
 	}
 
 	public Connection getFreeConnection() throws ConnectionPoolException {
+		System.out.println(freeConnections.remainingCapacity());
+		System.out.println(takenConnections.remainingCapacity());
 		
 		Connection connection;
 		connection = freeConnections.poll();

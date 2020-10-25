@@ -89,7 +89,7 @@
 			</form>
 		
 		</c:if>
-		<c:if test="${sessionScope.bean.userRoleId >2 && sessionScope.bean.userStatusId == 2}">
+		<c:if test="${sessionScope.bean.userRoleId >2 }">
 		
 		<form style = "display:inline; float:center" action="Controller" method="post">
 				<input type="hidden" name="command"

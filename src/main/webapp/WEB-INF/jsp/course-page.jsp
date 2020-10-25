@@ -61,7 +61,7 @@
 		<div class="inscription"><c:out value="${available_run_courses}"/></div>
 	
 	<c:choose>
-		<c:when test="${requestScope.course.runCourses != null}">
+		<c:when test="${!empty requestScope.course.runCourses}">
 			<table class="courses_table">
 				<tr>
 				<th><c:out value="${start_date}"/></th>

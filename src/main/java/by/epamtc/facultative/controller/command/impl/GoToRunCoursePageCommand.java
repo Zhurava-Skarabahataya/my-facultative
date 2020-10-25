@@ -31,22 +31,16 @@ public class GoToRunCoursePageCommand implements Command {
 
 		request.setAttribute("run_course", runCourse);
 		
-		for(StudentOnCourse s: runCourse.getStudentsOnCourse()) {
-			System.out.println(s);
-		}
-		
 		if (userLogin != null) {
 			UserInfo userInfo = (UserInfo) session.getAttribute("bean");
 
 			int userId = userInfo.getUserId();
 			int userRoleId = userInfo.getUserRoleId();
 
-			
-
 			if (userRoleId == 1) {
 
 				int userStatusOnCourse = courseInfoProvider.getUserOnCourseApprovalStatusId(userId, runCourse);
-
+				
 				request.setAttribute("user_approval_status_id", userStatusOnCourse);
 			} else {
 				// Если препод, чтобы список студней видел и оценки им ставил

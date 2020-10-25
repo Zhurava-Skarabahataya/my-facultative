@@ -1,16 +1,78 @@
 package by.epamtc.facultative.bean;
 
-public class Faculty {
+import java.io.Serializable;
+import java.util.List;
+
+public class Faculty implements Serializable{
+	
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String facultyName;
 	private String facultyDescription;
+	private String deanName;
+	
 	
 	private int faculteId;
 	private int dean_id;
 	
+	private List <UserInfo> workingStaff;
+	private List <UserInfo> NotApprovedStaff;
+	private List <UserInfo> firedStaff;
+	
 	public Faculty() {
 		
 	}
+	
+	
+
+	public String getDeanName() {
+		return deanName;
+	}
+
+
+
+	public List<UserInfo> getWorkingStaff() {
+		return workingStaff;
+	}
+
+
+
+	public List<UserInfo> getNotApprovedStaff() {
+		return NotApprovedStaff;
+	}
+
+
+
+	public List<UserInfo> getFiredStaff() {
+		return firedStaff;
+	}
+
+
+
+	public void setDeanName(String deanName) {
+		this.deanName = deanName;
+	}
+
+
+
+	public void setWorkingStaff(List<UserInfo> workingStaff) {
+		this.workingStaff = workingStaff;
+	}
+
+
+
+	public void setNotApprovedStaff(List<UserInfo> notApprovedStaff) {
+		NotApprovedStaff = notApprovedStaff;
+	}
+
+
+
+	public void setFiredStaff(List<UserInfo> firedStaff) {
+		this.firedStaff = firedStaff;
+	}
+
+
 
 	public String getFacultyName() {
 		return facultyName;
