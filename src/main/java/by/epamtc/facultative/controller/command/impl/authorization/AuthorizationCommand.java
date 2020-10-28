@@ -68,7 +68,7 @@ public class AuthorizationCommand implements Command {
 				userInfo.setUserLogin(login);
 
 				UserInfoService userPageInfoProviderService = UserInfoService.getInstance();
-				userPageInfoProviderService.execute(userInfo);
+				userPageInfoProviderService.findUserInfo(userInfo);
 
 				session.setAttribute(REQUEST_ATTRIBUTE_BEAN, userInfo);
 				

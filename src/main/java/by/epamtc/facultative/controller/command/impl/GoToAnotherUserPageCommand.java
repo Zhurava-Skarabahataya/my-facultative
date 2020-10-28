@@ -11,12 +11,12 @@ import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.UserInfoService;
 
-public class GoToUserPageCommand implements Command {
-
+public class GoToAnotherUserPageCommand implements Command {
+	
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
 	private final String SESSION_ATTRIBUTE_BEAN = "bean";
-	private final String USER_PAGE_PATH = "WEB-INF/jsp/user-page.jsp";
+	private final String USER_PAGE_PATH = "WEB-INF/jsp/guest-user-page.jsp";
 	
 	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
 	
@@ -24,15 +24,27 @@ public class GoToUserPageCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+			
 		HttpSession session = request.getSession();
 
 		String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
 
-		if (userLogin != null) {
+		UserInfo loggedUserInfo = (UserInfo) session.getAttribute("bean");
+		int loggedUserRole = loggedUserInfo.getUserRoleId();
+
+		if (userLogin != null && loggedUserRole > 1) {
+			
+			int userId = Integer.parseInt(request.getParameter("userId"));
 
 			try {
+				
+				UserInfo userInfo = UserInfoService.getInstance().findUserInfo(userId);
+				
+				
 				//response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_USER_PAGE );
+				
+				request.setAttribute("user", userInfo);
+				
 				request.getRequestDispatcher(USER_PAGE_PATH).forward(request, response);
 			} catch (ServletException e) {
 				e.printStackTrace();
@@ -51,6 +63,8 @@ public class GoToUserPageCommand implements Command {
 				e.printStackTrace();
 			}
 		}
+		
+
 	}
 
 }

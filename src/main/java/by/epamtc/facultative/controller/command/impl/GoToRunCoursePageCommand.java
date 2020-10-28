@@ -28,6 +28,9 @@ public class GoToRunCoursePageCommand implements Command {
 		CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
 		int runCourseId = Integer.parseInt(request.getParameter("run_course_id"));
 		RunnedCourse runCourse = courseInfoProvider.findRunCourseById(runCourseId);
+		
+		System.out.println(runCourse.getStudentAmount());
+		System.out.println(runCourse.getStudentLimit());
 
 		request.setAttribute("run_course", runCourse);
 		
@@ -36,6 +39,7 @@ public class GoToRunCoursePageCommand implements Command {
 
 			int userId = userInfo.getUserId();
 			int userRoleId = userInfo.getUserRoleId();
+			
 
 			if (userRoleId == 1) {
 

@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import by.epamtc.facultative.controller.command.impl.ApplyForCourseCommand;
+import by.epamtc.facultative.controller.command.impl.ApproveEmployeeCommand;
 import by.epamtc.facultative.controller.command.impl.ApproveStudentForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.CreateRunCourseCommand;
+import by.epamtc.facultative.controller.command.impl.DisapproveEmployeeCommand;
 import by.epamtc.facultative.controller.command.impl.DisapproveStudentForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.DropOutStudentFromCourseCommand;
 import by.epamtc.facultative.controller.command.impl.EditUserInfoCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAboutUniversityPage;
+import by.epamtc.facultative.controller.command.impl.GoToAnotherUserPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAvailableRunCoursesPage;
 import by.epamtc.facultative.controller.command.impl.GoToContactsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToCoursePageCommand;
@@ -79,6 +82,9 @@ public class CommandProvider {
 		commands.put(CommandName.APPROVE_STUDENT_ON_COURSE, new ApproveStudentForCourseCommand());
 		commands.put(CommandName.DISAPPROVE_STUDENT_ON_COURSE, new DisapproveStudentForCourseCommand());
 		commands.put(CommandName.DROP_OUT_STUDENT_FROM_COURSE, new DropOutStudentFromCourseCommand());
+		commands.put(CommandName.APPROVE_EMPLOYEE, new ApproveEmployeeCommand());
+		commands.put(CommandName.DISAPPROVE_EMPLOYEE, new DisapproveEmployeeCommand());
+		commands.put(CommandName.GO_TO_ANOTHER_USER_PAGE, new GoToAnotherUserPageCommand());
 		
 	}
 

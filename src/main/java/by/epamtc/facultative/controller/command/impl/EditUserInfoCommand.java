@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.ValidationException;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
@@ -17,11 +18,7 @@ public class EditUserInfoCommand implements Command {
 	private static final String PARAMETER_FIRST_NAME = "userFirstName";
 	private static final String PARAMETER_SECOND_NAME = "userSecondName";
 	private static final String PARAMETER_PATRONYMIC = "userPatronymic";
-	private static final String PARAMETER_USER_LOGIN = "userlogin";
-	private static final String PARAMETER_PASSWORD = "password";
-	private static final String PARAMETER_USER_EMAL = "user_email";
 	private static final String PARAMETER_FACULTY = "faculty";
-	private static final String PARAMETER_ROLE = "role";
 
 	private static final String PARAMETER_COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
 
@@ -58,17 +55,22 @@ public class EditUserInfoCommand implements Command {
 			userPageInfo.setUserPhone(userPhone);
 		}
 		if (!request.getParameter("userDateOfBirth").isEmpty()) {
-			System.out.println("date" + request.getParameter("userDateOfBirth"));
 			try {
 				LocalDate userDateOfBirth = LocalDate.parse(request.getParameter("userDateOfBirth"));
 				userPageInfo.setUserDateOfBirth(userDateOfBirth);
 			} catch (DateTimeParseException e) {
 				e.printStackTrace();
+				//ccообщить юзеру, что ввел фигню
 			}
 		}
 
-		UpdateUserInfoService updateUserInfoService = UpdateUserInfoService.getInstance();
-		updateUserInfoService.update(userPageInfo);
+		try {
+
+			UpdateUserInfoService updateUserInfoService = UpdateUserInfoService.getInstance();
+			updateUserInfoService.update(userPageInfo);
+		} catch (ValidationException e1) {
+			//на страницу ошибки с мессаджем, добавить текста
+		}
 		
 		try {
 			response.sendRedirect(request.getRequestURI() + PARAMETER_COMMAND_GO_TO_USER_PAGE);

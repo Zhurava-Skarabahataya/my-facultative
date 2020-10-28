@@ -10,8 +10,8 @@ public class Faculty implements Serializable{
 	
 	private String facultyName;
 	private String facultyDescription;
-	private String deanName;
 	
+	private UserInfo dean;
 	
 	private int faculteId;
 	private int dean_id;
@@ -26,8 +26,8 @@ public class Faculty implements Serializable{
 	
 	
 
-	public String getDeanName() {
-		return deanName;
+	public UserInfo getDean() {
+		return dean;
 	}
 
 
@@ -50,8 +50,8 @@ public class Faculty implements Serializable{
 
 
 
-	public void setDeanName(String deanName) {
-		this.deanName = deanName;
+	public void setDean(UserInfo dean) {
+		this.dean= dean;
 	}
 
 

@@ -27,6 +27,8 @@
 <fmt:message bundle="${loc}" key="success_registration" var="success_registration" />
 <fmt:message bundle="${loc}" key="success_authorization" var="success_authorization" />
 <fmt:message bundle="${loc}" key="success_student_approved" var="success_student_approved" />
+<fmt:message bundle="${loc}" key="success_employee_disapproved" var="success_employee_disapproved" />
+<fmt:message bundle="${loc}" key="success_employee_approved" var="success_employee_approved" />
 
 </head>
 <body>
@@ -56,6 +58,14 @@
 			</c:when>
 			<c:when test="${requestScope.message =='success_student_approved'}">
 					<c:out value="${success_student_approved}" />
+				
+			</c:when>
+			<c:when test="${requestScope.message =='success_employee_approved'}">
+					<c:out value="${success_employee_approved}" />
+				
+			</c:when>
+			<c:when test="${requestScope.message =='success_employee_disapproved'}">
+					<c:out value="${success_employee_disapproved}" />
 				
 			</c:when>
 			<c:when test="${requestScope.message=='student_approved'}">

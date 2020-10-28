@@ -439,6 +439,7 @@ public class CourseDAOImpl {
 				int userId = rs.getInt("users_has_run_courses.users_user_id");
 				int userResult = rs.getInt("users_has_run_courses.user_result");
 				int userApprovalStatusId = rs.getInt("users_has_run_courses.approval_status_id");
+
 				String userApprovalStatusName = rs.getString("approval_statuses.approval_status_name");
 
 				StudentOnCourse student = new StudentOnCourse();
@@ -884,6 +885,7 @@ public class CourseDAOImpl {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}finally {
 				try {
 					cp.closeConnection(ps, conn);

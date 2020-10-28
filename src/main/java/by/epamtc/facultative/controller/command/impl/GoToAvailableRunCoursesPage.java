@@ -21,6 +21,12 @@ private static final String AVAILABLE_RUN_COURSES_PATH = "WEB-INF/jsp/available-
 		
 		courses = CourseInfoService.getInstance().findAllAvailableRunCourses();
 		
+		for (RunnedCourse r:courses) {
+			System.out.println(r);
+			System.out.println(r.getStudentLimit());
+			System.out.println(r.getStudentAmount());
+		}
+		
 		request.setAttribute("courses", courses);
 		try {
 			request.getRequestDispatcher(AVAILABLE_RUN_COURSES_PATH).forward(request, response);

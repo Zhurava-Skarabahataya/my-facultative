@@ -36,6 +36,9 @@ public class GoToUserCoursesPage implements Command {
 		}
 		if (userRoleId == 2) {
 			courses = courseInfoProvider.findLecturerRunCourses(userId);
+		}
+		if (userRoleId == 3) {
+			courses = courseInfoProvider.findDeanRunCourses(userId);
 
 		}
 		userPageInfo.setCourses(courses);

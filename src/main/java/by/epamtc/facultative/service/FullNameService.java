@@ -20,14 +20,14 @@ public class FullNameService {
 		
 		StringBuilder fullName = new StringBuilder();
 		fullName.append(firstName);
-		fullName.append(" ");
-		fullName.append(secondName);
-
 		if (patronymic != null) {
 			fullName.append(" ");
 			fullName.append(patronymic);
 			
 		}
+		fullName.append(" ");
+		fullName.append(secondName);
+
 		
 		return fullName.toString();
 		

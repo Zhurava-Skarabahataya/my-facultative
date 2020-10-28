@@ -79,14 +79,20 @@ public class CourseInfoService {
 	}
 
 	private void countStudentsOnCourse(List<RunnedCourse> courses) {
+		
 		int approvedStudentsAmount = 0;
+		
 		if (courses != null) {
 			for (RunnedCourse course : courses) {
+				
+				approvedStudentsAmount = 0;
 
 				List<StudentOnCourse> students = course.getStudentsOnCourse();
+
 				if (students != null) {
 
 					for (StudentOnCourse student : students) {
+						
 
 						int approvalStatusId = student.getUserApprovalStatusId();
 						if (approvalStatusId == 2) {
@@ -107,7 +113,7 @@ public class CourseInfoService {
 
 			List<StudentOnCourse> students = course.getStudentsOnCourse();
 			if (students != null) {
-				System.out.println("НЕ НУЛ");
+
 				for (StudentOnCourse student : students) {
 					int approvalStatusId = student.getUserApprovalStatusId();
 					if (approvalStatusId == 2) {
@@ -130,6 +136,11 @@ public class CourseInfoService {
 
 		try {
 			courses = courseInfoDAOImpl.findAllAvailableRunCourses();
+			
+			System.out.println("чекаем тут ----------------------");
+			System.out.println(courses.get(3).getStudentsOnCourse().size());
+			System.out.println(courses.get(3).getRunCourseId());
+			
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -284,6 +295,11 @@ public class CourseInfoService {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public List<RunnedCourse> findDeanRunCourses(int userId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

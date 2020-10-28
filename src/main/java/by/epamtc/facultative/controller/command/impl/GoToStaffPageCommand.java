@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import by.epamtc.facultative.bean.Faculty;
+import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.UserInfoService;
@@ -31,8 +33,8 @@ public class GoToStaffPageCommand implements Command {
 			
 			UserInfo userInfo = (UserInfo) session.getAttribute("bean");
 			int userInfoStatusId = userInfo.getUserStatusId();
+			int userId = userInfo.getUserId();
 			
-			System.out.println("USER STATUS" + userInfoStatusId);
 			int userRoleId = userInfo.getUserRoleId();
 			
 			if(userInfoStatusId != 2) {
@@ -51,9 +53,25 @@ public class GoToStaffPageCommand implements Command {
 			else {
 				
 				UserInfoService userService = UserInfoService.getInstance();
-				List<UserInfo> staff = userService.findStaffForUser(userInfo);
 				
-				request.setAttribute("staff", staff);
+				DepartmentStaff departmentStaff = null;
+				List <DepartmentStaff> allStaff = null;
+				
+				//ЕСЛИ ДЕКАН
+				if (userRoleId == 3) {
+					
+					departmentStaff = userService.findFacultyStaffForDean(userInfo);
+					request.setAttribute("staff", departmentStaff);
+				}
+				
+				//ЕСЛИ РЕКТОР
+				else {
+					
+					allStaff = userService.findUnivercityStaffForRector(userInfo);
+					request.setAttribute("allStaff", allStaff);
+				}
+				
+				
 				try {
 					request.getRequestDispatcher(STAFF_PAGE_PATH).forward(request, response);
 				} catch (ServletException e) {

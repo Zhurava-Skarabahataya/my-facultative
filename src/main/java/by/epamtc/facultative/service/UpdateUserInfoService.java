@@ -1,8 +1,12 @@
 package by.epamtc.facultative.service;
 
+import javax.xml.bind.ValidationException;
+
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.UserDAOImpl;
+import by.epamtc.facultative.service.validator.UserDataValidator;
+import by.epamtc.facultative.service.validator.Validator;
 
 public class UpdateUserInfoService {
 	
@@ -16,9 +20,19 @@ public class UpdateUserInfoService {
 		return instance;
 	}
 
-	public void update(UserInfo userPageInfo) {
+	public void update(UserInfo userPageInfo) throws ValidationException {
+		
+		UserDataValidator validator = UserDataValidator.getInstance();
+		
+		String message = validator.validate(userPageInfo);
+		
+		if (message != null) {
+			
+			throw new ValidationException(message);
+		}
 		
 		UserDAOImpl userInfoDAO = UserDAOImpl.getInstance();
+		
 		try {
 			userInfoDAO.updateUserInfo(userPageInfo);
 		} catch (DAOException e) {
