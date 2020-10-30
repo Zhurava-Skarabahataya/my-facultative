@@ -9,15 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.Department;
-import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.DepartmentInfoProviderService;
-import by.epamtc.facultative.service.UserInfoService;
 
-public class GoToStaffPageCommand implements Command {
-	
-	private  final String STAFF_PAGE_PATH = "WEB-INF/jsp/staff-page.jsp";
+public class GoToStudentsPageCommand implements Command {
+
+	private final String STUDENTS_PAGE_PATH = "WEB-INF/jsp/students-page.jsp";
+
 
 	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
 	private final String MESSAGE_TO_ERROR_PAGE = "errorMessage";
@@ -26,20 +25,19 @@ public class GoToStaffPageCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute("userLogin");
-		
+
 		if (userLogin != null) {
-			
+
 			UserInfo userInfo = (UserInfo) session.getAttribute("bean");
 			int userInfoStatusId = userInfo.getUserStatusId();
-			int userId = userInfo.getUserId();
-			
+
 			int userRoleId = userInfo.getUserRoleId();
-			
-			if(userInfoStatusId != 2) {
-				
+
+			if (userInfoStatusId != 2) { // если аппрувнут
+
 				request.setAttribute(MESSAGE_TO_ERROR_PAGE, ERROR_CAUSE_NOT_APPROVED);
 				try {
 					request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
@@ -50,44 +48,47 @@ public class GoToStaffPageCommand implements Command {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else {
-				
-				UserInfoService userService = UserInfoService.getInstance();
+			} else {
 
-				DepartmentStaff departmentStaff = null;
-				List<DepartmentStaff> allStaff = null;
-				//ЕСЛИ ДЕКАН
+				DepartmentInfoProviderService userService = DepartmentInfoProviderService.getInstance();
+
+				// ЕСЛИ ДЕКАН
 				if (userRoleId == 3) {
-					
 
-					departmentStaff = userService.findFacultyStaffForDean(userInfo);
-					request.setAttribute("staff", departmentStaff);
+					int departmentId = userInfo.getUserFacultyId();
+
+					List<UserInfo> students = userService.findStudentsOfDepartment(departmentId);
+					
+					request.setAttribute("students", students);
+
 				}
-				
-				//ЕСЛИ РЕКТОР
+
+				// ЕСЛИ РЕКТОР
 				else {
-					//СЕЙЧАС СДЕЛЯЮ
-					allStaff = userService.findUnivercityStaffForRector(userInfo);
-					request.setAttribute("allStaff", allStaff);
+					
+					List <Department> studentsInDepartments = userService.findStudentsOfAllDepartments();	
+					
+					request.setAttribute("allStudents", studentsInDepartments);
+					
+					//СДЕЛАЮ
+//					allStaff = userService.findUnivercityStaffForRector(userInfo);
+//					request.setAttribute("allStaff", allStaff);
 				}
-				
-				
+
 				try {
-					request.getRequestDispatcher(STAFF_PAGE_PATH).forward(request, response);
+					request.getRequestDispatcher(STUDENTS_PAGE_PATH).forward(request, response);
 				} catch (ServletException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}				
+				}
 			}
-			
-			
+
 		}
+
 		else {
-			
 			try {
 				request.setAttribute("errorMessage", "Необходимо войти в систему.");
 				request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);

@@ -49,6 +49,13 @@
 <fmt:message bundle="${loc}" key="no_places" var="no_places" />
 <fmt:message bundle="${loc}" key="course_ended" var="course_ended" />
 <fmt:message bundle="${loc}" key="course_cancelled" var="course_cancelled" />
+<fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
+<fmt:message bundle="${loc}" key="course_running" var="course_running" />
+<fmt:message bundle="${loc}" key="no_students_on_course" var="no_students_on_course" />
+<fmt:message bundle="${loc}" key="student_photo" var="student_photo" />
+<fmt:message bundle="${loc}" key="view_student_page" var="view_student_page" />
+<fmt:message bundle="${loc}" key="no_photo" var="no_photo" />
+<fmt:message bundle="${loc}" key="give_the_grade" var="give_the_grade" />
 <fmt:message bundle="${loc}" key="no_vacant_places"
 	var="no_vacant_places" />
 
@@ -78,7 +85,15 @@
 		</tr>
 		<tr>
 			<td><c:out value="${course_status}" /></td>
-			<td><c:out value="${run_course.courseStatusName}" /></td>
+			<td>
+			<c:choose>
+				<c:when test="${run_course.currentState == 1}"><c:out value="${course_canselled}"/> </c:when>
+				<c:when test="${run_course.currentState== 2}"><c:out value="${course_ended}"/> </c:when>
+				<c:when test="${run_course.currentState== 3}"><c:out value="${course_recruting}"/> </c:when>
+				<c:when test="${run_course.currentState== 4}"><c:out value="${course_running}"/> </c:when>
+				
+			</c:choose>
+		
 		</tr>
 		<tr>
 			<td><c:out value="${description}" /></td>
@@ -96,8 +111,7 @@
 		</tr>
 		<tr>
 			<td><c:out value="${lecturer}" /></td>
-			<td><c:out value="${run_course.lecturerName}" />ФОТО<img alt=""
-				src=""></td>
+			<td><c:out value="${run_course.lecturerName}" /><br><img src = "${run_course.lecturerPhotoLink}" width=200px alt=""></td>
 		</tr>
 		<tr>
 			<td><c:out value="${duration}" /></td>
@@ -179,13 +193,19 @@
 		
 		</c:when>
 		
-		<c:when test="${sessionScope.bean.userRoleId > 1}">
+		<c:when test="${(sessionScope.bean.userRoleId == 2 && 
+		requestScope.run_course.lecturerId == sessionScope.bean.userId) ||
+		 (sessionScope.bean.userRoleId == 3 
+		 && sessionScope.bean.userFacultyId == run_course.infoAboutCoursecourseDepartment) ||
+		 sessionScope.bean.userRoleId == 4}">
 			<div class="inscription"><c:out value="${student_list}"/></div>
-			
+			<c:if test="${empty requestScope.run_course.studentsOnCourse }">
+			<div class="inscription"><c:out value="${no_students_on_course}"/></div></c:if>
+			<c:if test="${!empty requestScope.run_course.studentsOnCourse }">
 			<table class="courses_table">
 			<tr>
 				<th><c:out value="${student_name}"/></th>
-				<th>Фотка</th>
+				<th><c:out value="${student_photo}"/></th>
 				<th><c:out value="${mark}"/></th>
 				<th><c:out value="${status_on_course}"/></th>
 				<th><c:out value="${more}"/></th>
@@ -195,12 +215,19 @@
 					<td><c:out value="${student.userFirstName}"/> 
 					<c:if test="${student.userPatronymic != null}">
 					<c:out value="${student.userPatronymic}"/> 
+					<br>
+					<form action="Controller" method = "post">
+						<input type="hidden" name="command" value="go_to_another_user_page" />
+						<input type="hidden" name="userId" value="${student.userId}" />
+						<input type="submit" value="${view_student_page}" />
+					</form>
+					
 					</c:if> 
 					<c:out value="${student.userSecondName}"/></td>
 					
-					<td>ФОТКА</td>
+					<td><img src="${student.userPhotoLink}" width = 200px alt = "${no_photo}"/></td>
 					<td><c:choose>
-							<c:when test="${student.result == 0}">
+							<c:when test="${student.result != 0}">
 							<c:out value="${student.result}"/>
 							</c:when>
 							<c:otherwise><c:out value="${no_mark}"/></c:otherwise>
@@ -229,7 +256,17 @@
 									<input type="submit" value="${disapprove}" />
 								</form>
 							</c:when>
-							<c:when test="${student.userApprovalStatusId == 2}">
+							<c:when test="${student.userApprovalStatusId == 2 && run_course.currentState== 2
+							 && student.result == 0}">
+								<form action="Controller" method="post">
+									<input type="hidden" name="command" value="give_the_grade" />
+									<input type="range" name = "grade" min="1" max = "10"/>
+									<input type="hidden" name="runCourseId" value="${requestScope.run_course.runCourseId}"/>
+									<input type="hidden" name="studentId" value="${student.userId}" />
+									<input type="submit" value="${give_the_grade}" />
+								</form>
+							</c:when>
+							<c:when test="${student.userApprovalStatusId == 2 && run_course.currentState>2}">
 								<form action="Controller" method="post">
 									<input type="hidden" name="command" value="drop_out_student_from_course" />
 									<input type="hidden" name="runCourseId" value="${requestScope.run_course.runCourseId}"/>
@@ -244,7 +281,7 @@
 				</tr>
 			</c:forEach>
 			</table>
-		
+			</c:if>
 		</c:when>
 		
 		<c:otherwise>

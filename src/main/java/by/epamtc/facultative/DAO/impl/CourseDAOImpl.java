@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.DefaultEditorKit.CutAction;
+
 import org.apache.log4j.Logger;
 
 import by.epamtc.facultative.bean.StudentOnCourse;
@@ -18,6 +20,7 @@ import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.facultative.service.CourseInfoService;
 import by.epamtc.facultative.service.FullNameService;
 
 public class CourseDAOImpl {
@@ -51,7 +54,7 @@ public class CourseDAOImpl {
 			+ "courses.course_id, courses.title, courses.description, courses.course_program, "
 			+ "courses.requirement, courses.duration_in_hours, courses.department_id, "
 			+ "run_courses_statuses.run_courses_statuses_title, users.first_name, "
-			+ "users.second_name, users.patronymic, departments.name FROM courses JOIN run_courses "
+			+ "users.second_name, users.patronymic, users.user_login, departments.name FROM courses JOIN run_courses "
 			+ "ON courses.course_id = run_courses.courses_course_id "
 			+ "JOIN run_courses_statuses ON run_courses_statuses.run_courses_statuses_id = "
 			+ "run_courses.run_courses_status JOIN users ON users.user_id = run_courses.lecturer_user_id"
@@ -80,15 +83,18 @@ public class CourseDAOImpl {
 			+ " JOIN departments ON courses.department_id = departments.department_id" + " WHERE courses.course_id = ?";
 
 	private final String QUERY_FOR_STUDENT_RUN_COURSES = "SELECT "
-			+ "run_courses.run_courses_id, run_courses.start_date, " + "run_courses.end_date, run_courses.shcedule, "
+			+ "run_courses.run_courses_id, run_courses.start_date, " 
+			+ "run_courses.end_date, run_courses.shcedule, "
 			+ "run_courses.student_limit, run_courses.classroom, "
 			+ "run_courses.run_courses_status, courses.course_id, "
 			+ "courses.title, courses.description, courses.course_program, "
 			+ "courses.requirement, courses.duration_in_hours, courses.department_id, "
-			+ "users_has_run_courses.approval_status_id, approval_statuses.approval_status_name " + "FROM courses "
+			+ "users_has_run_courses.approval_status_id, approval_statuses.approval_status_name " 
+			+ "FROM courses "
 			+ "JOIN run_courses ON courses.course_id = run_courses.courses_course_id " + "JOIN run_courses_statuses "
 			+ "ON run_courses_statuses.run_courses_statuses_id = run_courses.run_courses_status "
-			+ "JOIN users_has_run_courses " + "ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
+			+ "JOIN users_has_run_courses " 
+			+ "ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
 			+ "JOIN approval_statuses ON approval_statuses.approval_status_id = users_has_run_courses.approval_status_id"
 			+ " WHERE users_has_run_courses.users_user_id = ?";
 
@@ -108,6 +114,9 @@ public class CourseDAOImpl {
 
 	private final String QUERY_FOR_CHANGING_APPROVAL_STATUS_ON_COURSE = "UPDATE users_has_run_courses"
 			+ " SET approval_status_id = ? WHERE users_user_id = ? AND run_courses_id = ?";
+	
+	private final String QUERY_FOR_GIVING_STUDENT_GRADE = "UPDATE users_has_run_courses "
+			+ " SET user_result = ? WHERE users_user_id = ? AND run_courses_id = ?";
 
 	private CourseDAOImpl() {
 
@@ -222,13 +231,18 @@ public class CourseDAOImpl {
 
 	}
 
-	public List<RunnedCourse> getRunCoursesOfStudent(int userId) throws DAOException {
-
-		List<RunnedCourse> courses = new ArrayList<RunnedCourse>();
+	public void getRunCoursesOfStudent(UserInfo userPageInfo) throws DAOException {
 
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
+		
+		List<RunnedCourse> currentCourses = new ArrayList<RunnedCourse>();
+		List<RunnedCourse> endedCourses = new ArrayList<RunnedCourse>();
+		List<RunnedCourse> canselledCourses = new ArrayList<RunnedCourse>();
 
+
+		int userId = userPageInfo.getUserId();
+		
 		try {
 			conn = cp.getFreeConnection();
 		} catch (ConnectionPoolException e) {
@@ -278,7 +292,6 @@ public class CourseDAOImpl {
 				infoAboutRunnedCourse.setCourseStatus(runCourseStatusId);
 				infoAboutRunnedCourse.setDateOfEnd(endDate);
 				infoAboutRunnedCourse.setDateOfStart(startDate);
-				infoAboutRunnedCourse.setLecturerId(userId);
 				infoAboutRunnedCourse.setRunCourseId(runCourseId);
 				infoAboutRunnedCourse.setShedule(shcedule);
 				infoAboutRunnedCourse.setStudentLimit(studentLimit);
@@ -294,14 +307,33 @@ public class CourseDAOImpl {
 				infoAbourCourse.setCourseRequirement(courseRequirement);
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
-
+				
+				CourseInfoService courseInfoService = CourseInfoService.getInstance();
+				courseInfoService.defineCourseLaunchStatus(infoAboutRunnedCourse);
+				
+				int courseLaunchStatus = infoAboutRunnedCourse.getCurrentState();
+				if (courseLaunchStatus == 1) {
+					canselledCourses.add(infoAboutRunnedCourse);
+				}
+				else if (courseLaunchStatus == 2) {
+					endedCourses.add(infoAboutRunnedCourse);
+				}
+				else {
+					currentCourses.add(infoAboutRunnedCourse);
+				}
+				
 				List<StudentOnCourse> students = findStudentsOnRunCourse(runCourseId);
 
 				infoAboutRunnedCourse.setStudentsOnCourse(students);
-
-				courses.add(infoAboutRunnedCourse);
+				
+				userPageInfo.setCanselledCourses(canselledCourses);
+				userPageInfo.setEndedCourses(endedCourses);
+				userPageInfo.setCurrentCourses(currentCourses);
+				
 
 			}
+			
+			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -317,13 +349,17 @@ public class CourseDAOImpl {
 			}
 
 		}
-		return courses;
 	}
 
-	public List<RunnedCourse> getRunCoursesOfLecturer(int userId) throws DAOException {
+	public void getRunCoursesOfLecturer(UserInfo userPageInfo) throws DAOException {
 
-		List<RunnedCourse> courses = new ArrayList<RunnedCourse>();
+		List<RunnedCourse> currentCourses = new ArrayList<RunnedCourse>();
+		List<RunnedCourse> endedCourses = new ArrayList<RunnedCourse>();
+		List<RunnedCourse> canselledCourses = new ArrayList<RunnedCourse>();
 
+		int userId = userPageInfo.getUserId();
+
+		
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 
@@ -382,12 +418,29 @@ public class CourseDAOImpl {
 				infoAbourCourse.setCourseRequirement(courseRequirement);
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
+				
+				CourseInfoService courseInfoService = CourseInfoService.getInstance();
+				courseInfoService.defineCourseLaunchStatus(infoAboutRunnedCourse);
+				
+				int courseLaunchStatus = infoAboutRunnedCourse.getCurrentState();
+				if (courseLaunchStatus == 1) {
+					canselledCourses.add(infoAboutRunnedCourse);
+				}
+				else if (courseLaunchStatus == 2) {
+					endedCourses.add(infoAboutRunnedCourse);
+				}
+				else {
+					currentCourses.add(infoAboutRunnedCourse);
+				}
 
 				List<StudentOnCourse> students = findStudentsOnRunCourse(runCourseId);
 
 				infoAboutRunnedCourse.setStudentsOnCourse(students);
 
-				courses.add(infoAboutRunnedCourse);
+				userPageInfo.setCanselledCourses(canselledCourses);
+				userPageInfo.setEndedCourses(endedCourses);
+				userPageInfo.setCurrentCourses(currentCourses);
+				
 
 			}
 
@@ -405,7 +458,6 @@ public class CourseDAOImpl {
 			}
 
 		}
-		return courses;
 	}
 
 	private List<StudentOnCourse> findStudentsOnRunCourse(int runCourseId) throws DAOException {
@@ -595,6 +647,7 @@ public class CourseDAOImpl {
 				String lecturerFirstName = rs.getString("users.first_name");
 				String lecturerSecondName = rs.getString("users.second_name");
 				String lecturerPatronymic = rs.getString("users.patronymic");
+				String lecturerLogin = rs.getString("users.user_login");
 				String departmentName = rs.getString("departments.name");
 
 				Date sqlDateStart = rs.getDate("run_courses.start_date");
@@ -624,6 +677,7 @@ public class CourseDAOImpl {
 				infoAboutRunnedCourse.setShedule(shcedule);
 				infoAboutRunnedCourse.setStudentLimit(studentLimit);
 				infoAboutRunnedCourse.setLecturerName(lecturerFullName);
+				infoAboutRunnedCourse.setLecturerLogin(lecturerLogin);
 
 				Course infoAbourCourse = new Course();
 				infoAbourCourse.setCourseDepartment(departmentId);
@@ -894,6 +948,43 @@ public class CourseDAOImpl {
 					e.printStackTrace();
 				}
 		
+		}
+		
+	}
+
+	public void giveStudentGraveOnRunCourse(int studentId, int runCourseId, int grade) {
+	
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+
+		PreparedStatement ps = null;
+		
+		String query = QUERY_FOR_GIVING_STUDENT_GRADE;
+		
+		try {
+			conn = cp.getFreeConnection();
+			
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, grade);
+			ps.setInt(2, studentId);
+			ps.setInt(3, runCourseId);
+			
+			ps.executeUpdate();
+			
+		} catch (ConnectionPoolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			 //ОБРАБОТАЙ
+		}
+		finally {
+			try {
+				cp.closeConnection(ps, conn);
+			} catch (ConnectionPoolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}

@@ -31,6 +31,10 @@ public class DepartmentDAOImpl {
 			+ "users.first_name, users.second_name, users.patronymic, users.user_login "
 			+ "FROM users WHERE users.user_role_id = 2 AND users.department_department_id = ?";
 
+	private final String QUERY_FOR_STUDENTS_IN_DEPARTMENT = "SELECT "
+			+ "users.first_name, users.second_name, users.patronymic, users.user_login "
+			+ "FROM users WHERE users.user_role_id = 1 AND status = 1 AND users.department_department_id = ?";
+
 	private DepartmentDAOImpl() {
 
 	}
@@ -211,6 +215,64 @@ public class DepartmentDAOImpl {
 		}
 
 		return courses;
+	}
+
+	public List<UserInfo> findStudentsInDepartment(int departmentId) throws DAOException {
+		
+		System.out.println("В ДАО");
+		List<UserInfo> students = new ArrayList<UserInfo>();
+
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+
+		try {
+			conn = cp.getFreeConnection();
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		}
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String query = QUERY_FOR_STUDENTS_IN_DEPARTMENT;
+
+		try {
+			ps = conn.prepareStatement(query);
+
+			ps.setInt(1,  departmentId);
+			
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String firstName = rs.getString("users.first_name");
+				String secondName = rs.getString("users.second_name");
+				String patronymic = rs.getString("users.patronymic");
+				String userLogin = rs.getString("users.user_login");
+				System.out.println(userLogin);
+				
+				UserInfo student = new UserInfo();
+				student.setUserFirstName(firstName);
+				student.setUserSecondName(secondName);
+				student.setUserPatronymic(patronymic);
+				student.setUserLogin(userLogin);
+				
+				students.add(student);
+				}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				cp.closeConnection(rs, ps, conn);
+			} catch (ConnectionPoolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		// TODO Auto-generated method stub
+		return students;
 	}
 
 	

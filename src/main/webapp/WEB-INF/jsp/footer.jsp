@@ -28,6 +28,7 @@
 <fmt:message bundle="${loc_footer}" key="adress_country"	var="adress_country" />
 <fmt:message bundle="${loc_footer}" key="adress_town"	var="adress_town" />
 <fmt:message bundle="${loc_footer}" key="adress_street"	var="adress_street" />
+<fmt:message bundle="${loc_footer}" key="adress_building"	var="adress_building" />
 <fmt:message bundle="${loc_footer}" key="about"	var="about" />
 <fmt:message bundle="${loc_footer}" key="text"	var="text" />
 
@@ -42,17 +43,17 @@
 				<h3><c:out value="${belmagun}"/><span><img alt="" src="image/logo.png" width="50"></span></h3>
 
 				<p class="footer-links">
-					<a href="#" ><c:out value="${to_main_page}"/></a>
+					<a href="Controller?command=go_to_welcome_page" ><c:out value="${to_main_page}"/></a>
 					
-					<a href="#"><c:out value="${about_us}"/></a>
+					<a href="Controller?command=go_to_about_university_page"><c:out value="${about_us}"/></a>
 				
-					<a href="#"><c:out value="${departments}"/></a>
+					<a href="Controller?command=go_to_departments_page"><c:out value="${departments}"/></a>
 				
-					<a href="#"><c:out value="${courses}"/></a>
+					<a href="Controller?command=go_to_available_run_courses_page"><c:out value="${courses}"/></a>
 					
-					<a href="#"><c:out value="${contacts}"/></a>
+					<a href="Controller?command=go_to_contacts_page"><c:out value="${contacts}"/></a>
 					
-					<a href="#"><c:out value="${news}"/></a>
+					<a href="Controller?command=go_to_news_page"><c:out value="${news}"/></a>
 				</p>
 
 			</div>
@@ -62,8 +63,9 @@
 				<div>
 					<i class="fa fa-map-marker"></i>
 					<p><span><c:out value="${adress_country}"/> <br> 
-					<c:out value="${adress_town}"/> </span> 
-					<c:out value="${adress_street}"/> </p>
+					<c:out value="${adress_town}"/> 
+					<c:out value="${adress_street}"/> 
+					<c:out value="${adress_building}"/> </p></span> 
 				</div>
 
 				<div>

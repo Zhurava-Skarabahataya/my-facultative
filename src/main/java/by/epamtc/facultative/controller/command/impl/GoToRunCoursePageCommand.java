@@ -29,9 +29,6 @@ public class GoToRunCoursePageCommand implements Command {
 		int runCourseId = Integer.parseInt(request.getParameter("run_course_id"));
 		RunnedCourse runCourse = courseInfoProvider.findRunCourseById(runCourseId);
 		
-		System.out.println(runCourse.getStudentAmount());
-		System.out.println(runCourse.getStudentLimit());
-
 		request.setAttribute("run_course", runCourse);
 		
 		if (userLogin != null) {
@@ -46,6 +43,7 @@ public class GoToRunCoursePageCommand implements Command {
 				int userStatusOnCourse = courseInfoProvider.getUserOnCourseApprovalStatusId(userId, runCourse);
 				
 				request.setAttribute("user_approval_status_id", userStatusOnCourse);
+				
 			} else {
 				// Если препод, чтобы список студней видел и оценки им ставил
 			}

@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import by.epamtc.facultative.bean.Faculty;
+import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.UserInfo;
 

@@ -49,6 +49,7 @@
 	var="tel_number" />
 <fmt:message bundle="${loc}" key="button.edit"	var="edit" />
 <fmt:message bundle="${loc}" key="button.go_to_staff_page"	var="go_to_staff_page" />
+<fmt:message bundle="${loc}" key="button.go_to_students_page"	var="go_to_students_page" />
 
 
 
@@ -96,6 +97,11 @@
 					value="go_to_staff_page" /> <input type="submit"
 					value="${go_to_staff_page}" /><br />
 			</form>
+			<form style = "display:inline; float:center" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_students_page" /> <input type="submit"
+					value="${go_to_students_page}" /><br />
+			</form>
 		
 		</c:if>
 		
@@ -112,8 +118,7 @@
 	
 		<img src="${sessionScope.bean.userPhotoLink}"
 		onerror="this.src='D:/Java/facultative-project/user_photos/default.jpg'" alt="${upload_photo}"
-			height=200 width=200
-			>
+			height=200 width=200>
 		<br>
 		
 		<div align="center">

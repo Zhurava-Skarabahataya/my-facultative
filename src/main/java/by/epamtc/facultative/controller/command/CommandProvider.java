@@ -11,6 +11,9 @@ import by.epamtc.facultative.controller.command.impl.DisapproveEmployeeCommand;
 import by.epamtc.facultative.controller.command.impl.DisapproveStudentForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.DropOutStudentFromCourseCommand;
 import by.epamtc.facultative.controller.command.impl.EditUserInfoCommand;
+import by.epamtc.facultative.controller.command.impl.ExpellStudentCommand;
+import by.epamtc.facultative.controller.command.impl.FireEmployeeCommand;
+import by.epamtc.facultative.controller.command.impl.GiveStudentGradeCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAboutUniversityPage;
 import by.epamtc.facultative.controller.command.impl.GoToAnotherUserPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToAvailableRunCoursesPage;
@@ -24,6 +27,7 @@ import by.epamtc.facultative.controller.command.impl.GoToNewsPage;
 import by.epamtc.facultative.controller.command.impl.GoToRegistrationSuccessPage;
 import by.epamtc.facultative.controller.command.impl.GoToRunCoursePageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToStaffPageCommand;
+import by.epamtc.facultative.controller.command.impl.GoToStudentsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToSuccessPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUniversityCoursesPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserCoursesPage;
@@ -33,6 +37,8 @@ import by.epamtc.facultative.controller.command.impl.GoToUserRatingPage;
 import by.epamtc.facultative.controller.command.impl.GoToWelcomePageCommand;
 import by.epamtc.facultative.controller.command.impl.RemoveApplicationForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.UploadUserPhotoCommand;
+import by.epamtc.facultative.controller.command.impl.ViewAnotherUserRunCoursesCommand;
+import by.epamtc.facultative.controller.command.impl.ViewStudentRatingPageCommand;
 import by.epamtc.facultative.controller.command.impl.authorization.AuthorizationCommand;
 import by.epamtc.facultative.controller.command.impl.authorization.GoToAuthorizationPageCommand;
 import by.epamtc.facultative.controller.command.impl.authorization.LogOutCommand;
@@ -69,6 +75,7 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_CURRENT_DEPARTMENT_PAGE_COMMAND, new GoToCurrentDepartmentPageCommand());
 		commands.put(CommandName.GO_TO_SUCCESS_PAGE_COMMAND, new GoToSuccessPageCommand());
 		commands.put(CommandName.GO_TO_STAFF_PAGE, new GoToStaffPageCommand());
+		commands.put(CommandName.GO_TO_STUDENTS_PAGE, new GoToStudentsPageCommand());
 
 		commands.put(CommandName.REGISTRATION_COMMAND, new RegistrationCommand());
 		commands.put(CommandName.AUTHORIZATION_COMMAND, new AuthorizationCommand());
@@ -85,6 +92,11 @@ public class CommandProvider {
 		commands.put(CommandName.APPROVE_EMPLOYEE, new ApproveEmployeeCommand());
 		commands.put(CommandName.DISAPPROVE_EMPLOYEE, new DisapproveEmployeeCommand());
 		commands.put(CommandName.GO_TO_ANOTHER_USER_PAGE, new GoToAnotherUserPageCommand());
+		commands.put(CommandName.GIVE_THE_GRADE, new GiveStudentGradeCommand());
+		commands.put(CommandName.VIEW_ANOTHER_USER_RUN_COURSES, new ViewAnotherUserRunCoursesCommand());
+		commands.put(CommandName.VIEW_STUDENT_RATING_PAGE, new ViewStudentRatingPageCommand());
+		commands.put(CommandName.EXPEL_STUDENT, new ExpellStudentCommand());
+		commands.put(CommandName.FIRE_EMPLOYEE, new FireEmployeeCommand());
 		
 	}
 

@@ -1,15 +1,16 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,500,300,700);
-@import url('https://fonts.googleapis.com/css?family=Ubuntu+Condensed');
-
 
 body{
-	  font-family: 'Ubuntu Condensed', sans-serif;
+	  font-family: 'Courier New';
 	  background-color: #f1f1f1;
 	 
 	border-radius: 10px;
 	
 }
 
+div{
+		  font-family: 'Courier New';
+	
+}
 
 
 .footer-distributed{

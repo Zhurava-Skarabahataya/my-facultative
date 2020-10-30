@@ -26,6 +26,10 @@
 <fmt:message bundle="${loc}" key="vacant_places" var="vacant_places" />
 <fmt:message bundle="${loc}" key="status" var="status" />
 <fmt:message bundle="${loc}" key="more" var="more" />
+<fmt:message bundle="${loc}" key="course_ended" var="course_ended" />
+<fmt:message bundle="${loc}" key="course_cancelled" var="course_cancelled" />
+<fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
+<fmt:message bundle="${loc}" key="course_running" var="course_running" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_available_run_courses_page" />
 
@@ -51,6 +55,7 @@
 			
 			
 			<c:forEach var="run_course" items="${requestScope.courses}">
+				<c:if test="${run.course.currentState >2 }"> 
 				<tr>
 					<td><c:out value="${run_course.courseName}"/></td>
 					<td><c:out value="${run_course.dateOfStart}"/></td>
@@ -58,7 +63,13 @@
 					<td><c:out value="${run_course.lecturerName}"/></td>
 					<td><c:out value="${run_course.shedule}"/></td>
 					<td><c:out value="${run_course.studentLimit - run_course.studentAmount}"/></td>
-					<td><c:out value="${run_course.courseStatusName}"/></td>
+					<td><c:choose>
+				<c:when test="${run_course.currentState == 1}"><c:out value="${course_canselled}"/> </c:when>
+				<c:when test="${run_course.currentState== 2}"><c:out value="${course_ended}"/> </c:when>
+				<c:when test="${run_course.currentState== 3}"><c:out value="${course_recruting}"/> </c:when>
+				<c:when test="${run_course.currentState== 4}"><c:out value="${course_running}"/> </c:when>
+				
+			</c:choose></td>
 					<td><form action="Controller" method="post">
 					<input type="hidden" name="command" value="go_to_run_course_page" />
 					<input type="hidden" name="run_course_id" value = "${run_course.runCourseId}"/>
@@ -68,7 +79,7 @@
 				
 				</tr>
 				
-				
+				</c:if>
 			</c:forEach>
 		
 			</table>

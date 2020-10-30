@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import by.epamtc.facultative.bean.StudentOnCourse;
+import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.dao.exception.DAOException;
@@ -12,6 +13,9 @@ import by.epamtc.facultative.dao.impl.CourseDAOImpl;
 public class CourseInfoService {
 
 	private static final CourseInfoService instance = new CourseInfoService();
+	
+	private final String PHOTO_LINK_PREFIX = "D:/Java/facultative-project/user_photos/";
+	private final String PHOTO_LINK_POSTFIX = ".jpg";
 
 	private CourseInfoService() {
 
@@ -38,44 +42,42 @@ public class CourseInfoService {
 		return courses;
 	}
 
-	public List<RunnedCourse> findStudentRunCourses(int userId) {
+	public void findStudentRunCourses(UserInfo userPageInfo) {
 
-		List<RunnedCourse> courses = null;
 
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
 
 		try {
-			courses = CourseDAOImpl.getInstance().getRunCoursesOfStudent(userId);
+			courseInfoDAOImpl.getRunCoursesOfStudent(userPageInfo);
 
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		countStudentsOnCourse(courses);
-		defineCourseLaunchStatus(courses);
+		
+		countStudentsOnCourse(userPageInfo.getCanselledCourses());
+		countStudentsOnCourse(userPageInfo.getEndedCourses());
+		countStudentsOnCourse(userPageInfo.getCurrentCourses());
+//		defineCourseLaunchStatus(courses);
 
-		// TODO Auto-generated method stub
-		return courses;
 	}
 
-	public List<RunnedCourse> findLecturerRunCourses(int userId) {
+	public void findLecturerRunCourses(UserInfo userPageInfo) {
 
-		List<RunnedCourse> courses = null;
 
 		CourseDAOImpl courseInfoDAOImpl = CourseDAOImpl.getInstance();
 
 		try {
-			courses = courseInfoDAOImpl.getRunCoursesOfLecturer(userId);
+			courseInfoDAOImpl.getRunCoursesOfLecturer(userPageInfo);
 
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		countStudentsOnCourse(courses);
-		defineCourseLaunchStatus(courses);
-
-		return courses;
+		countStudentsOnCourse(userPageInfo.getCanselledCourses());
+		countStudentsOnCourse(userPageInfo.getEndedCourses());
+		countStudentsOnCourse(userPageInfo.getCurrentCourses());
 	}
 
 	private void countStudentsOnCourse(List<RunnedCourse> courses) {
@@ -137,14 +139,12 @@ public class CourseInfoService {
 		try {
 			courses = courseInfoDAOImpl.findAllAvailableRunCourses();
 			
-			System.out.println("чекаем тут ----------------------");
-			System.out.println(courses.get(3).getStudentsOnCourse().size());
-			System.out.println(courses.get(3).getRunCourseId());
-			
+					
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		countStudentsOnCourse(courses);
 		defineCourseLaunchStatus(courses);
 
@@ -184,7 +184,7 @@ public class CourseInfoService {
 
 	}
 
-	private void defineCourseLaunchStatus(RunnedCourse runnedCourse) {
+	public void defineCourseLaunchStatus(RunnedCourse runnedCourse) {
 
 		int runnedCourseStatusId = runnedCourse.getCourseStatus();
 		if (runnedCourseStatusId == 2) {
@@ -224,10 +224,31 @@ public class CourseInfoService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		String lecturerLogin = info.getLecturerLogin();
+		String lecturerPhotoLink = PHOTO_LINK_PREFIX + lecturerLogin + PHOTO_LINK_POSTFIX;
+		
+		info.setLecturerPhotoLink(lecturerPhotoLink);
+		
+		List<StudentOnCourse> students = info.getStudentsOnCourse();
+		addPhotoLinks(students);
+		
 		countStudentsOnCourse(info);
 		defineCourseLaunchStatus(info);
 		return info;
 	}
+	
+
+	public void addPhotoLinks(List<StudentOnCourse> users) {
+		
+		for (StudentOnCourse user : users) {
+			String userLogin = user.getUserLogin();
+			
+			user.setUserPhotoLink(PHOTO_LINK_PREFIX + userLogin + PHOTO_LINK_POSTFIX);
+			
+		}
+	}
+
 
 	public void applyStudentForRunCourse(int userId, int runCourseId) {
 
@@ -297,9 +318,17 @@ public class CourseInfoService {
 		
 	}
 
-	public List<RunnedCourse> findDeanRunCourses(int userId) {
+	public List<RunnedCourse> findDeanRunCourses(UserInfo userPageInfo) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void giveStudentGraveOnRunCourse(int studentId, int runCourseId, int grade) {
+
+		CourseDAOImpl courseDAOImpl = CourseDAOImpl.getInstance();
+		courseDAOImpl.giveStudentGraveOnRunCourse(studentId, runCourseId, grade);
+		
+		
 	}
 
 }

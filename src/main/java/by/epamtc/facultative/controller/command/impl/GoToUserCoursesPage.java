@@ -32,16 +32,17 @@ public class GoToUserCoursesPage implements Command {
 		List<RunnedCourse> courses = null;
 		
 		if (userRoleId == 1) {
-			courses = courseInfoProvider.findStudentRunCourses(userId);
+			courseInfoProvider.findStudentRunCourses(userPageInfo);
 		}
 		if (userRoleId == 2) {
-			courses = courseInfoProvider.findLecturerRunCourses(userId);
+			courseInfoProvider.findLecturerRunCourses(userPageInfo);
+			
 		}
 		if (userRoleId == 3) {
-			courses = courseInfoProvider.findDeanRunCourses(userId);
+			courseInfoProvider.findDeanRunCourses(userPageInfo);
 
 		}
-		userPageInfo.setCourses(courses);
+		
 
 		if (userLogin != null) {
 

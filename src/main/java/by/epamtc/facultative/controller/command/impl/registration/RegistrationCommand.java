@@ -121,7 +121,7 @@ public class RegistrationCommand implements Command {
 				userInfo.setUserLogin(userLogin);
 
 				UserInfoService userPageInfoProviderService = UserInfoService.getInstance();
-				userPageInfoProviderService.execute(userInfo);
+				userPageInfoProviderService.findUserInfo(userInfo);
 
 				session.setAttribute(REQUEST_ATTRIBUTE_BEAN, userInfo);
 

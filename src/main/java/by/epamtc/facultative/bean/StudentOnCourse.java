@@ -11,11 +11,42 @@ public class StudentOnCourse implements Serializable {
 	private String userFirstName;
 	private String userSecondName;
 	private String userPatronymic;
+	private String userPhotoLink;
 	private int result;
 	private int userApprovalStatusId;
 	private String userApprovalStatusName;
 	
 	RunnedCourse infoAboutRunnedCourse;
+
+	public StudentOnCourse() {
+		
+	}
+	
+	
+	
+	public String getUserPhotoLink() {
+		return userPhotoLink;
+	}
+
+
+
+	public RunnedCourse getInfoAboutRunnedCourse() {
+		return infoAboutRunnedCourse;
+	}
+
+
+
+	public void setUserPhotoLink(String userPhotoLink) {
+		this.userPhotoLink = userPhotoLink;
+	}
+
+
+
+	public void setInfoAboutRunnedCourse(RunnedCourse infoAboutRunnedCourse) {
+		this.infoAboutRunnedCourse = infoAboutRunnedCourse;
+	}
+
+
 
 	public int getUserId() {
 		return userId;

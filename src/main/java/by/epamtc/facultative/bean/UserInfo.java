@@ -3,6 +3,7 @@ package by.epamtc.facultative.bean;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class UserInfo implements Serializable {
 
@@ -26,11 +27,53 @@ public class UserInfo implements Serializable {
 	int userStatusId;
 	int userFacultyId;
 
-	List<RunnedCourse> courses;
+	List<RunnedCourse> currentCourses;
+	List<RunnedCourse> endedCourses;
+	List<RunnedCourse> canselledCourses;
+	
+	Map <Integer, Integer> results;
 
 	public UserInfo() {
 
 	}
+
+	
+	
+	public List<RunnedCourse> getCurrentCourses() {
+		return currentCourses;
+	}
+
+
+
+	public void setCurrentCourses(List<RunnedCourse> currentCourses) {
+		this.currentCourses = currentCourses;
+	}
+
+
+
+	public List<RunnedCourse> getEndedCourses() {
+		return endedCourses;
+	}
+
+
+
+	public List<RunnedCourse> getCanselledCourses() {
+		return canselledCourses;
+	}
+
+
+
+	public void setEndedCourses(List<RunnedCourse> endedCourses) {
+		this.endedCourses = endedCourses;
+	}
+
+
+
+	public void setCanselledCourses(List<RunnedCourse> canselledCourses) {
+		this.canselledCourses = canselledCourses;
+	}
+
+
 
 	public String getUserFirstName() {
 		return userFirstName;
@@ -92,9 +135,7 @@ public class UserInfo implements Serializable {
 		return userFacultyId;
 	}
 
-	public List<RunnedCourse> getCourses() {
-		return courses;
-	}
+	
 
 	public void setUserFirstName(String userFirstName) {
 		this.userFirstName = userFirstName;
@@ -156,15 +197,11 @@ public class UserInfo implements Serializable {
 		this.userFacultyId = userFacultyId;
 	}
 
-	public void setCourses(List<RunnedCourse> courses) {
-		this.courses = courses;
-	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((courses == null) ? 0 : courses.hashCode());
 		result = prime * result + ((userAdress == null) ? 0 : userAdress.hashCode());
 		result = prime * result + ((userDateOfBirth == null) ? 0 : userDateOfBirth.hashCode());
 		result = prime * result + ((userEmail == null) ? 0 : userEmail.hashCode());
@@ -192,11 +229,6 @@ public class UserInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserInfo other = (UserInfo) obj;
-		if (courses == null) {
-			if (other.courses != null)
-				return false;
-		} else if (!courses.equals(other.courses))
-			return false;
 		if (userAdress == null) {
 			if (other.userAdress != null)
 				return false;
@@ -270,7 +302,7 @@ public class UserInfo implements Serializable {
 				+ ", userFaculty=" + userFaculty + ", userAdress=" + userAdress + ", userPhone=" + userPhone
 				+ ", userPhotoLink=" + userPhotoLink + ", userDateOfBirth=" + userDateOfBirth + ", userId=" + userId
 				+ ", userRoleId=" + userRoleId + ", userStatusId=" + userStatusId + ", userFacultyId=" + userFacultyId
-				+ ", courses=" + courses + "]";
+				+ ", courses=";
 	}
 
 		

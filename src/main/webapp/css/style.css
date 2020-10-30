@@ -4,7 +4,12 @@ body {
 	background-image: url(image/seamless-background.jpg);
 	 background-repeat: repeat;
 	background-color: #000040; 
-	  font-family: 'Ubuntu Condensed', sans-serif;
+	  font-family: 'Courier New';
+	
+}
+
+div{
+		  font-family: 'Courier New';
 	
 }
 
@@ -15,7 +20,7 @@ body {
   background: #ffffff;
   border: 1px solid #DDDDDD;
   font-size: 20px;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Courier New';
   color: #808080;
   outline: none;
 	
@@ -37,14 +42,14 @@ body {
  input[type="submit"]:hover {background: #1abc9c;}
 
 .header {
-	 font-family: 'Ubuntu Condensed', sans-serif;
+	 font-family: 'Courier New', sans-serif;
 	
 	background-color: #f1f1f1;
 	padding: 15px;
 	text-align: center;
 	background: #1abc9c;
 	color: white;
-	font-size: 30px;
+	font-size: 25px;
 	width:95%;
 	opacity:0.9;
 	border-radius: 10px;
@@ -53,7 +58,7 @@ body {
 }
 
 .footer{
-	font-family: 'Ubuntu Condensed', sans-serif;
+	font-family: 'Courier New';
 	overflow: hidden;
 	background-color: #f1f1f1;
 	padding: 15px;
@@ -74,7 +79,7 @@ body {
 	border-radius: 10px;
 	padding: 15px;
 	margin: 15px;
-	font-family: 'Ubuntu Condensed', sans-serif;
+	font-family: 'Courier New;
 }
 
 .about_university{
@@ -125,7 +130,7 @@ body {
 .menu-main li:last-child:after {content: none;}
 .menu-main a {
   text-decoration: none;
-  font-family: 'Ubuntu Condensed', sans-serif;
+  font-family: 'Courier New';
   letter-spacing: 2px;
   position: relative;
   padding-bottom: 20px;

@@ -6,20 +6,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User page</title>
+<title><c:out value="${title}"/></title>
 <style>
 <%@ include file="/css/style.css"%>
 </style>
 
 
 <c:set var="commandToLanguageChanger" scope="session"
-	value="go_to_user_page" />
+	value="go_to_another_user_page" />
 
 <fmt:setLocale value="${sessionScope.local}" />
 
 <fmt:setBundle basename="localization.user_page.user_page" var="loc"
 	scope="session" />
 <fmt:message bundle="${loc}" key="user_profile"	var="user_profile" />
+<fmt:message bundle="${loc}" key="title"	var="title" />
+<fmt:message bundle="${loc}" key="name"	var="name" />
+<fmt:message bundle="${loc}" key="no_photo"	var="no_photo" />
+<fmt:message bundle="${loc}" key="position"	var="position" />
+<fmt:message bundle="${loc}" key="faculty"	var="faculty" />
+<fmt:message bundle="${loc}" key="adress"	var="adress" />
+<fmt:message bundle="${loc}" key="phone"	var="phone" />
+<fmt:message bundle="${loc}" key="see_student_rating"	var="see_student_rating" />
+<fmt:message bundle="${loc}" key="see_student_run_courses"	var="see_student_run_courses" />
+<fmt:message bundle="${loc}" key="expell_student"	var="expell_student" />
+<fmt:message bundle="${loc}" key="see_lecturer_run_courses"	var="see_lecturer_run_courses" />
+<fmt:message bundle="${loc}" key="fire_employee"	var="fire_employee" />
 	
 	</head>
 <body>

@@ -162,7 +162,7 @@
 					<td><c:out value="${employee.userPhone}" /></td>
 					<td><c:out value="${employee.userAdress}" /></td>
 					<td><c:out value="${employee.userDateOfBirth}" /></td>
-					<td>Уволькать</td>
+					<td>Няхай работает</td>
 				</tr>
 			</c:forEach>
 
@@ -242,7 +242,7 @@
 					<td><c:out value="${employee.userPhone}" /></td>
 					<td><c:out value="${employee.userAdress}" /></td>
 					<td><c:out value="${employee.userDateOfBirth}" /></td>
-					<td>>Работает</td>
+					<td>>Няхай работает</td>
 				</tr>
 				
 				</c:forEach>

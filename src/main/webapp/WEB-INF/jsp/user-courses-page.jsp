@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Мои Курсы</title>
+<title><c:out value="${my_courses}"/></title>
 
 
 <fmt:setLocale value="${sessionScope.local}" />
@@ -18,6 +18,25 @@
 <fmt:message bundle="${loc}" key="my_courses" var="my_courses" />
 <fmt:message bundle="${loc}" key="my_rating" var="my_rating" />
 <fmt:message bundle="${loc}" key="create_course" var="create_course" />
+<fmt:message bundle="${loc}" key="title" var="title" />
+<fmt:message bundle="${loc}" key="date_of_start" var="date_of_start" />
+<fmt:message bundle="${loc}" key="date_of_end" var="date_of_end" />
+<fmt:message bundle="${loc}" key="course_status" var="course_status" />
+<fmt:message bundle="${loc}" key="schedule" var="schedule" />
+<fmt:message bundle="${loc}" key="classroom" var="classroom" />
+<fmt:message bundle="${loc}" key="amount_of_students_on_course" var="amount_of_students_on_course" />
+<fmt:message bundle="${loc}" key="students_limit_on_course" var="students_limit_on_course" />
+<fmt:message bundle="${loc}" key="lecturer" var="lecturer" />
+<fmt:message bundle="${loc}" key="available_places" var="available_places" />
+<fmt:message bundle="${loc}" key="my_status" var="my_status" />
+<fmt:message bundle="${loc}" key="more" var="more" />
+<fmt:message bundle="${loc}" key="more_about_course" var="more_about_course" />
+<fmt:message bundle="${loc}" key="no_courses_yet" var="no_courses_yet" />
+<fmt:message bundle="${loc}" key="view_available_run_courses" var="view_available_run_courses" />
+<fmt:message bundle="${loc}" key="course_ended" var="course_ended" />
+<fmt:message bundle="${loc}" key="course_cancelled" var="course_cancelled" />
+<fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
+<fmt:message bundle="${loc}" key="course_running" var="course_running" />
 
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_user_courses_page" />
@@ -61,34 +80,35 @@
 	</div>
 
 	<div>
-		<c:if test="${!empty sessionScope.bean.courses}"> 
-	МОИ КУРСЫ:
-		<table class="courses_info_table">
+		<c:if test="${!empty sessionScope.bean.currentCourses}"> 
+	<div class = "inscription"><c:out value="${my_courses}"/></div>
+	
+		<table>
 				<tr>
-					<th>Название</th>
-					<th>Дата старта</th>
+					<th><c:out value="${title}"/></th>
+					<th><c:out value="${date_of_start}"/></th>
 
-					<th>Дата окончания</th>
-					<th>Статус курса</th>
-					<th>Расписание</th>
+					<th><c:out value="${date_of_end}"/></th>
+					<th><c:out value="${course_status}"/></th>
+					<th><c:out value="${schedule}"/></th>
 					
+					<th><c:out value="${classroom}"/></th>
 					<c:if test="${sessionScope.bean.userRoleId > 1}">
-					<th>Аудитория</th>
-						<th>Количество студентов на курсе</th>
-						<th>Максимальное количество студентов</th>
+					<th><c:out value="${amount_of_students_on_course}"/></th>
+					<th><c:out value="${students_limit_on_course}"/></th>
 					</c:if>
 
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
-						<th>Преподаватель</th>
-						<th>Осталось мест</th>
+						<th><c:out value="${lecturer}"/></th>
+						<th><c:out value="${available_places}"/></th>
 					</c:if>
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
-						<th>Мой статус</th>
+						<th><c:out value="${my_status}"/></th>
 					</c:if>
 
-					<th>Прочее</th>
+					<th><c:out value="${more}"/></th>
 				</tr>
-				<c:forEach var="course" items="${sessionScope.bean.courses}">
+				<c:forEach var="course" items="${sessionScope.bean.currentCourses}">
 					<tr>
 						<td>
 							<c:out value="${course.courseName}" />
@@ -96,12 +116,18 @@
 						</td>
 						<td><c:out value="${course.dateOfStart}" /></td>
 						<td><c:out value="${course.dateOfEnd}" /></td>
-						<td><c:out value="${course.courseStatusName}" /></td>
+						<td><c:choose>
+				<c:when test="${course.currentState == 1}"><c:out value="${course_canselled}"/> </c:when>
+				<c:when test="${course.currentState== 2}"><c:out value="${course_ended}"/> </c:when>
+				<c:when test="${course.currentState== 3}"><c:out value="${course_recruting}"/> </c:when>
+				<c:when test="${course.currentState== 4}"><c:out value="${course_running}"/> </c:when>
+				
+			</c:choose></td>
 
 						<td><c:out value="${course.shedule}" /></td>
 						
-						<c:if test="${sessionScope.bean.userRoleId > 1}">
 						<td><c:out value="${course.classroomNumber}" /></td>
+						<c:if test="${sessionScope.bean.userRoleId > 1}">
 							<td><c:out value="${course.studentAmount}" /></td>
 							<td><c:out value="${course.studentLimit}" /></td>
 						</c:if>
@@ -121,7 +147,7 @@
 									value="go_to_run_course_page" /> 
 									<input type="hidden" name="run_course_id"
 									value="${course.runCourseId}" /><input type="submit"
-									value="Подробности" />
+									value="${more_about_course}" />
 							</form>
 
 						</td>
@@ -134,9 +160,11 @@
 		</c:if>
 	</div>
 	<br>
-	<div style="padding: 15px">
-		<c:if test="${empty sessionScope.bean.courses}"> 
-	Пока нету курсов...<br>
+	
+		<div style="padding: 15px">
+		<c:if test="${empty sessionScope.bean.currentCourses}"> 
+		<div class="inscription"><c:out value="${no_courses_yet}"/></div>
+		<br>
 			<br>
 
 		</c:if>
@@ -146,12 +174,91 @@
 			<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="go_to_available_run_courses_page" /> <input type="submit"
-					value="Просмотреть доступные курсы" />
+					value="${view_available_run_courses}" />
 			</form>
 
 		</c:if>
+		
+		
 	</div>
 
+	<c:if test="${!empty sessionScope.bean.endedCourses}"> 
+		<div class="inscription"><c:out value="ended courses"/></div>
+		<br>
+			<table>
+				<tr>
+					<th><c:out value="${title}"/></th>
+					<th><c:out value="${date_of_start}"/></th>
+
+					<th><c:out value="${date_of_end}"/></th>
+					<th><c:out value="${course_status}"/></th>
+					<th><c:out value="${schedule}"/></th>
+					
+					<th><c:out value="${classroom}"/></th>
+					<c:if test="${sessionScope.bean.userRoleId > 1}">
+					<th><c:out value="${amount_of_students_on_course}"/></th>
+					</c:if>
+
+					<c:if test="${sessionScope.bean.userRoleId == 1}">
+						<th><c:out value="${lecturer}"/></th>
+						<th><c:out value="mark"/></th>
+					</c:if>
+					<c:if test="${sessionScope.bean.userRoleId == 1}">
+						<th><c:out value="${my_status}"/></th>
+					</c:if>
+
+					<th><c:out value="${more}"/></th>
+				</tr>
+				<c:forEach var="course" items="${sessionScope.bean.endedCourses}">
+					<tr>
+						<td>
+							<c:out value="${course.courseName}" />
+						
+						</td>
+						<td><c:out value="${course.dateOfStart}" /></td>
+						<td><c:out value="${course.dateOfEnd}" /></td>
+						<td><c:choose>
+				<c:when test="${course.currentState == 1}"><c:out value="${course_canselled}"/> </c:when>
+				<c:when test="${course.currentState== 2}"><c:out value="${course_ended}"/> </c:when>
+				<c:when test="${course.currentState== 3}"><c:out value="${course_recruting}"/> </c:when>
+				<c:when test="${course.currentState== 4}"><c:out value="${course_running}"/> </c:when>
+				
+			</c:choose></td>
+
+						<td><c:out value="${course.shedule}" /></td>
+						
+						<td><c:out value="${course.classroomNumber}" /></td>
+						<c:if test="${sessionScope.bean.userRoleId > 1}">
+							<td><c:out value="${course.studentAmount}" /></td>
+						</c:if>
+
+						<c:if test="${sessionScope.bean.userRoleId == 1}">
+							<td><c:out value="${course.lecturerName}" /></td>
+							<td><c:out
+									value="${course.studentResult}" /></td>
+						</c:if>
+						<c:if test="${sessionScope.bean.userRoleId == 1}">
+							<td><c:out value="${course.studentStatusName}" /></td>
+						</c:if>
+						<td>
+
+							<form action="Controller" method="post">
+								<input type="hidden" name="command"
+									value="go_to_run_course_page" /> 
+									<input type="hidden" name="run_course_id"
+									value="${course.runCourseId}" /><input type="submit"
+									value="${more_about_course}" />
+							</form>
+
+						</td>
+
+					</tr>
+
+				</c:forEach>
+
+			</table>
+
+		</c:if>
 
 
 

@@ -29,6 +29,7 @@
 <fmt:message bundle="${loc}" key="success_student_approved" var="success_student_approved" />
 <fmt:message bundle="${loc}" key="success_employee_disapproved" var="success_employee_disapproved" />
 <fmt:message bundle="${loc}" key="success_employee_approved" var="success_employee_approved" />
+<fmt:message bundle="${loc}" key="go_to_user_courses_page" var="go_to_user_courses_page" />
 
 </head>
 <body>
@@ -46,6 +47,11 @@
 			</c:when>
 			<c:when test="${requestScope.message =='success_created_course'}">
 					<c:out value="${success_created_course_message}" />
+					
+						<form action="Controller" method="post">
+				<input type="hidden" name="command"	value="go_to_user_courses_page" /> 
+					<input type="submit" value="${go_to_user_courses_page}" /><br />
+			</form>
 				
 			</c:when>
 			<c:when test="${requestScope.message =='success_registration'}">
@@ -62,10 +68,18 @@
 			</c:when>
 			<c:when test="${requestScope.message =='success_employee_approved'}">
 					<c:out value="${success_employee_approved}" />
+					<form action="Controller" method="post">
+				<input type="hidden" name="command"	value="go_to_staff_page" /> 
+					<input type="submit" value="${go_to_staff_page}" /><br />
+			</form>
 				
 			</c:when>
 			<c:when test="${requestScope.message =='success_employee_disapproved'}">
 					<c:out value="${success_employee_disapproved}" />
+						<form action="Controller" method="post">
+				<input type="hidden" name="command"	value="go_to_staff_page" /> 
+					<input type="submit" value="${go_to_staff_page}" /><br />
+			</form>
 				
 			</c:when>
 			<c:when test="${requestScope.message=='student_approved'}">

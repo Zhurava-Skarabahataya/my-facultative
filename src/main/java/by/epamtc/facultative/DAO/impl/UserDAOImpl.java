@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
-import by.epamtc.facultative.bean.Faculty;
+import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.UserInfo;
@@ -237,9 +237,9 @@ public class UserDAOImpl {
 
 	}
 
-	public List<Faculty> findStaffFromDepartment(int userDepartment) throws DAOException {
+	public List<Department> findStaffFromDepartment(int userDepartment) throws DAOException {
 
-		List<Faculty> staff = new ArrayList<Faculty>();
+		List<Department> staff = new ArrayList<Department>();
 
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;

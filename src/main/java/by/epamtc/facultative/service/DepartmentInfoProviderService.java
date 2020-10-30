@@ -54,15 +54,6 @@ public class DepartmentInfoProviderService {
 
 	}
 
-//	public List<InfoAboutCourse> findAllCoursesInDepartments() {
-//		List<InfoAboutCourse> courses;
-//
-//		courses = null;
-//		DepartmentDAOImpl departmentDAOImpl = DepartmentDAOImpl.getInstance();
-//		courses = departmentDAOImpl.findAllCoursesInDepartment();
-//
-//		return courses;
-//	}
 
 	public void findLecturersAndCoursesForDepartment(Department department) {
 
@@ -79,24 +70,41 @@ public class DepartmentInfoProviderService {
 			e.printStackTrace();
 		}
 
-		createLecturerPhotoPath(lecturers);
+		createUsersPhotoPath(lecturers);
 
 		department.setLecturers(lecturers);
 		department.setCourses(courses);
 	}
 
-	public void createLecturerPhotoPath(List<UserInfo> lecturers) {
+	public void createUsersPhotoPath(List<UserInfo> users) {
 		
-		for (UserInfo lecturer : lecturers) {
-			String userLogin = lecturer.getUserLogin();
+		for (UserInfo user : users) {
+			String userLogin = user.getUserLogin();
 			StringBuilder path = new StringBuilder();
 			path.append(PHOTO_PATH_PREFIX);
 			path.append(userLogin);
 			path.append(PHOTO_PATH_POSTFIX);
 			
-			lecturer.setUserPhotoLink(path.toString());
+			user.setUserPhotoLink(path.toString());
 		}
 		
+	}
+
+	public List<UserInfo> findStudentsOfDepartment(int departmentId) {
+		
+		DepartmentDAOImpl departmentDAOImpl = DepartmentDAOImpl.getInstance();
+
+		List<UserInfo> students = null;
+		try {
+			students = departmentDAOImpl.findStudentsInDepartment(departmentId);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		createUsersPhotoPath(students);
+		
+		return students;
 	}
 
 }

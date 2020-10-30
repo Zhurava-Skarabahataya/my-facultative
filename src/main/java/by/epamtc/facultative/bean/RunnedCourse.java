@@ -13,6 +13,8 @@ public class RunnedCourse implements Serializable {
 	String courseName;
 	String shedule;
 	String lecturerName;
+	String lecturerLogin;
+	String lecturerPhotoLink;
 	String courseStatusName;
 	String studentStatusName;
 
@@ -27,6 +29,7 @@ public class RunnedCourse implements Serializable {
 	int classroomNumber;
 	int studentLimit;
 	int studentAmount;
+	int studentResult;
 	
 	List<StudentOnCourse> studentsOnCourse;
 
@@ -35,8 +38,56 @@ public class RunnedCourse implements Serializable {
 	}
 	
 	
+	
+	
 
 	
+	public int getStudentResult() {
+		return studentResult;
+	}
+
+
+
+
+
+
+	public void setStudentResult(int studentResult) {
+		this.studentResult = studentResult;
+	}
+
+
+
+
+
+
+	public String getLecturerLogin() {
+		return lecturerLogin;
+	}
+
+
+
+
+	public String getLecturerPhotoLink() {
+		return lecturerPhotoLink;
+	}
+
+
+
+
+	public void setLecturerLogin(String lecturerLogin) {
+		this.lecturerLogin = lecturerLogin;
+	}
+
+
+
+
+	public void setLecturerPhotoLink(String lecturerPhotoLink) {
+		this.lecturerPhotoLink = lecturerPhotoLink;
+	}
+
+
+
+
 	public int getCurrentState() {
 		return currentState;
 	}
