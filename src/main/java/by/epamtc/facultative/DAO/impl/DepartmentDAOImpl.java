@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class DepartmentDAOImpl {
 
 	private static final DepartmentDAOImpl instance = new DepartmentDAOImpl();
 
+	
 	private final String QUERY_FOR_ALL_DEPARTMENTS = "SELECT "
 			+ "departments.department_id, departments.name, departments.description, departments.dean_id,"
 			+ " users.first_name, users.second_name, users.patronymic, users.user_login"
@@ -29,11 +31,21 @@ public class DepartmentDAOImpl {
 	
 	private final String QUERY_FOR_LECTURERS_IN_DEPARTMENT = "SELECT "
 			+ "users.first_name, users.second_name, users.patronymic, users.user_login "
-			+ "FROM users WHERE users.user_role_id = 2 AND users.department_department_id = ?";
+			+ "FROM users WHERE users.user_role_id = 2 AND users.department_department_id = ? AND users.status < 4";
 
 	private final String QUERY_FOR_STUDENTS_IN_DEPARTMENT = "SELECT "
 			+ "users.first_name, users.second_name, users.patronymic, users.user_login "
 			+ "FROM users WHERE users.user_role_id = 1 AND status = 1 AND users.department_department_id = ?";
+	
+	private final String QUERY_FOR_STUDENTS_IN_ALL_DEPARTMENTS = "SELECT "
+			+ "users.user_id, users.first_name, users.second_name, users.patronymic, "
+			+ "users.user_login, departments.name, departments.department_id, "
+			+ "user_details.user_mobile_number, user_details.user_adress, user_details.user_date_of_birth "
+			+ " FROM users JOIN user_details ON users.user_id = user_details.users_user_id "
+			+ "JOIN departments ON departments.department_id = users.department_department_id "
+			+ "WHERE users.user_role_id = 1 AND users.status != 3";
+			
+	
 
 	private DepartmentDAOImpl() {
 
@@ -219,7 +231,6 @@ public class DepartmentDAOImpl {
 
 	public List<UserInfo> findStudentsInDepartment(int departmentId) throws DAOException {
 		
-		System.out.println("В ДАО");
 		List<UserInfo> students = new ArrayList<UserInfo>();
 
 		ConnectionPool cp = ConnectionPool.getInstance();
@@ -271,8 +282,70 @@ public class DepartmentDAOImpl {
 			}
 		}
 
-		// TODO Auto-generated method stub
 		return students;
+	}
+
+	public List<UserInfo> findStudentsInAllDepartments() throws DAOException {
+		
+		List<UserInfo> studentsOfAllDepartments = new ArrayList<UserInfo>();
+
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+
+		try {
+			conn = cp.getFreeConnection();
+			
+			
+			PreparedStatement ps = null;
+			ResultSet resultSet = null;
+
+			String query = QUERY_FOR_STUDENTS_IN_ALL_DEPARTMENTS;
+				
+			ps = conn.prepareStatement(query);
+			
+			resultSet = ps.executeQuery();
+			
+			while (resultSet.next()) {
+				int userId = resultSet.getInt("users.user_id");
+				String userFirstName = resultSet.getString("users.first_name");
+				String userSecondName = resultSet.getString("users.second_name");
+				String userPatronymic = resultSet.getString("users.patronymic");
+				String userLogin = resultSet.getString("users.user_login");
+				String userMobile = resultSet.getString("user_details.user_mobile_number");
+				String userAdress = resultSet.getString("user_details.user_adress");
+				LocalDate userDateOfBirth = null;
+				java.sql.Date sqlDate = resultSet.getDate("user_details.user_date_of_birth");
+				if (sqlDate != null) {
+					userDateOfBirth = sqlDate.toLocalDate();
+				}
+				int departmentId = resultSet.getInt("departments.department_id");
+				String departmentName = resultSet.getString("departments.name");
+
+				UserInfo student = new UserInfo();
+				student.setUserId(userId);
+				student.setUserFirstName(userFirstName);
+				student.setUserSecondName(userSecondName);
+				student.setUserPatronymic(userPatronymic);
+				student.setUserLogin(userLogin);
+				student.setUserPhone(userMobile);
+				student.setUserAdress(userAdress);
+				student.setUserDateOfBirth(userDateOfBirth);
+				student.setUserFacultyId(departmentId);
+				student.setUserFaculty(departmentName);
+
+				studentsOfAllDepartments.add(student);
+			}
+			
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		return studentsOfAllDepartments;
 	}
 
 	

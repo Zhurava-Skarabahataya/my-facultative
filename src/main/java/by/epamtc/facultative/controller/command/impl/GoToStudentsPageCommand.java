@@ -68,6 +68,8 @@ public class GoToStudentsPageCommand implements Command {
 					
 					List <Department> studentsInDepartments = userService.findStudentsOfAllDepartments();	
 					
+					
+					
 					request.setAttribute("allStudents", studentsInDepartments);
 					
 					//СДЕЛАЮ

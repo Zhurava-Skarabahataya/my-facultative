@@ -55,7 +55,7 @@
 			
 			
 			<c:forEach var="run_course" items="${requestScope.courses}">
-				<c:if test="${run.course.currentState >2 }"> 
+				<c:if test="${run_course.currentState >2 }"> 
 				<tr>
 					<td><c:out value="${run_course.courseName}"/></td>
 					<td><c:out value="${run_course.dateOfStart}"/></td>
@@ -69,7 +69,7 @@
 				<c:when test="${run_course.currentState== 3}"><c:out value="${course_recruting}"/> </c:when>
 				<c:when test="${run_course.currentState== 4}"><c:out value="${course_running}"/> </c:when>
 				
-			</c:choose></td>
+				</c:choose></td>
 					<td><form action="Controller" method="post">
 					<input type="hidden" name="command" value="go_to_run_course_page" />
 					<input type="hidden" name="run_course_id" value = "${run_course.runCourseId}"/>

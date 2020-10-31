@@ -30,6 +30,7 @@
 <fmt:message bundle="${loc}" key="name" var="name" />
 <fmt:message bundle="${loc}" key="photo" var="photo" />
 <fmt:message bundle="${loc}" key="more" var="more" />
+<fmt:message bundle="${loc}" key="rating" var="rating" />
 <fmt:message bundle="${loc}" key="no_photo" var="no_photo" />
 <fmt:message bundle="${loc}" key="to_student_page" var="to_student_page" />
 <fmt:message bundle="${loc}" key="more" var="more" />
@@ -97,6 +98,8 @@
 		<tr>
 			<th><c:out value="${name}"/></th>
 			<th><c:out value="${photo}"/></th>
+								<th><c:out value="${rating}" /></th>
+			
 			<th><c:out value="${more}"/></th>
 		</tr>
 		<c:forEach var="student" items="${requestScope.students}">
@@ -105,6 +108,8 @@
 				<c:if test="${student.userPatronymic != null}"><c:out value="${student.userPatronymic}"/> </c:if>
 				<c:out value="${student.userSecondName}"/> </td>
 				<td><img src="${student.userPhotoLink}" alt="${no_photo}"	height=200 width=200></td>
+									<th><c:out value="${rating}" /></th>
+				
 				<td><form action="Controller" method="post">
 				<input type="hidden" name="command"	value="go_to_another_user_page" /> 
 				<input type="hidden" name="userId"	value="${student.userId}" /> 
@@ -118,6 +123,38 @@
 		
 	</c:if>
 	<c:if test="${sessionScope.bean.userRoleId == 4}">
+	
+		<c:forEach var="department" items="${requestScope.allStudents}">
+			<div class="inscription">	<c:out value="${department.departmentName}" />	</div>
+			<table>
+				<tr>
+					<th><c:out value="${name}" /></th>
+					<th><c:out value="${photo}" /></th>
+					<th><c:out value="${rating}" /></th>
+					<th><c:out value="${more}" /></th>
+					
+				</tr>
+				<c:forEach var="student" items="${department.students}">
+					<tr>
+						<td><c:out value="${student.userFirstName}"/> 
+				<c:if test="${student.userPatronymic != null}"><c:out value="${student.userPatronymic}"/> </c:if>
+				<c:out value="${student.userSecondName}"/> </td>
+				<td><img src="${student.userPhotoLink}" alt="${no_photo}"	height=200 width=200></td>
+				
+										<td><c:out value="${rating}" /></td>
+				
+				<td><form action="Controller" method="post">
+				<input type="hidden" name="command"	value="go_to_another_user_page" /> 
+				<input type="hidden" name="userId"	value="${student.userId}" /> 
+				<input type="submit" value="${to_student_page}" />
+			</form></td>
+					</tr>
+				</c:forEach>
+			
+			</table>
+		
+		</c:forEach>
+	
 		<table>
 			
 		</table>

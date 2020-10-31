@@ -19,6 +19,7 @@ public class UserInfo implements Serializable {
 	String userAdress;
 	String userPhone;
 	String userPhotoLink;
+	String studentRating;
 
 	LocalDate userDateOfBirth;
 
@@ -27,11 +28,12 @@ public class UserInfo implements Serializable {
 	int userStatusId;
 	int userFacultyId;
 
+	List <Mark> studentMarks;
+	
 	List<RunnedCourse> currentCourses;
 	List<RunnedCourse> endedCourses;
 	List<RunnedCourse> canselledCourses;
 	
-	Map <Integer, Integer> results;
 
 	public UserInfo() {
 
@@ -39,6 +41,35 @@ public class UserInfo implements Serializable {
 
 	
 	
+	
+	public String getStudentRating() {
+		return studentRating;
+	}
+
+
+
+
+	public List<Mark> getStudentMarks() {
+		return studentMarks;
+	}
+
+
+
+
+	public void setStudentRating(String studentRating) {
+		this.studentRating = studentRating;
+	}
+
+
+
+
+	public void setStudentMarks(List<Mark> studentMarks) {
+		this.studentMarks = studentMarks;
+	}
+
+
+
+
 	public List<RunnedCourse> getCurrentCourses() {
 		return currentCourses;
 	}
@@ -295,15 +326,22 @@ public class UserInfo implements Serializable {
 		return true;
 	}
 
+
+
+
 	@Override
 	public String toString() {
 		return "UserInfo [userFirstName=" + userFirstName + ", userSecondName=" + userSecondName + ", userPatronymic="
 				+ userPatronymic + ", userLogin=" + userLogin + ", userEmail=" + userEmail + ", userRole=" + userRole
 				+ ", userFaculty=" + userFaculty + ", userAdress=" + userAdress + ", userPhone=" + userPhone
-				+ ", userPhotoLink=" + userPhotoLink + ", userDateOfBirth=" + userDateOfBirth + ", userId=" + userId
-				+ ", userRoleId=" + userRoleId + ", userStatusId=" + userStatusId + ", userFacultyId=" + userFacultyId
-				+ ", courses=";
+				+ ", userPhotoLink=" + userPhotoLink + ", studentRating=" + studentRating + ", userDateOfBirth="
+				+ userDateOfBirth + ", userId=" + userId + ", userRoleId=" + userRoleId + ", userStatusId="
+				+ userStatusId + ", userFacultyId=" + userFacultyId + ", studentMarks=" + studentMarks
+				+ ", currentCourses=" + currentCourses + ", endedCourses=" + endedCourses + ", canselledCourses="
+				+ canselledCourses + "]";
 	}
+
+
 
 		
 }

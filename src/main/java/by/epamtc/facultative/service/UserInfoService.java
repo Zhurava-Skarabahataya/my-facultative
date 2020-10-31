@@ -92,7 +92,6 @@ public class UserInfoService {
 		List <DepartmentStaff> staffDividedByDepartments = divideDifferentDepartmentsStaff(facultiesStaffInfo);
 		
 		
-		//раздели по факам
 		return staffDividedByDepartments;
 	}
 
