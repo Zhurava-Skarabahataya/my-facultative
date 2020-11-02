@@ -38,6 +38,8 @@
 <fmt:message bundle="${loc}" key="successfully_enrolled" var="successfully_enrolled" />
 <fmt:message bundle="${loc}" key="dropped" var="dropped" />
 <fmt:message bundle="${loc}" key="no_mark" var="no_mark" />
+<fmt:message bundle="${loc}" key="leave_feedback" var="leave_feedback" />
+<fmt:message bundle="${loc}" key="my_grade" var="my_grade" />
 <fmt:message bundle="${loc}" key="student_list" var="student_list" />
 <fmt:message bundle="${loc}" key="student_name" var="student_name" />
 <fmt:message bundle="${loc}" key="status_on_course" var="status_on_course" />
@@ -56,6 +58,8 @@
 <fmt:message bundle="${loc}" key="view_student_page" var="view_student_page" />
 <fmt:message bundle="${loc}" key="no_photo" var="no_photo" />
 <fmt:message bundle="${loc}" key="give_the_grade" var="give_the_grade" />
+<fmt:message bundle="${loc}" key="need_to_registrate" var="need_to_registrate" />
+<fmt:message bundle="${loc}" key="send_feedback" var="send_feedback" />
 <fmt:message bundle="${loc}" key="no_vacant_places"
 	var="no_vacant_places" />
 
@@ -179,9 +183,20 @@
 		</c:when>
 		
 		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState == 2)}">
-			
 			<c:choose>
-				<c:when test="${requestScope.user_approval_status_id == 2}"> ОТЗЫВ </c:when>
+				<c:when test="${requestScope.user_approval_status_id == 2}"> 
+							<div class="inscription"><c:out value="${my_grade}"/>
+							<div style="font-size:40px;"><c:out value="${requestScope.user_mark}"/></div></div>
+				
+					<div class="inscription"><c:out value="${leave_feedback}"/></div>
+					<form action="Controller" method="post">
+						<input type="hidden" name="command" value="leave_feedback"/>
+						<input type="hidden" name="courseId" value="${run_course.courseId}"/>
+						 <textarea name="comment" cols="40" rows="3"></textarea><br>
+						 <input type="submit" value="${send_feedback}" />
+						 
+					</form>
+				 </c:when>
 				<c:otherwise><div class="inscription"><c:out value="${course_ended}"/></div></c:otherwise>				
 			</c:choose>
 		
@@ -212,18 +227,18 @@
 			</tr>
 			<c:forEach var="student" items="${requestScope.run_course.studentsOnCourse}">
 				<tr>
-					<td><c:out value="${student.userFirstName}"/> 
+					<td><c:out value="${student.userFirstName}"/> <br>
 					<c:if test="${student.userPatronymic != null}">
 					<c:out value="${student.userPatronymic}"/> 
 					<br>
+					
+					</c:if> 
+					<c:out value="${student.userSecondName}"/><br>
 					<form action="Controller" method = "post">
 						<input type="hidden" name="command" value="go_to_another_user_page" />
 						<input type="hidden" name="userId" value="${student.userId}" />
 						<input type="submit" value="${view_student_page}" />
-					</form>
-					
-					</c:if> 
-					<c:out value="${student.userSecondName}"/></td>
+					</form></td>
 					
 					<td><img src="${student.userPhotoLink}" width = 200px alt = "${no_photo}"/></td>
 					<td><c:choose>
@@ -285,7 +300,7 @@
 		</c:when>
 		
 		<c:otherwise>
-			<div class="inscription">Для записи на курсы необходимо зарегистрироваться</div>
+			<div class="inscription"><c:out value="${need_to_registrate}"></c:out></div>
 		</c:otherwise>
 
 

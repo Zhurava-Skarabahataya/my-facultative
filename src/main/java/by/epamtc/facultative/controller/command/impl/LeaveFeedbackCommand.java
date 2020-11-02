@@ -5,11 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.facultative.controller.command.Command;
 
-public class GoToUserRatingPage implements Command {
+public class LeaveFeedbackCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		
+		System.out.println(request.getParameter("comment"));
 
 	}
 

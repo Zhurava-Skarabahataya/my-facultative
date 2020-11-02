@@ -18,6 +18,7 @@ public class Course implements Serializable{
 	private int courseDuration;
 	
 	private List<RunnedCourse> runCourses;
+	private List<Feedback> feedbacks;
 	
 	public Course() {
 		
@@ -25,6 +26,18 @@ public class Course implements Serializable{
 
 	
 	
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
+	}
+
+
+
+	public void setFeedbacks(List<Feedback> feedbacks) {
+		this.feedbacks = feedbacks;
+	}
+
+
+
 	public List<RunnedCourse> getRunCourses() {
 		return runCourses;
 	}

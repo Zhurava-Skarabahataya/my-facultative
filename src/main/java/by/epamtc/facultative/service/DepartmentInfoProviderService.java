@@ -111,6 +111,10 @@ public class DepartmentInfoProviderService {
 			e.printStackTrace();
 		}
 		
+		RatingService ratingService = RatingService.getInstance();
+		
+		ratingService.countRatingForStudents(students);
+		
 		createUsersPhotoPath(students);
 		
 		return students;
@@ -130,6 +134,12 @@ public class DepartmentInfoProviderService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		RatingService ratingService = RatingService.getInstance();
+		
+		ratingService.countRatingForStudents(studentsInAllDepartments);
+		
 		
 		int amountOfDepartments = Integer.parseInt(resourceBundle.getString(AMOUNT_OF_DEPARTMENTS));
 

@@ -13,6 +13,10 @@ div{
 	
 }
 
+.table_user_info{
+	width:50%;
+}
+
  input [type="submit"]{
 	height: 38px;
   line-height: 38px;
@@ -166,18 +170,18 @@ div{
 }
 }
 
-.departmnent_table{
+table{
 	background-color: #ced1d6;
 	opacity: 0.9;
 	border-radius: 10px;
 	margin:15px;
+	width:95%;
 	
 }
 
-.dept_table{
+table{
 	
 	background-color: #ced1d6;
-	opacity: 0.9;
 	border-radius: 10px;
 	margin:15px;
 }
@@ -187,23 +191,21 @@ div{
 	
 }
 
-.courses_table{
+table{
 	background-color: #ced1d6;
-	opacity: 0.9;
 	border-radius: 10px;
 	margin:15px;
 }
 
-.courses_table tr{
+table tr{
 	background-color: #9298a3;
 	
 	border-radius: 10px;
 	
 }
 
-.courses_info_table {
+table {
 	background-color: #ced1d6;
-	opacity: 0.7;
 	border-radius: 10px;
 	
 	
@@ -243,12 +245,12 @@ div{
 	margin:15px;
 }
 
-.table_user_info{
+table{
 	text-align: left;
 border-collapse: separate;
 border-spacing: 2px;
 background: #808080;
-color: #ffffff;
+color: #000000;
 border: 16px solid #ECE9E0;
 border-radius: 20px;
 	

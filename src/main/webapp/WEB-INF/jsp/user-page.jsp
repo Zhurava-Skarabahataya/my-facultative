@@ -75,7 +75,9 @@
 		
 		<form style = "display:inline;  float:center" action="Controller" method="post">
 				<input type="hidden" name="command"
-					value="go_to_user_rating_page" /> <input type="submit"
+					value="view_student_rating_page" /> 
+						<input type="hidden" name="userLogin"	value="${bean.userLogin}" /> 
+						<input type="submit"
 					value="${my_rating}" /><br />
 			</form>
 		
@@ -132,7 +134,7 @@
 
 	<div class="main_user_info" >
 
-		<table class="table_user_info">
+		<table class="table_user_info" >
 			<tr>
 				<td><c:out value="${first_name}"/></td>
 				<td><c:out value="${sessionScope.bean.userFirstName}" /></td>

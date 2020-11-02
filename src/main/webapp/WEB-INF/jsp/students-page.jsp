@@ -108,7 +108,7 @@
 				<c:if test="${student.userPatronymic != null}"><c:out value="${student.userPatronymic}"/> </c:if>
 				<c:out value="${student.userSecondName}"/> </td>
 				<td><img src="${student.userPhotoLink}" alt="${no_photo}"	height=200 width=200></td>
-									<th><c:out value="${rating}" /></th>
+									<th><c:out value="${student.studentRating}" /></th>
 				
 				<td><form action="Controller" method="post">
 				<input type="hidden" name="command"	value="go_to_another_user_page" /> 
@@ -141,7 +141,7 @@
 				<c:out value="${student.userSecondName}"/> </td>
 				<td><img src="${student.userPhotoLink}" alt="${no_photo}"	height=200 width=200></td>
 				
-										<td><c:out value="${rating}" /></td>
+										<td><c:out value="${student.studentRating}" /></td>
 				
 				<td><form action="Controller" method="post">
 				<input type="hidden" name="command"	value="go_to_another_user_page" /> 

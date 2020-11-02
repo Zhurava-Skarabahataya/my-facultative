@@ -39,10 +39,15 @@ public class GoToRunCoursePageCommand implements Command {
 			
 
 			if (userRoleId == 1) {
-
+				
 				int userStatusOnCourse = courseInfoProvider.getUserOnCourseApprovalStatusId(userId, runCourse);
 				
+				int studentMarkOnCourse = courseInfoProvider.getUserMarkOnCourse(userId, runCourse);
+				
 				request.setAttribute("user_approval_status_id", userStatusOnCourse);
+				request.setAttribute("user_mark", studentMarkOnCourse);
+				
+				
 				
 			} else {
 				// Если препод, чтобы список студней видел и оценки им ставил

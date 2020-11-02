@@ -30,6 +30,7 @@
 <fmt:message bundle="${loc}" key="available_places" var="available_places" />
 <fmt:message bundle="${loc}" key="my_status" var="my_status" />
 <fmt:message bundle="${loc}" key="more" var="more" />
+<fmt:message bundle="${loc}" key="mark" var="mark" />
 <fmt:message bundle="${loc}" key="more_about_course" var="more_about_course" />
 <fmt:message bundle="${loc}" key="no_courses_yet" var="no_courses_yet" />
 <fmt:message bundle="${loc}" key="view_available_run_courses" var="view_available_run_courses" />
@@ -200,8 +201,7 @@
 					</c:if>
 
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
-						<th><c:out value="${lecturer}"/></th>
-						<th><c:out value="mark"/></th>
+						<th><c:out value="${mark}"/></th>
 					</c:if>
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
 						<th><c:out value="${my_status}"/></th>
@@ -233,7 +233,6 @@
 						</c:if>
 
 						<c:if test="${sessionScope.bean.userRoleId == 1}">
-							<td><c:out value="${course.lecturerName}" /></td>
 							<td><c:out
 									value="${course.studentResult}" /></td>
 						</c:if>

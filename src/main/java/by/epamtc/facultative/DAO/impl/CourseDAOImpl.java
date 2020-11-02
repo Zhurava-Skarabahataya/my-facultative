@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +91,8 @@ public class CourseDAOImpl {
 			+ "run_courses.run_courses_status, courses.course_id, "
 			+ "courses.title, courses.description, courses.course_program, "
 			+ "courses.requirement, courses.duration_in_hours, courses.department_id, "
-			+ "users_has_run_courses.approval_status_id, approval_statuses.approval_status_name " 
+			+ "users_has_run_courses.approval_status_id, users_has_run_courses.user_result,"
+			+ " approval_statuses.approval_status_name " 
 			+ "FROM courses "
 			+ "JOIN run_courses ON courses.course_id = run_courses.courses_course_id " + "JOIN run_courses_statuses "
 			+ "ON run_courses_statuses.run_courses_statuses_id = run_courses.run_courses_status "
@@ -183,7 +186,7 @@ public class CourseDAOImpl {
 		int coursesCourseId = infoAboutRunnedCourse.getCourseId();
 		LocalDate startDate = infoAboutRunnedCourse.getDateOfStart();
 		LocalDate endDate = infoAboutRunnedCourse.getDateOfEnd();
-
+		
 		String shedule = infoAboutRunnedCourse.getShedule();
 		int studentLimit = infoAboutRunnedCourse.getStudentLimit();
 		int classroom = infoAboutRunnedCourse.getClassroomNumber();
@@ -205,9 +208,10 @@ public class CourseDAOImpl {
 			ps = conn.prepareStatement(QUERY_FOR_CREATING_RUN_COURSE);
 
 			ps.setInt(1, coursesCourseId);
-			Date sqlStartDate = Date.valueOf(startDate);
+			Date sqlStartDate = Date.valueOf(startDate.plusDays(1));
+
 			ps.setDate(2, sqlStartDate);
-			Date sqlEndDate = Date.valueOf(endDate);
+			Date sqlEndDate = Date.valueOf(endDate.plusDays(1));
 			ps.setDate(3, sqlEndDate);
 			ps.setString(4, shedule);
 			ps.setInt(5, studentLimit);
@@ -275,6 +279,8 @@ public class CourseDAOImpl {
 				int runCourseStatusId = rs.getInt("run_courses.run_courses_status");
 
 				int courseId = rs.getInt("courses.course_id");
+				
+				int courseResult = rs.getInt("users_has_run_courses.user_result");
 
 				String courseTitle = rs.getString("courses.title");
 				String courseDescription = rs.getString("courses.description");
@@ -296,6 +302,7 @@ public class CourseDAOImpl {
 				infoAboutRunnedCourse.setShedule(shcedule);
 				infoAboutRunnedCourse.setStudentLimit(studentLimit);
 				infoAboutRunnedCourse.setStudentStatusName(studentStatusOnCourse);
+				infoAboutRunnedCourse.setStudentResult(courseResult);
 
 				Course infoAbourCourse = new Course();
 				infoAbourCourse.setCourseDepartment(departmentId);

@@ -90,7 +90,7 @@
 		</form>
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
-					value="expell_student" /> 
+					value="expel_student" /> 
 					<input type="submit" value="${expell_student}" onclick="return confirm('Are you sure you want to expell?')" />
 		</form>
 		</c:if>

@@ -55,6 +55,8 @@ public class CourseInfoService {
 			e.printStackTrace();
 		}
 		
+		
+		
 		countStudentsOnCourse(userPageInfo.getCanselledCourses());
 		countStudentsOnCourse(userPageInfo.getEndedCourses());
 		countStudentsOnCourse(userPageInfo.getCurrentCourses());
@@ -329,6 +331,20 @@ public class CourseInfoService {
 		courseDAOImpl.giveStudentGraveOnRunCourse(studentId, runCourseId, grade);
 		
 		
+	}
+
+	public int getUserMarkOnCourse(int userId, RunnedCourse runCourse) {
+		
+		List<StudentOnCourse> studentsOnCourse;
+		studentsOnCourse = runCourse.getStudentsOnCourse();
+
+		for (StudentOnCourse student : studentsOnCourse) {
+			int studentId = student.getUserId();
+			if (studentId == userId) {
+				return student.getResult();
+			}
+		}
+		return 0;
 	}
 
 }

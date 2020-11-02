@@ -17,6 +17,7 @@ import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.DepartmentStaff;
+import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 
 public class UserDAOImpl {
@@ -34,16 +35,14 @@ public class UserDAOImpl {
 			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
 			+ "JOIN departments ON users.department_department_id = departments.department_id "
 			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_login = ?";
-	
+
 	private final String QUERY_FOR_USER_DATA_BY_ID = "SELECT users.first_name, users.second_name, "
 			+ "users.patronymic, users.user_email, users.department_department_id, departments.name,"
 			+ " users.user_role_id, user_roles.role_name, user_details.user_adress, "
 			+ "user_details.user_mobile_number, user_details.user_date_of_birth, users.status, users.user_login "
-			+ "FROM users  "
-			+ "JOIN user_details ON users.user_id = user_details.users_user_id "
+			+ "FROM users  " + "JOIN user_details ON users.user_id = user_details.users_user_id "
 			+ "JOIN departments ON users.department_department_id = departments.department_id "
-			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id "
-			+ "WHERE users.user_id = ?" ;
+			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id " + "WHERE users.user_id = ?";
 
 	private final String QUERY_UPDATE_USER_DATA_IN_USERS = "UPDATE users "
 			+ "SET users.first_name = ? , users.second_name = ?, users.patronymic = ?, "
@@ -72,12 +71,80 @@ public class UserDAOImpl {
 			+ "JOIN departments ON departments.department_id = users.department_department_id "
 			+ "WHERE users.user_role_id = 2 OR users.user_role_id = 3";
 
+	private final String QUERY_FOR_STUDENT_RESULTS = "SELECT users_has_run_courses.user_result, "
+			+ "run_courses.run_courses_id, courses.title FROM users_has_run_courses "
+			+ "JOIN run_courses ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
+			+ "JOIN courses ON courses.course_id = run_courses.courses_course_id"
+			+ " WHERE users_has_run_courses.users_user_id = ?";
+
 	private UserDAOImpl() {
 
 	}
 
 	public static UserDAOImpl getInstance() {
 		return instance;
+	}
+
+	public List<Mark> findStudentResults(int studentId) {
+
+		List<Mark> marks = new ArrayList<Mark>();
+		ConnectionPool cp = ConnectionPool.getInstance();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+
+		try {
+			conn = cp.getFreeConnection();
+			
+			ps = conn.prepareStatement(QUERY_FOR_STUDENT_RESULTS);
+			
+			ps.setInt(1, studentId);
+			
+			resultSet = ps.executeQuery();
+			
+			while (resultSet.next()) {
+				
+				int markNumber = resultSet.getInt("users_has_run_courses.user_result");
+				
+				if (markNumber != 0) {
+				
+				int runCourseId = resultSet.getInt("run_courses.run_courses_id");
+				String courseTitle = resultSet.getString("courses.title");
+				Mark mark = new Mark();
+				mark.setMarkGrade(markNumber);
+				mark.setRunCourseId(runCourseId);
+				mark.setCourseTitle(courseTitle);
+
+				marks.add(mark);
+				
+				}
+				
+			}
+			
+			
+		} catch (ConnectionPoolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finally {
+			try {
+				cp.closeConnection(resultSet, ps, conn);
+			} catch (ConnectionPoolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		
+
+		return marks;
 	}
 
 	public void provideUserInfo(UserInfo userPageInfo) throws DAOException {
@@ -111,7 +178,6 @@ public class UserDAOImpl {
 
 		int userRoleId = 0;
 		int userFacultyId = 0;
-
 
 		ResultSet rs = null;
 
@@ -182,6 +248,9 @@ public class UserDAOImpl {
 				throw new DAOException(e);
 			}
 		}
+		
+		
+		
 
 	}
 
@@ -472,43 +541,43 @@ public class UserDAOImpl {
 		PreparedStatement statement = null;
 
 		try {
-			
+
 			conn = cp.getFreeConnection();
 			statement = conn.prepareStatement(QUERY_FOR_CHANGING_EMPLOYEE_STATUS);
 
 			statement.setInt(1, status);
 			statement.setInt(2, employeeId);
-			
+
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
 			throw new DAOException();
-			
-			//НЕ УДАЛОСЬ, ПЕРЕДАЙ НАВЕРХ 
-			//e.printStackTrace();
+
+			// НЕ УДАЛОСЬ, ПЕРЕДАЙ НАВЕРХ
+			// e.printStackTrace();
 		} catch (ConnectionPoolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		finally {
-			
+
 			try {
 				cp.closeConnection(statement, conn);
 			} catch (ConnectionPoolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 
 	}
 
 	public UserInfo findUserInfoById(int userId) throws DAOException {
-		
+
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUserId(userId);
-		
+
 		ConnectionPool cp = ConnectionPool.getInstance();
 		Connection conn = null;
 
@@ -538,7 +607,6 @@ public class UserDAOImpl {
 		int userRoleId = 0;
 		int userFacultyId = 0;
 
-
 		ResultSet rs = null;
 
 		try {
@@ -551,7 +619,7 @@ public class UserDAOImpl {
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
-		
+
 				userFirstName = rs.getString("users.first_name");
 				userSecondName = rs.getString("users.second_name");
 				userPatronymic = rs.getString("users.patronymic");
@@ -574,7 +642,6 @@ public class UserDAOImpl {
 				}
 
 			}
-
 
 			userInfo.setUserFirstName(userFirstName);
 			userInfo.setUserSecondName(userSecondName);
@@ -609,8 +676,6 @@ public class UserDAOImpl {
 			}
 		}
 
-		
-		
 		return userInfo;
 	}
 

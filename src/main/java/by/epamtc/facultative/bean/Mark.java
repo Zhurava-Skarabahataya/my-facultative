@@ -9,6 +9,12 @@ public class Mark implements Serializable{
 	private int markGrade;
 	private int runCourseId;
 	private String courseTitle;
+	
+	
+	public Mark() {
+		
+	}
+	
 	public int getMarkGrade() {
 		return markGrade;
 	}

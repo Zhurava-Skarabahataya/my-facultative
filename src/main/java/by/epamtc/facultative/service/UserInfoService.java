@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.DepartmentStaff;
+import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 
 public class UserInfoService {
@@ -172,6 +173,20 @@ public class UserInfoService {
 		userInfo.setUserPhotoLink(PHOTO_LINK_PREFIX + userLogin + PHOTO_LINK_POSTFIX);
 		
 		return userInfo;
+	}
+
+	public void findUserRating(UserInfo loggedUserInfo) {
+		
+		int studentId = loggedUserInfo.getUserId();
+
+		UserDAOImpl userDAO = UserDAOImpl.getInstance();
+		List <Mark> marks = userDAO.findStudentResults(studentId);
+		
+		loggedUserInfo.setStudentMarks(marks);
+		
+		RatingService ratingService = RatingService.getInstance();
+		ratingService.countRatingForStudent(loggedUserInfo);
+		
 	}
 	
 }

@@ -33,8 +33,8 @@ import by.epamtc.facultative.controller.command.impl.GoToUniversityCoursesPageCo
 import by.epamtc.facultative.controller.command.impl.GoToUserCoursesPage;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageEditingCommand;
-import by.epamtc.facultative.controller.command.impl.GoToUserRatingPage;
 import by.epamtc.facultative.controller.command.impl.GoToWelcomePageCommand;
+import by.epamtc.facultative.controller.command.impl.LeaveFeedbackCommand;
 import by.epamtc.facultative.controller.command.impl.RemoveApplicationForCourseCommand;
 import by.epamtc.facultative.controller.command.impl.UploadUserPhotoCommand;
 import by.epamtc.facultative.controller.command.impl.ViewAnotherUserRunCoursesCommand;
@@ -62,7 +62,6 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPageCommand());
 		commands.put(CommandName.GO_TO_EDIT_USER_INFO_COMMAND, new GoToUserPageEditingCommand());
 		commands.put(CommandName.GO_TO_USER_COURSES_PAGE, new GoToUserCoursesPage());
-		commands.put(CommandName.GO_TO_USER_RATING_PAGE, new GoToUserRatingPage());
 		commands.put(CommandName.GO_TO_CREATE_RUN_COURSE_PAGE, new GoToCreateCoursePage());
 		commands.put(CommandName.GO_TO_RUN_COURSE_PAGE, new GoToRunCoursePageCommand());
 		commands.put(CommandName.GO_TO_COURSE_PAGE_COMMAND, new GoToCoursePageCommand());
@@ -97,6 +96,7 @@ public class CommandProvider {
 		commands.put(CommandName.VIEW_STUDENT_RATING_PAGE, new ViewStudentRatingPageCommand());
 		commands.put(CommandName.EXPEL_STUDENT, new ExpellStudentCommand());
 		commands.put(CommandName.FIRE_EMPLOYEE, new FireEmployeeCommand());
+		commands.put(CommandName.LEAVE_FEEDBACK, new LeaveFeedbackCommand());
 		
 	}
 
