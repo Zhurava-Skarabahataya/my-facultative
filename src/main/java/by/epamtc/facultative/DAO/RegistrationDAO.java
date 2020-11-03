@@ -5,8 +5,9 @@ import by.epamtc.facultative.bean.UserRegistrationInfo;
 
 public interface RegistrationDAO {
 
-	void registrateUser(UserRegistrationInfo userRegistrationInfo) throws DAOException;
+	public void registrateUser(UserRegistrationInfo userRegistrationInfo) throws DAOException;
 
-	
+	public boolean checkEmailIfExists(String email) throws DAOException;
+	public boolean checkLoginIfExists(String login) throws DAOException;
 
 }

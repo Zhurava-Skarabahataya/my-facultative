@@ -14,8 +14,8 @@ import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
-import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
-import by.epamtc.facultative.service.FullNameService;
+import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
+import by.epamtc.facultative.service.impl.FullNameServiceImpl;
 
 public class DepartmentDAOImpl {
 
@@ -92,7 +92,7 @@ public class DepartmentDAOImpl {
 				department.setDepartmentName(departmentName);
 				department.setDepartmentDescription(departmentDescription);
 
-				String deanFullName = FullNameService.getInstance().createFullName(deanFirstName, deanSecondName,
+				String deanFullName = FullNameServiceImpl.getInstance().createFullName(deanFirstName, deanSecondName,
 						deanPatronymic);
 				department.setDeanName(deanFullName);
 				department.setDeanLogin(deanLogin);

@@ -34,7 +34,7 @@
 					<c:out value="${user_not_approved}" />
 					<form action="Controller" method="post">
 				<input type="hidden" name="command" value="go_to_user_page" />
-				<input type="submit" value="${to_user_page}" /><br />
+				<input type="submit" value="${to_user_page}" /></form><br />
 			</c:when>
 			
 			<c:when test="${requestScope.errorMessage=='user_not_authorized'}">

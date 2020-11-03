@@ -11,22 +11,26 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import by.epamtc.facultative.dao.UserDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
-import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
 import by.epamtc.facultative.bean.Department;
-import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 
-public class UserDAOImpl {
+public class UserDAOImpl implements UserDAO {
 
 	private static final UserDAOImpl instance = new UserDAOImpl();
 
 	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
 
-	private final int DEPARTMENT_COUNT = 8;
+	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
+
+	private final String DATABASE_PARAMETER_USER_RESULT = "users_has_run_courses.user_result";
+	private final String DATABASE_PARAMETER_RUN_COURSE_ID = "run_courses.run_courses_id";
+	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
 
 	private final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
 			+ "users.user_email, users.department_department_id, departments.name, "
@@ -85,80 +89,76 @@ public class UserDAOImpl {
 		return instance;
 	}
 
-	public List<Mark> findStudentResults(int studentId) {
+	public List<Mark> findStudentResults(int studentId) throws DAOException {
 
 		List<Mark> marks = new ArrayList<Mark>();
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
-		PreparedStatement ps = null;
+
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-			
-			ps = conn.prepareStatement(QUERY_FOR_STUDENT_RESULTS);
-			
-			ps.setInt(1, studentId);
-			
-			resultSet = ps.executeQuery();
-			
+			connection = connectionPool.getFreeConnection();
+
+			statement = connection.prepareStatement(QUERY_FOR_STUDENT_RESULTS);
+
+			statement.setInt(1, studentId);
+
+			resultSet = statement.executeQuery();
+
 			while (resultSet.next()) {
-				
-				int markNumber = resultSet.getInt("users_has_run_courses.user_result");
-				
+
+				int markNumber = resultSet.getInt(DATABASE_PARAMETER_USER_RESULT);
+
 				if (markNumber != 0) {
-				
-				int runCourseId = resultSet.getInt("run_courses.run_courses_id");
-				String courseTitle = resultSet.getString("courses.title");
-				Mark mark = new Mark();
-				mark.setMarkGrade(markNumber);
-				mark.setRunCourseId(runCourseId);
-				mark.setCourseTitle(courseTitle);
 
-				marks.add(mark);
-				
+					int runCourseId;
+					String courseTitle;
+
+					runCourseId = resultSet.getInt(DATABASE_PARAMETER_RUN_COURSE_ID);
+					courseTitle = resultSet.getString(DATABASE_PARAMETER_COURSE_TITLE);
+
+					Mark mark = new Mark();
+					mark.setMarkGrade(markNumber);
+					mark.setRunCourseId(runCourseId);
+					mark.setCourseTitle(courseTitle);
+
+					marks.add(mark);
 				}
-				
 			}
-			
-			
-		} catch (ConnectionPoolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		finally {
-			try {
-				cp.closeConnection(resultSet, ps, conn);
-			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		
-		
-		
-		
 
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+
+		} catch (SQLException e) {
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} finally {
+			try {
+				connectionPool.closeConnection(resultSet, statement, connection);
+				
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e);
+			}
+		}
 		return marks;
 	}
 
 	public void provideUserInfo(UserInfo userPageInfo) throws DAOException {
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 
 		try {
-			conn = cp.getFreeConnection();
+			connection = connectionPool.getFreeConnection();
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
 		}
 
-		PreparedStatement ps = null;
+		PreparedStatement statement = null;
 
 		String login = userPageInfo.getUserLogin();
 
@@ -184,11 +184,11 @@ public class UserDAOImpl {
 		try {
 			String query = QUERY_SELECT_USER_DATA;
 
-			ps = conn.prepareStatement(query);
+			statement = connection.prepareStatement(query);
 
-			ps.setString(1, login);
+			statement.setString(1, login);
 
-			rs = ps.executeQuery();
+			rs = statement.executeQuery();
 
 			if (rs.next()) {
 
@@ -235,31 +235,28 @@ public class UserDAOImpl {
 
 		} catch (SQLException e) {
 
-			String message = "Проблема с выполнением запроса в базу данных.";
-			logger.error(message, e);
-			throw new DAOException(message, e);
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 		}
 
 		finally {
 
 			try {
-				cp.closeConnection(rs, ps, conn);
+				connectionPool.closeConnection(rs, statement, connection);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 			}
 		}
-		
-		
-		
 
 	}
 
 	public void updateUserInfo(UserInfo userPageInfo) throws DAOException {
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 
 		try {
-			conn = cp.getFreeConnection();
+			connection = connectionPool.getFreeConnection();
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
 		}
@@ -268,8 +265,8 @@ public class UserDAOImpl {
 		PreparedStatement statementSecond = null;
 
 		try {
-			statementFirst = conn.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USERS);
-			statementSecond = conn.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
+			statementFirst = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USERS);
+			statementSecond = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
 
 			statementFirst.setString(1, userPageInfo.getUserFirstName());
 			statementFirst.setString(2, userPageInfo.getUserSecondName());
@@ -291,8 +288,8 @@ public class UserDAOImpl {
 			statementSecond.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 		} finally {
 			try {
 				statementFirst.close();
@@ -301,7 +298,7 @@ public class UserDAOImpl {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			cp.releaseConnection(conn);
+			connectionPool.releaseConnection(connection);
 		}
 
 	}
@@ -310,14 +307,14 @@ public class UserDAOImpl {
 
 		List<Department> staff = new ArrayList<Department>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-			statement = conn.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
+			connection = connectionPool.getFreeConnection();
+			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
 
 			statement.setInt(1, userDepartment);
 
@@ -365,11 +362,11 @@ public class UserDAOImpl {
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 		} finally {
 			try {
-				cp.closeConnection(resultSet, statement, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -387,14 +384,14 @@ public class UserDAOImpl {
 		List<UserInfo> notApprovedLecturers = new ArrayList<UserInfo>();
 		List<UserInfo> firedLecturers = new ArrayList<UserInfo>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-			statement = conn.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
+			connection = connectionPool.getFreeConnection();
+			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
 			statement.setInt(1, departmentId);
 			resultSet = statement.executeQuery();
 
@@ -440,12 +437,15 @@ public class UserDAOImpl {
 
 			}
 
-		} catch (ConnectionPoolException | SQLException e) {
+		} catch (ConnectionPoolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (SQLException e) {
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 		} finally {
 			try {
-				cp.closeConnection(resultSet, statement, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -466,14 +466,14 @@ public class UserDAOImpl {
 
 		List<UserInfo> allStaff = new ArrayList<UserInfo>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-			statement = conn.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY);
+			connection = connectionPool.getFreeConnection();
+			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY);
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
@@ -520,11 +520,11 @@ public class UserDAOImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 		} finally {
 			try {
-				cp.closeConnection(resultSet, statement, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -536,14 +536,14 @@ public class UserDAOImpl {
 
 	public void changeEmployeeStatus(int employeeId, int status) throws DAOException {
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 		PreparedStatement statement = null;
 
 		try {
 
-			conn = cp.getFreeConnection();
-			statement = conn.prepareStatement(QUERY_FOR_CHANGING_EMPLOYEE_STATUS);
+			connection = connectionPool.getFreeConnection();
+			statement = connection.prepareStatement(QUERY_FOR_CHANGING_EMPLOYEE_STATUS);
 
 			statement.setInt(1, status);
 			statement.setInt(2, employeeId);
@@ -551,10 +551,9 @@ public class UserDAOImpl {
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 
-			// НЕ УДАЛОСЬ, ПЕРЕДАЙ НАВЕРХ
-			// e.printStackTrace();
 		} catch (ConnectionPoolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -563,7 +562,7 @@ public class UserDAOImpl {
 		finally {
 
 			try {
-				cp.closeConnection(statement, conn);
+				connectionPool.closeConnection(statement, connection);
 			} catch (ConnectionPoolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -578,16 +577,16 @@ public class UserDAOImpl {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUserId(userId);
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 
 		try {
-			conn = cp.getFreeConnection();
+			connection = connectionPool.getFreeConnection();
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
 		}
 
-		PreparedStatement ps = null;
+		PreparedStatement statement = null;
 
 		String userFirstName = null;
 		String userSecondName = null;
@@ -612,11 +611,11 @@ public class UserDAOImpl {
 		try {
 			String query = QUERY_FOR_USER_DATA_BY_ID;
 
-			ps = conn.prepareStatement(query);
+			statement = connection.prepareStatement(query);
 
-			ps.setInt(1, userId);
+			statement.setInt(1, userId);
 
-			rs = ps.executeQuery();
+			rs = statement.executeQuery();
 
 			if (rs.next()) {
 
@@ -662,15 +661,14 @@ public class UserDAOImpl {
 
 		} catch (SQLException e) {
 
-			String message = "Проблема с выполнением запроса в базу данных.";
-			logger.error(message, e);
-			throw new DAOException(message, e);
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 		}
 
 		finally {
 
 			try {
-				cp.closeConnection(rs, ps, conn);
+				connectionPool.closeConnection(rs, statement, connection);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 			}

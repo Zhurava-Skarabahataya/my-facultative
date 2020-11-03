@@ -35,6 +35,7 @@
 <fmt:message bundle="${loc}" key="no_courses_yet" var="no_courses_yet" />
 <fmt:message bundle="${loc}" key="view_available_run_courses" var="view_available_run_courses" />
 <fmt:message bundle="${loc}" key="course_ended" var="course_ended" />
+<fmt:message bundle="${loc}" key="ended_courses" var="ended_courses" />
 <fmt:message bundle="${loc}" key="course_cancelled" var="course_cancelled" />
 <fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
 <fmt:message bundle="${loc}" key="course_running" var="course_running" />
@@ -184,7 +185,7 @@
 	</div>
 
 	<c:if test="${!empty sessionScope.bean.endedCourses}"> 
-		<div class="inscription"><c:out value="ended courses"/></div>
+		<div class="inscription"><c:out value="${ended_courses}"/></div>
 		<br>
 			<table>
 				<tr>

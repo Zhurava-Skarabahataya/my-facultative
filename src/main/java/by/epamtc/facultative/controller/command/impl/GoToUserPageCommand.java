@@ -18,8 +18,9 @@ public class GoToUserPageCommand implements Command {
 	private final String SESSION_ATTRIBUTE_BEAN = "bean";
 	private final String USER_PAGE_PATH = "WEB-INF/jsp/user-page.jsp";
 	
-	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
-	
+	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_NOT_AUTHORIZED = "&message=user_not_authorized";
+
 	private final String COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
 
 	@Override
@@ -41,11 +42,8 @@ public class GoToUserPageCommand implements Command {
 			}
 		} else {
 			try {
-				session.setAttribute("errorMessage", "Необходимо войти в систему.");
-				request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_NOT_AUTHORIZED);
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

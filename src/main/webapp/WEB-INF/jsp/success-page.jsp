@@ -30,6 +30,8 @@
 <fmt:message bundle="${loc}" key="success_employee_disapproved" var="success_employee_disapproved" />
 <fmt:message bundle="${loc}" key="success_employee_approved" var="success_employee_approved" />
 <fmt:message bundle="${loc}" key="go_to_user_courses_page" var="go_to_user_courses_page" />
+<fmt:message bundle="${loc}" key="success_leaving_feedback" var="success_leaving_feedback" />
+
 
 </head>
 <body>
@@ -43,6 +45,14 @@
 			</c:when>
 			<c:when test="${requestScope.message=='success_remove_apply'}">
 					<c:out value="${success_remove_apply_message}" />
+				
+			</c:when>
+			<c:when test="${requestScope.message=='success_leaving_feedback'}">
+					<c:out value="${success_leaving_feedback}" />
+					<form action="Controller" method="post">
+				<input type="hidden" name="command"	value="go_to_user_courses_page" /> 
+					<input type="submit" value="${go_to_user_courses_page}" /><br />
+			</form>
 				
 			</c:when>
 			<c:when test="${requestScope.message =='success_created_course'}">

@@ -8,18 +8,23 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
+import by.epamtc.facultative.dao.AuthorizationDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
-import by.epamtc.facultative.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 
-public class AuthorizationDAOImpl {
+public class AuthorizationDAOImpl implements AuthorizationDAO {
 
 	private static final AuthorizationDAOImpl instance = new AuthorizationDAOImpl();
 
 	private static final Logger logger = Logger.getLogger(AuthorizationDAOImpl.class);
 
-	private static final String QUERY_FIND_USER_IN_DATABASE = "SELECT * FROM users WHERE user_login = ? ";
+	private final String QUERY_FIND_USER_IN_DATABASE = "SELECT * FROM users WHERE user_login = ? ";
+
+	private final String PARAMETER_USER_PASSWORD = "user_password";
+
+	private final String ERROR_MESSAGE_DATABASE_PROBLEM = "Problem with database execution.";
 
 	private AuthorizationDAOImpl() {
 
@@ -29,6 +34,7 @@ public class AuthorizationDAOImpl {
 		return instance;
 	}
 
+	@Override
 	public boolean authorizeUser(UserAuthorizationInfo info) throws DAOException {
 
 		String userLogin;
@@ -46,7 +52,6 @@ public class AuthorizationDAOImpl {
 
 		try {
 			connection = connectionPool.getFreeConnection();
-
 			statement = connection.prepareStatement(QUERY_FIND_USER_IN_DATABASE);
 
 			statement.setString(1, userLogin);
@@ -54,9 +59,9 @@ public class AuthorizationDAOImpl {
 			resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				
-				hashedPassword = resultSet.getString("user_password");
-				
+
+				hashedPassword = resultSet.getString(PARAMETER_USER_PASSWORD);
+
 				if (BCrypt.checkpw(userPasswordUnhashed, hashedPassword)) {
 					return true;
 				}
@@ -65,16 +70,13 @@ public class AuthorizationDAOImpl {
 
 		} catch (ConnectionPoolException e) {
 
-			String message = "Не удалось получить соединение.";
-			logger.error(message);
-			throw new DAOException(message, e);
+			throw new DAOException(e);
 		}
 
 		catch (SQLException e) {
 
-			String message = "Проблема с выполнением запроса в базу данных.";
-			logger.error(message, e);
-			throw new DAOException(message, e);
+			logger.error(ERROR_MESSAGE_DATABASE_PROBLEM, e);
+			throw new DAOException(ERROR_MESSAGE_DATABASE_PROBLEM, e);
 
 		} finally {
 
@@ -83,9 +85,7 @@ public class AuthorizationDAOImpl {
 
 			} catch (ConnectionPoolException e) {
 
-				String message = "Не удалось закрыть соединение.";
-				logger.error(message);
-				throw new DAOException(message, e);
+				throw new DAOException(e);
 			}
 		}
 

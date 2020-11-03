@@ -1,4 +1,4 @@
-package by.epamtc.facultative.dao.impl.pool;
+package by.epamtc.facultative.dao.impl.pool.exception;
 
 public class ConnectionPoolException extends Exception{
 

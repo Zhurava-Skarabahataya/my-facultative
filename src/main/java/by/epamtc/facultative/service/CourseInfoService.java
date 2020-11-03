@@ -295,7 +295,7 @@ public class CourseInfoService {
 		
 		CourseDAOImpl courseDAO = CourseDAOImpl.getInstance();
 		try {
-			courseDAO.finsInfoAboutCourse(course);
+			courseDAO.findInfoAboutCourse(course);
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

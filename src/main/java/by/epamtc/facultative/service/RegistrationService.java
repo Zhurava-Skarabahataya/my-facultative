@@ -59,7 +59,7 @@ public class RegistrationService {
 				registrationDAO.registrateUser(userRegistrationInfo);
 				
 			} catch (DAOException e) {
-				logger.error(e);
+
 				throw new ServiceException(e);
 			}
 		}

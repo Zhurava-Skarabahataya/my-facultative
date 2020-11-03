@@ -17,31 +17,65 @@ public class GoToUserCoursesPage implements Command {
 
 	private final String USER_COURSES_PAGE_PATH = "WEB-INF/jsp/user-courses-page.jsp";
 	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
+	
+	private final String REQUEST_PARAMETER_ERROR = "errorMessage";
+	private final String ERROR_MESSAGE_SERVER_PROBLEMS = "server_problems";
+	
+	
+	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_NOT_AUTHORIZED = "&message=user_not_authorized";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_SERVER_ERROR = "&message=internal_server_error";
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute("userLogin");
 		UserInfo userPageInfo = (UserInfo) session.getAttribute("bean");
-
-		int userId = userPageInfo.getUserId();
-		int userRoleId = userPageInfo.getUserRoleId();
-
-		CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
-		List<RunnedCourse> courses = null;
 		
-		if (userRoleId == 1) {
-			courseInfoProvider.findStudentRunCourses(userPageInfo);
-		}
-		if (userRoleId == 2) {
-			courseInfoProvider.findLecturerRunCourses(userPageInfo);
+		if (userLogin != null) {
+			
+			int userId = userPageInfo.getUserId();
+			int userRoleId = userPageInfo.getUserRoleId();
+
+			CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
+			List<RunnedCourse> courses = null;
+			
+			if (userRoleId == 1) {
+				courseInfoProvider.findStudentRunCourses(userPageInfo);
+			}
+			if (userRoleId == 2) {
+				courseInfoProvider.findLecturerRunCourses(userPageInfo);
+				
+			}
+			if (userRoleId == 3) {
+				courseInfoProvider.findDeanRunCourses(userPageInfo);
+
+			}
+			
+			
 			
 		}
-		if (userRoleId == 3) {
-			courseInfoProvider.findDeanRunCourses(userPageInfo);
+		
+		else {
+			
+			try {
+				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_NOT_AUTHORIZED);
 
+			} catch (IOException e) {
+				
+				
+				// LOG
+				
+					request.setAttribute(REQUEST_PARAMETER_ERROR, ERROR_MESSAGE_SERVER_PROBLEMS);
+					request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+				
+
+			}
+			
 		}
+
+		
 		
 
 		if (userLogin != null) {

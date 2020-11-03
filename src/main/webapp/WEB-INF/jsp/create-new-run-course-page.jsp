@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Создать новый курс</title>
+
+<title><c:out value="${create_new_run_course}"/></title>
 
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_create_course_page" />
@@ -15,6 +16,15 @@
 
 <fmt:setBundle basename="localization.new_course_page.new_course"
 	var="loc" scope="session" />
+<fmt:message bundle="${loc}" key="create_new_run_course" var="create_new_run_course" />
+<fmt:message bundle="${loc}" key="choose_title_from_list" var="choose_title_from_list" />
+<fmt:message bundle="${loc}" key="choose_course" var="choose_course" />
+<fmt:message bundle="${loc}" key="start_date" var="start_date" />
+<fmt:message bundle="${loc}" key="end_date" var="end_date" />
+<fmt:message bundle="${loc}" key="schedule" var="schedule" />
+<fmt:message bundle="${loc}" key="classroom" var="classroom" />
+<fmt:message bundle="${loc}" key="max_amount_students" var="max_amount_students" />
+
 <fmt:message bundle="${loc}" key="button.my_page" var="my_page" />
 <fmt:message bundle="${loc}" key="button.my_courses" var="my_courses" />
 <fmt:message bundle="${loc}" key="button.create_course"
@@ -53,10 +63,10 @@
 			<input type="hidden" name="command" value="create_course_command" />
 			<table>
 				<tr>
-					<td>Выберите название из списка доступных курсов</td>
+					<td><c:out value="${choose_title_from_list}"/></td>
 					<td><select name="courseId" size="1">
 							<option selected="selected" disabled><c:out
-									value="Выберите курс" /></option>
+									value="${choose_course}" /></option>
 							<c:forEach var="course" items="${requestScope.listOfCourses}">
 								<option value="${course.courseId}"><c:out
 										value="${course.courseName}" /></option>
@@ -67,27 +77,27 @@
 
 				</tr>
 				<tr>
-					<td>Дата начала:</td>
+					<td><c:out value="${start_date}"/></td>
 					<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="startDate" value="" /></td>
 
 				</tr>
 				<tr>
-					<td>Дата окончания:</td>
+					<td><c:out value="${end_date}"/></td>
 					<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="endDate" value="" /></td>
 
 				</tr>
 				<tr>
-					<td>Расписание:</td>
+					<td><c:out value="${schedule}"/></td>
 					<td><input type="text" required name="shedule" value="" /></td>
 
 				</tr>
 				<tr>
-					<td>Аудитория</td>
+					<td><c:out value="${classroom}"/></td>
 					<td><input type="text" required name="classroom" value="" /></td>
 
 				</tr>
 				<tr>
-					<td>Максимальное количество студентов:</td>
+					<td><c:out value="${max_amount_students}"/></td>
 					<td><input type="text" required pattern="^[ 0-9]+$"
 						name="student_limit" value="" /></td>
 				</tr>

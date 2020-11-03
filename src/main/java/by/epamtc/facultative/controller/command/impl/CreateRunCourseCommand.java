@@ -12,7 +12,7 @@ import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
 import by.epamtc.facultative.service.CourseCreatorService;
-import by.epamtc.facultative.service.FullNameService;
+import by.epamtc.facultative.service.impl.FullNameServiceImpl;
 
 public class CreateRunCourseCommand implements Command {
 
@@ -42,7 +42,7 @@ public class CreateRunCourseCommand implements Command {
 		String lecturerSecondName = userInfo.getUserSecondName();
 		String lecturerPatronymic = userInfo.getUserPatronymic();
 
-		String lecturerFullName = FullNameService.getInstance().createFullName(lecturerFirstName, lecturerSecondName,
+		String lecturerFullName = FullNameServiceImpl.getInstance().createFullName(lecturerFirstName, lecturerSecondName,
 				lecturerPatronymic);
 
 		RunnedCourse infoAboutRunnedCourse = new RunnedCourse();
