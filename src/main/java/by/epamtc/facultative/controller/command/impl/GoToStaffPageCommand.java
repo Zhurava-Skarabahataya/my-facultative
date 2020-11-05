@@ -12,8 +12,8 @@ import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.DepartmentInfoProviderService;
 import by.epamtc.facultative.service.UserInfoService;
+import by.epamtc.facultative.service.impl.DepartmentInfoServiceImpl;
 
 public class GoToStaffPageCommand implements Command {
 	

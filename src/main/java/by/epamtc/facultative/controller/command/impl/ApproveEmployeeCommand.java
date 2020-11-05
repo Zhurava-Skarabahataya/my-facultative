@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.EmployeeStatusService;
 import by.epamtc.facultative.service.exception.ServiceException;
+import by.epamtc.facultative.service.impl.EmployeeStatusServiceImpl;
 
 public class ApproveEmployeeCommand implements Command {
 
@@ -30,7 +30,7 @@ public class ApproveEmployeeCommand implements Command {
 
 			int employeeId = Integer.parseInt(employeeIdFromRequest);
 
-			EmployeeStatusService employeeStatusService = EmployeeStatusService.getInstance();
+			EmployeeStatusServiceImpl employeeStatusService = EmployeeStatusServiceImpl.getInstance();
 			try {
 				employeeStatusService.approveEmployee(employeeId);
 				

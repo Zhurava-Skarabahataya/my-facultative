@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseCreatorService;
+import by.epamtc.facultative.service.impl.CourseCreatorServiceImpl;
 import by.epamtc.facultative.service.impl.FullNameServiceImpl;
 
 public class CreateRunCourseCommand implements Command {
@@ -59,7 +59,7 @@ public class CreateRunCourseCommand implements Command {
 
 		infoAboutRunnedCourse.setCourseStatus(courseStatus);
 
-		CourseCreatorService courseCreatorService = CourseCreatorService.getInstance();
+		CourseCreatorServiceImpl courseCreatorService = CourseCreatorServiceImpl.getInstance();
 		courseCreatorService.createRunCourse(infoAboutRunnedCourse);
 
 		try {

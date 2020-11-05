@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class GoToUserCoursesPage implements Command {
 
@@ -38,7 +38,7 @@ public class GoToUserCoursesPage implements Command {
 			int userId = userPageInfo.getUserId();
 			int userRoleId = userPageInfo.getUserRoleId();
 
-			CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
+			CourseInfoServiceImpl courseInfoProvider = CourseInfoServiceImpl.getInstance();
 			List<RunnedCourse> courses = null;
 			
 			if (userRoleId == 1) {

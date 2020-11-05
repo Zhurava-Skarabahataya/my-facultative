@@ -1,24 +1,9 @@
 package by.epamtc.facultative.service;
 
-import by.epamtc.facultative.dao.impl.CourseDAOImpl;
+import by.epamtc.facultative.service.exception.ServiceException;
 
-public class FeedbackService {
-	
-	private static final FeedbackService instance = new FeedbackService();
-	
-	private FeedbackService() {
-		
-	}
-	
-	public static FeedbackService getInstance() {
-		return instance;
-	}
+public interface FeedbackService {
 
-	public void leaveFeadback(int userId, int courseId, String comment) {
-		
-		CourseDAOImpl courseDAO = CourseDAOImpl.getInstance();
-		courseDAO.leaveFeedback( userId, courseId, comment);
-		
-	}
+	void leaveFeadback(int userId, int courseId, String comment) throws ServiceException;
 
 }

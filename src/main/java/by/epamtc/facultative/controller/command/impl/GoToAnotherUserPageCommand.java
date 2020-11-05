@@ -38,7 +38,9 @@ public class GoToAnotherUserPageCommand implements Command {
 
 			try {
 				
-				UserInfo userInfo = UserInfoService.getInstance().findUserInfo(userId);
+				UserInfo userInfo = new UserInfo();
+				userInfo.setUserId(userId);
+				UserInfoService.getInstance().findUserInfo(userInfo);
 				
 				
 				//response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_USER_PAGE );

@@ -5,6 +5,6 @@ import by.epamtc.facultative.dao.exception.DAOException;
 
 public interface AuthorizationDAO {
 
-	public boolean authorizeUser(UserAuthorizationInfo info) throws DAOException;
+	boolean authorizeUser(UserAuthorizationInfo info) throws DAOException;
 
 }

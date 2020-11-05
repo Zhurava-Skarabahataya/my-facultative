@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.FeedbackService;
+import by.epamtc.facultative.service.impl.FeedbackServiceImpl;
 
 public class LeaveFeedbackCommand implements Command {
 	
@@ -47,7 +47,7 @@ public class LeaveFeedbackCommand implements Command {
 			
 			int userId = user.getUserId(); 
 			
-			FeedbackService feedbackService = FeedbackService.getInstance();
+			FeedbackServiceImpl feedbackService = FeedbackServiceImpl.getInstance();
 			feedbackService.leaveFeadback(userId, courseId, comment);
 			
 			

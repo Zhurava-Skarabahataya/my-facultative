@@ -17,13 +17,16 @@ public class FullNameServiceImpl implements FullNameService{
 	@Override
 	public String createFullName (String firstName, String secondName, String patronymic) {
 		
-		StringBuilder fullName = new StringBuilder();
+		StringBuilder fullName;
+		fullName = new StringBuilder();
+		
 		fullName.append(firstName);
+		
 		if (patronymic != null) {
 			fullName.append(" ");
 			fullName.append(patronymic);
-			
 		}
+
 		fullName.append(" ");
 		fullName.append(secondName);
 

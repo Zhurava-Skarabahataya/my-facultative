@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class GoToAvailableRunCoursesPage implements Command {
 
@@ -19,7 +19,7 @@ private static final String AVAILABLE_RUN_COURSES_PATH = "WEB-INF/jsp/available-
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		List <RunnedCourse> courses = null;
 		
-		courses = CourseInfoService.getInstance().findAllAvailableRunCourses();
+		courses = CourseInfoServiceImpl.getInstance().findAllAvailableRunCourses();
 		
 		for(RunnedCourse r : courses) {
 			System.out.println(r.getCourseName() + r.getCurrentState());

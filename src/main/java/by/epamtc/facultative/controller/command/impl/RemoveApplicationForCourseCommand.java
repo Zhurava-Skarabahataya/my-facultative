@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class RemoveApplicationForCourseCommand implements Command {
 
@@ -30,7 +30,7 @@ public class RemoveApplicationForCourseCommand implements Command {
 			int userId = user.getUserId();
 							
 			try {
-				CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
+				CourseInfoServiceImpl courseInfoProvider = CourseInfoServiceImpl.getInstance();
 				courseInfoProvider.removeApplicationStudentForRunCourse(userId, runCourseId);
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE + MESSAGE_GO_TO_SUCCESS_PAGE);
 			}  catch (IOException e) {

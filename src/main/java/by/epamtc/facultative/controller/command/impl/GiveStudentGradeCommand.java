@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class GiveStudentGradeCommand implements Command {
 	
@@ -38,7 +38,7 @@ public class GiveStudentGradeCommand implements Command {
 				int studentId = Integer.parseInt(request.getParameter("studentId"));
 				int grade = Integer.parseInt(request.getParameter("grade"));
 				
-				CourseInfoService courseInfoService = CourseInfoService.getInstance();
+				CourseInfoServiceImpl courseInfoService = CourseInfoServiceImpl.getInstance();
 				courseInfoService.giveStudentGraveOnRunCourse(studentId, runCourseId, grade);
 				
 				try {

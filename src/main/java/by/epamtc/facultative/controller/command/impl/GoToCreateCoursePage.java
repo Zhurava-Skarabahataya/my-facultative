@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class GoToCreateCoursePage implements Command {
 
@@ -47,7 +47,7 @@ public class GoToCreateCoursePage implements Command {
 				int userDeparttmentId = userPageInfo.getUserFacultyId();
 				List<Course> availableCoursesForDepartment = null;
 
-				CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
+				CourseInfoServiceImpl courseInfoProvider = CourseInfoServiceImpl.getInstance();
 				availableCoursesForDepartment = courseInfoProvider.findAvailableCoursesForDepartment(userDeparttmentId);
 
 				request.setAttribute("listOfCourses", availableCoursesForDepartment);

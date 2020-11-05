@@ -15,7 +15,6 @@ import by.epamtc.facultative.dao.UserDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
-import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
@@ -28,8 +27,22 @@ public class UserDAOImpl implements UserDAO {
 
 	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
 
+	private final String DATABASE_PARAMETER_USER_FIRST_NAME = "users.first_name";
+	private final String DATABASE_PARAMETER_USER_SECOND_NAME = "users.second_name";
+	private final String DATABASE_PARAMETER_USER_PATRONYMIC = "users.patronymic";
+	private final String DATABASE_PARAMETER_USER_EMAIL = "users.user_email";
+	private final String DATABASE_PARAMETER_USER_ROLE_ID = "users.user_role_id";
+	private final String DATABASE_PARAMETER_USER_ID = "users.user_id";
+	private final String DATABASE_PARAMETER_USER_ROLE_NAME = "user_roles.role_name";
 	private final String DATABASE_PARAMETER_USER_RESULT = "users_has_run_courses.user_result";
+	private final String DATABASE_PARAMETER_USER_STATUS = "users.status";
+	private final String DATABASE_PARAMETER_USER_LOGIN = "users.user_login";
+	private final String DATABASE_PARAMETER_USER_ADRESS = "user_details.user_adress";
+	private final String DATABASE_PARAMETER_USER_PHONE = "user_details.user_mobile_number";
+	private final String DATABASE_PARAMETER_USER_DATE_OF_BIRTH = "user_details.user_date_of_birth";
 	private final String DATABASE_PARAMETER_RUN_COURSE_ID = "run_courses.run_courses_id";
+	private final String DATABASE_PARAMETER_DEPARTMENT_ID = "users.department_department_id";
+	private final String DATABASE_PARAMETER_DEPARTMENT_NAME = "departments.name";
 	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
 
 	private final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
@@ -89,6 +102,7 @@ public class UserDAOImpl implements UserDAO {
 		return instance;
 	}
 
+	@Override
 	public List<Mark> findStudentResults(int studentId) throws DAOException {
 
 		List<Mark> marks = new ArrayList<Mark>();
@@ -139,7 +153,7 @@ public class UserDAOImpl implements UserDAO {
 		} finally {
 			try {
 				connectionPool.closeConnection(resultSet, statement, connection);
-				
+
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 			}
@@ -147,102 +161,96 @@ public class UserDAOImpl implements UserDAO {
 		return marks;
 	}
 
+	@Override
 	public void provideUserInfo(UserInfo userPageInfo) throws DAOException {
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
 		try {
 			connection = connectionPool.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
 
-		PreparedStatement statement = null;
-
-		String login = userPageInfo.getUserLogin();
-
-		String userFirstName = null;
-		String userSecondName = null;
-		String userPatronymic = null;
-		String userEmail = null;
-
-		String userRole = null;
-		String userFaculty = null;
-		String userAdress = null;
-		String userPhone = null;
-		int userId = 0;
-		int userStatusId = 0;
-
-		LocalDate userDateOfBirth = null;
-
-		int userRoleId = 0;
-		int userFacultyId = 0;
-
-		ResultSet rs = null;
-
-		try {
 			String query = QUERY_SELECT_USER_DATA;
 
 			statement = connection.prepareStatement(query);
 
+			String login;
+			login = userPageInfo.getUserLogin();
+
 			statement.setString(1, login);
 
-			rs = statement.executeQuery();
+			resultSet = statement.executeQuery();
 
-			if (rs.next()) {
+			if (resultSet.next()) {
 
-				userFirstName = rs.getString(1);
-				userSecondName = rs.getString(2);
-				userPatronymic = rs.getString(3);
-				userEmail = rs.getString(4);
+				int userId;
+				int userRoleId;
+				int userFacultyId;
+				int userStatusId;
 
-				userFacultyId = rs.getInt(5);
-				userFaculty = rs.getString(6);
+				String userFirstName;
+				String userSecondName;
+				String userPatronymic;
+				String userEmail;
+				String userRole;
+				String userFaculty;
+				String userAdress;
+				String userPhone;
 
-				userRoleId = rs.getInt("users.user_role_id");
-				userRole = rs.getString("user_roles.role_name");
-				userStatusId = rs.getInt("users.status");
+				LocalDate userDateOfBirth = null;
 
-				userAdress = rs.getString(9);
-				userPhone = rs.getString(10);
+				userId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
+				userFacultyId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
+				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
+				userStatusId = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
 
-				java.sql.Date sqlDate = rs.getDate(11);
+				userFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				userPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userEmail = resultSet.getString(DATABASE_PARAMETER_USER_EMAIL);
+				userFaculty = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+				userRole = resultSet.getString(DATABASE_PARAMETER_USER_ROLE_NAME);
+				userAdress = resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
+				userPhone = resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
+
+				Date sqlDate = resultSet.getDate(DATABASE_PARAMETER_USER_DATE_OF_BIRTH);
+
 				if (sqlDate != null) {
 					userDateOfBirth = sqlDate.toLocalDate();
 				}
 
-				userId = rs.getInt(12);
+				userPageInfo.setUserId(userId);
+
+				userPageInfo.setUserFirstName(userFirstName);
+				userPageInfo.setUserSecondName(userSecondName);
+				userPageInfo.setUserPatronymic(userPatronymic);
+				userPageInfo.setUserEmail(userEmail);
+
+				userPageInfo.setUserRoleId(userRoleId);
+				userPageInfo.setUserRole(userRole);
+				userPageInfo.setUserStatusId(userStatusId);
+
+				userPageInfo.setUserFacultyId(userFacultyId);
+				userPageInfo.setUserFaculty(userFaculty);
+
+				userPageInfo.setUserAdress(userAdress);
+				userPageInfo.setUserPhone(userPhone);
+				userPageInfo.setUserDateOfBirth(userDateOfBirth);
 			}
 
-			userPageInfo.setUserId(userId);
-
-			userPageInfo.setUserFirstName(userFirstName);
-			userPageInfo.setUserSecondName(userSecondName);
-			userPageInfo.setUserPatronymic(userPatronymic);
-			userPageInfo.setUserEmail(userEmail);
-
-			userPageInfo.setUserRoleId(userRoleId);
-			userPageInfo.setUserRole(userRole);
-			userPageInfo.setUserStatusId(userStatusId);
-
-			userPageInfo.setUserFacultyId(userFacultyId);
-			userPageInfo.setUserFaculty(userFaculty);
-
-			userPageInfo.setUserAdress(userAdress);
-			userPageInfo.setUserPhone(userPhone);
-			userPageInfo.setUserDateOfBirth(userDateOfBirth);
-
 		} catch (SQLException e) {
-
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
-		}
 
-		finally {
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
 
+		} finally {
 			try {
-				connectionPool.closeConnection(rs, statement, connection);
+				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 			}
@@ -250,133 +258,62 @@ public class UserDAOImpl implements UserDAO {
 
 	}
 
+	@Override
 	public void updateUserInfo(UserInfo userPageInfo) throws DAOException {
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 
+		PreparedStatement statement1 = null;
+		PreparedStatement statement2 = null;
 		try {
 			connection = connectionPool.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
 
-		PreparedStatement statementFirst = null;
-		PreparedStatement statementSecond = null;
+			statement1 = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USERS);
+			statement2 = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
 
-		try {
-			statementFirst = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USERS);
-			statementSecond = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
+			statement1.setString(1, userPageInfo.getUserFirstName());
+			statement1.setString(2, userPageInfo.getUserSecondName());
+			statement1.setString(3, userPageInfo.getUserPatronymic());
+			statement1.setInt(4, userPageInfo.getUserFacultyId());
 
-			statementFirst.setString(1, userPageInfo.getUserFirstName());
-			statementFirst.setString(2, userPageInfo.getUserSecondName());
-			statementFirst.setString(3, userPageInfo.getUserPatronymic());
-			statementFirst.setInt(4, userPageInfo.getUserFacultyId());
+			statement2.setString(1, userPageInfo.getUserAdress());
+			statement2.setString(2, userPageInfo.getUserPhone());
 
-			statementSecond.setString(1, userPageInfo.getUserAdress());
-			statementSecond.setString(2, userPageInfo.getUserPhone());
 			if (userPageInfo.getUserDateOfBirth() != null) {
 				Date sqlDate = Date.valueOf(userPageInfo.getUserDateOfBirth());
-				statementSecond.setDate(3, sqlDate);
+				statement2.setDate(3, sqlDate);
 			} else {
-				statementSecond.setDate(3, null);
+				statement2.setDate(3, null);
 			}
 
-			statementFirst.setInt(5, userPageInfo.getUserId());
-			statementSecond.setInt(4, userPageInfo.getUserId());
-			statementFirst.executeUpdate();
-			statementSecond.executeUpdate();
+			statement1.setInt(5, userPageInfo.getUserId());
+			statement2.setInt(4, userPageInfo.getUserId());
+
+			statement1.executeUpdate();
+			statement2.executeUpdate();
 
 		} catch (SQLException e) {
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
-		} finally {
-			try {
-				statementFirst.close();
-				statementSecond.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			connectionPool.releaseConnection(connection);
-		}
-
-	}
-
-	public List<Department> findStaffFromDepartment(int userDepartment) throws DAOException {
-
-		List<Department> staff = new ArrayList<Department>();
-
-		ConnectionPool connectionPool = ConnectionPool.getInstance();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-
-		try {
-			connection = connectionPool.getFreeConnection();
-			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
-
-			statement.setInt(1, userDepartment);
-
-			resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-
-				int userId = resultSet.getInt("users.user_id");
-				int userRoleId = resultSet.getInt("users.user_role_id");
-				int userStatus = resultSet.getInt("users.status");
-				String userFirstName = resultSet.getString("users.first_name");
-				String userSecondName = resultSet.getString("users.second_name");
-				String userPatronymic = resultSet.getString("users.patronymic");
-				String userLogin = resultSet.getString("users.user_login");
-				String userRoleName = resultSet.getString("user_roles.role_name");
-				String userMobile = resultSet.getString("user_details.user_mobile_number");
-				String userAdress = resultSet.getString("user_details.user_adress");
-				LocalDate userDateOfBirth = null;
-				java.sql.Date sqlDate = resultSet.getDate("user_details.user_date_of_birth");
-				if (sqlDate != null) {
-					userDateOfBirth = sqlDate.toLocalDate();
-				}
-
-				UserInfo employee = new UserInfo();
-				employee.setUserId(userId);
-				employee.setUserRoleId(userRoleId);
-				employee.setUserStatusId(userStatus);
-				employee.setUserFirstName(userFirstName);
-				employee.setUserSecondName(userSecondName);
-				employee.setUserPatronymic(userPatronymic);
-				employee.setUserLogin(userLogin);
-				employee.setUserRole(userRoleName);
-				employee.setUserPhone(userMobile);
-				employee.setUserAdress(userAdress);
-				employee.setUserDateOfBirth(userDateOfBirth);
-
-				if (userRoleId == 3) {
-
-				}
-
-//				
-//				staff.add(employee);
-			}
 
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
-		} catch (SQLException e) {
-			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
-			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
 		} finally {
 			try {
-				connectionPool.closeConnection(resultSet, statement, connection);
+				connectionPool.closeConnection(statement1, statement2, connection);
+
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
+
 			}
 		}
 
-		return staff;
 	}
 
-	public DepartmentStaff findFacultyStaffInfo(int departmentId) {
+	@Override
+	public DepartmentStaff findFacultyStaffInfo(int departmentId) throws DAOException {
 
 		DepartmentStaff facultyStaffInfo = new DepartmentStaff();
 
@@ -386,37 +323,59 @@ public class UserDAOImpl implements UserDAO {
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
+
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
 			connection = connectionPool.getFreeConnection();
 			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
+
 			statement.setInt(1, departmentId);
+
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
 
-				int userId = resultSet.getInt("users.user_id");
-				int userRoleId = resultSet.getInt("users.user_role_id");
-				int userStatus = resultSet.getInt("users.status");
-				String userFirstName = resultSet.getString("users.first_name");
-				String userSecondName = resultSet.getString("users.second_name");
-				String userPatronymic = resultSet.getString("users.patronymic");
-				String userLogin = resultSet.getString("users.user_login");
-				String userRoleName = resultSet.getString("user_roles.role_name");
-				String userMobile = resultSet.getString("user_details.user_mobile_number");
-				String userAdress = resultSet.getString("user_details.user_adress");
-				LocalDate userDateOfBirth = null;
-				java.sql.Date sqlDate = resultSet.getDate("user_details.user_date_of_birth");
+				int userId;
+				int userRoleId;
+				int userStatus;
+
+				String userFirstName;
+				String userSecondName;
+				String userPatronymic;
+				String userLogin;
+				String userRoleName;
+				String userMobile;
+				String userAdress;
+
+				LocalDate userDateOfBirth;
+				Date sqlDate;
+
+				userId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
+				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
+				userStatus = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
+
+				userFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				userPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
+				userRoleName = resultSet.getString(DATABASE_PARAMETER_USER_ROLE_NAME);
+				userMobile = resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
+				userAdress = resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
+
+				userDateOfBirth = null;
+				sqlDate = resultSet.getDate(DATABASE_PARAMETER_USER_DATE_OF_BIRTH);
 				if (sqlDate != null) {
 					userDateOfBirth = sqlDate.toLocalDate();
 				}
 
 				UserInfo employee = new UserInfo();
+
 				employee.setUserId(userId);
 				employee.setUserRoleId(userRoleId);
 				employee.setUserStatusId(userStatus);
+
 				employee.setUserFirstName(userFirstName);
 				employee.setUserSecondName(userSecondName);
 				employee.setUserPatronymic(userPatronymic);
@@ -430,37 +389,33 @@ public class UserDAOImpl implements UserDAO {
 					notApprovedLecturers.add(employee);
 				} else if (userStatus == 2) {
 					workingLecturers.add(employee);
-
 				} else {
 					firedLecturers.add(employee);
 				}
-
 			}
-
 		} catch (ConnectionPoolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DAOException(e);
+
 		} catch (SQLException e) {
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
 		} finally {
 			try {
 				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
 			}
 		}
-
 		facultyStaffInfo.setWorkingStaff(workingLecturers);
 		facultyStaffInfo.setNotApprovedStaff(notApprovedLecturers);
-
 		facultyStaffInfo.setFiredStaff(firedLecturers);
 
 		return facultyStaffInfo;
 	}
 
-	public DepartmentStaff findAllFacultiesStaffInfo() {
+	@Override
+	public DepartmentStaff findAllFacultiesStaffInfo() throws DAOException {
 
 		DepartmentStaff allFacultiesStaffInfo = new DepartmentStaff();
 
@@ -468,37 +423,62 @@ public class UserDAOImpl implements UserDAO {
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
+
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 
 		try {
 			connection = connectionPool.getFreeConnection();
 			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY);
+
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				int userId = resultSet.getInt("users.user_id");
-				int userRoleId = resultSet.getInt("users.user_role_id");
-				int userStatus = resultSet.getInt("users.status");
-				String userFirstName = resultSet.getString("users.first_name");
-				String userSecondName = resultSet.getString("users.second_name");
-				String userPatronymic = resultSet.getString("users.patronymic");
-				String userLogin = resultSet.getString("users.user_login");
-				String userRoleName = resultSet.getString("user_roles.role_name");
-				String userMobile = resultSet.getString("user_details.user_mobile_number");
-				String userAdress = resultSet.getString("user_details.user_adress");
-				LocalDate userDateOfBirth = null;
-				java.sql.Date sqlDate = resultSet.getDate("user_details.user_date_of_birth");
+
+				int userId;
+				int departmentId;
+				int userRoleId;
+				int userStatus;
+
+				String userFirstName;
+				String userSecondName;
+				String userPatronymic;
+				String userLogin;
+				String userRoleName;
+				String userMobile;
+				String userAdress;
+				String departmentName;
+
+				LocalDate userDateOfBirth;
+				Date sqlDate;
+
+				userId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
+				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
+				userStatus = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
+				departmentId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
+
+				userFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				userPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
+				userRoleName = resultSet.getString(DATABASE_PARAMETER_USER_ROLE_NAME);
+				userMobile = resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
+				userAdress = resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
+				departmentName = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+
+				userDateOfBirth = null;
+				sqlDate = resultSet.getDate(DATABASE_PARAMETER_USER_DATE_OF_BIRTH);
 				if (sqlDate != null) {
 					userDateOfBirth = sqlDate.toLocalDate();
 				}
-				int departmentId = resultSet.getInt("departments.department_id");
-				String departmentName = resultSet.getString("departments.name");
 
 				UserInfo employee = new UserInfo();
+
 				employee.setUserId(userId);
 				employee.setUserRoleId(userRoleId);
 				employee.setUserStatusId(userStatus);
+				employee.setUserFacultyId(departmentId);
+
 				employee.setUserFirstName(userFirstName);
 				employee.setUserSecondName(userSecondName);
 				employee.setUserPatronymic(userPatronymic);
@@ -507,42 +487,40 @@ public class UserDAOImpl implements UserDAO {
 				employee.setUserPhone(userMobile);
 				employee.setUserAdress(userAdress);
 				employee.setUserDateOfBirth(userDateOfBirth);
-				employee.setUserFacultyId(departmentId);
 				employee.setUserFaculty(departmentName);
 
 				allStaff.add(employee);
-
 			}
-
 			allFacultiesStaffInfo.setAllStaff(allStaff);
 
 		} catch (ConnectionPoolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DAOException(e);
+
 		} catch (SQLException e) {
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
 		} finally {
 			try {
 				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
 			}
 		}
-
 		return allFacultiesStaffInfo;
 	}
 
+	@Override
 	public void changeEmployeeStatus(int employeeId, int status) throws DAOException {
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
+
 		Connection connection = null;
 		PreparedStatement statement = null;
 
 		try {
-
 			connection = connectionPool.getFreeConnection();
+
 			statement = connection.prepareStatement(QUERY_FOR_CHANGING_EMPLOYEE_STATUS);
 
 			statement.setInt(1, status);
@@ -555,126 +533,119 @@ public class UserDAOImpl implements UserDAO {
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 
 		} catch (ConnectionPoolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			throw new DAOException(e);
 
-		finally {
-
+		} finally {
 			try {
 				connectionPool.closeConnection(statement, connection);
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
+
 			}
 
 		}
 
 	}
 
-	public UserInfo findUserInfoById(int userId) throws DAOException {
+	@Override
+	public void findUserInfoById(UserInfo userInfo) throws DAOException {
 
-		UserInfo userInfo = new UserInfo();
-		userInfo.setUserId(userId);
+		int userId;
+		userId = userInfo.getUserId();
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 
-		try {
-			connection = connectionPool.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
-
 		PreparedStatement statement = null;
 
-		String userFirstName = null;
-		String userSecondName = null;
-		String userPatronymic = null;
-		String userEmail = null;
-
-		String userRole = null;
-		String userFaculty = null;
-		String userAdress = null;
-		String userPhone = null;
-		String userLogin = null;
-
-		int userStatusId = 0;
-
-		LocalDate userDateOfBirth = null;
-
-		int userRoleId = 0;
-		int userFacultyId = 0;
-
-		ResultSet rs = null;
+		ResultSet resultSet = null;
 
 		try {
+			connection = connectionPool.getFreeConnection();
+
 			String query = QUERY_FOR_USER_DATA_BY_ID;
 
 			statement = connection.prepareStatement(query);
 
 			statement.setInt(1, userId);
 
-			rs = statement.executeQuery();
+			resultSet = statement.executeQuery();
 
-			if (rs.next()) {
+			if (resultSet.next()) {
 
-				userFirstName = rs.getString("users.first_name");
-				userSecondName = rs.getString("users.second_name");
-				userPatronymic = rs.getString("users.patronymic");
-				userEmail = rs.getString("users.user_email");
-				userLogin = rs.getString("users.user_login");
+				int userStatusId;
+				int userRoleId;
+				int userFacultyId;
 
-				userFacultyId = rs.getInt("users.department_department_id");
-				userFaculty = rs.getString("departments.name");
+				String userFirstName;
+				String userSecondName;
+				String userPatronymic;
+				String userEmail;
 
-				userRoleId = rs.getInt("users.user_role_id");
-				userRole = rs.getString("user_roles.role_name");
-				userStatusId = rs.getInt("users.status");
+				String userRole;
+				String userFaculty;
+				String userAdress;
+				String userPhone;
+				String userLogin;
 
-				userAdress = rs.getString("user_details.user_adress");
-				userPhone = rs.getString("user_details.user_mobile_number");
+				LocalDate userDateOfBirth;
+				Date sqlDate;
 
-				java.sql.Date sqlDate = rs.getDate("user_details.user_date_of_birth");
+				userFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				userPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userEmail = resultSet.getString(DATABASE_PARAMETER_USER_EMAIL);
+				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
+
+				userFacultyId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
+				userFaculty = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+
+				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
+				userRole = resultSet.getString(DATABASE_PARAMETER_USER_ROLE_NAME);
+				userStatusId = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
+
+				userAdress = resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
+				userPhone = resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
+
+				sqlDate = resultSet.getDate(DATABASE_PARAMETER_USER_DATE_OF_BIRTH);
+				userDateOfBirth = null;
+
 				if (sqlDate != null) {
 					userDateOfBirth = sqlDate.toLocalDate();
 				}
 
+				userInfo.setUserFirstName(userFirstName);
+				userInfo.setUserSecondName(userSecondName);
+				userInfo.setUserPatronymic(userPatronymic);
+				userInfo.setUserEmail(userEmail);
+				userInfo.setUserLogin(userLogin);
+
+				userInfo.setUserRoleId(userRoleId);
+				userInfo.setUserRole(userRole);
+				userInfo.setUserStatusId(userStatusId);
+
+				userInfo.setUserFacultyId(userFacultyId);
+				userInfo.setUserFaculty(userFaculty);
+
+				userInfo.setUserAdress(userAdress);
+				userInfo.setUserPhone(userPhone);
+				userInfo.setUserDateOfBirth(userDateOfBirth);
 			}
 
-			userInfo.setUserFirstName(userFirstName);
-			userInfo.setUserSecondName(userSecondName);
-			userInfo.setUserPatronymic(userPatronymic);
-			userInfo.setUserEmail(userEmail);
-			userInfo.setUserLogin(userLogin);
-
-			userInfo.setUserRoleId(userRoleId);
-			userInfo.setUserRole(userRole);
-			userInfo.setUserStatusId(userStatusId);
-
-			userInfo.setUserFacultyId(userFacultyId);
-			userInfo.setUserFaculty(userFaculty);
-
-			userInfo.setUserAdress(userAdress);
-			userInfo.setUserPhone(userPhone);
-			userInfo.setUserDateOfBirth(userDateOfBirth);
-
 		} catch (SQLException e) {
-
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
-		}
 
-		finally {
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
 
+		} finally {
 			try {
-				connectionPool.closeConnection(rs, statement, connection);
+				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 			}
 		}
-
-		return userInfo;
 	}
 
 }

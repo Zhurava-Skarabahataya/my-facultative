@@ -10,8 +10,8 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.AuthorizationUserService;
 import by.epamtc.facultative.service.UserInfoService;
+import by.epamtc.facultative.service.impl.AuthorizationServiceImpl;
 
 public class AuthorizationCommand implements Command {
 
@@ -58,7 +58,7 @@ public class AuthorizationCommand implements Command {
 			userAuthorizationInfo.setLogin(login);
 			userAuthorizationInfo.setPassword(password);
 
-			AuthorizationUserService authorizationUserService = AuthorizationUserService.getInstance();
+			AuthorizationServiceImpl authorizationUserService = AuthorizationServiceImpl.getInstance();
 
 			if (authorizationUserService.execute(userAuthorizationInfo)) {
 

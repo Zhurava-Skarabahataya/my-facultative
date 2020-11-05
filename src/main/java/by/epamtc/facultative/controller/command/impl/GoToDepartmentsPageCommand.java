@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.DepartmentInfoProviderService;
+import by.epamtc.facultative.service.impl.DepartmentInfoServiceImpl;
 
 public class GoToDepartmentsPageCommand implements Command {
 
@@ -22,7 +22,7 @@ private final String DEPARTMENTS_PAGE_PATH = "WEB-INF/jsp/departments-page.jsp";
 		List <Department> departments;
 		departments = null;
 		
-		DepartmentInfoProviderService departmentService = DepartmentInfoProviderService.getInstance();
+		DepartmentInfoServiceImpl departmentService = DepartmentInfoServiceImpl.getInstance();
 		departments = departmentService.findAllDepartmentsInfo();
 		
 		request.setAttribute("departments", departments);

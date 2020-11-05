@@ -3,6 +3,7 @@ package by.epamtc.facultative.service;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.UserDAOImpl;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
+import by.epamtc.facultative.service.impl.RatingServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,25 +156,7 @@ public class UserInfoService {
 		return staffDividedByDepartments;
 	}
 
-	public UserInfo findUserInfo(int userId) {
-		
-		UserDAOImpl userInfoDAOImpl = UserDAOImpl.getInstance();
-
-		
-		UserInfo userInfo = null;
-		try {
-			userInfo = userInfoDAOImpl.findUserInfoById(userId);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String userLogin = userInfo.getUserLogin();
-		
-		userInfo.setUserPhotoLink(PHOTO_LINK_PREFIX + userLogin + PHOTO_LINK_POSTFIX);
-		
-		return userInfo;
-	}
+	
 
 	public void findUserRating(UserInfo loggedUserInfo) {
 		
@@ -184,7 +167,7 @@ public class UserInfoService {
 		
 		loggedUserInfo.setStudentMarks(marks);
 		
-		RatingService ratingService = RatingService.getInstance();
+		RatingServiceImpl ratingService = RatingServiceImpl.getInstance();
 		ratingService.countRatingForStudent(loggedUserInfo);
 		
 	}

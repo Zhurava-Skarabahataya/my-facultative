@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.RegistrationService;
 import by.epamtc.facultative.service.UserInfoService;
 import by.epamtc.facultative.service.exception.ServiceException;
+import by.epamtc.facultative.service.impl.RegistrationServiceImpl;
 
 public class RegistrationCommand implements Command {
 
@@ -63,7 +63,7 @@ public class RegistrationCommand implements Command {
 
 			UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo();
 
-			RegistrationService registrationService = RegistrationService.getInstance();
+			RegistrationServiceImpl registrationService = RegistrationServiceImpl.getInstance();
 
 			userLogin = request.getParameter(PARAMETER_USER_LOGIN);
 			String firstName = request.getParameter(PARAMETER_FIRST_NAME);

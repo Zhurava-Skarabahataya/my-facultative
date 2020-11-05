@@ -187,15 +187,16 @@ public class ConnectionPool {
 			releaseConnection(connection);
 		}
 	}
-	
-	public void closeConnection (ResultSet resultSet, Statement statement1, Statement statement2, Statement statement3, Connection connection) throws ConnectionPoolException {
-		
+
+	public void closeConnection(ResultSet resultSet, Statement statement1, Statement statement2, Statement statement3,
+			Connection connection) throws ConnectionPoolException {
+
 		if (resultSet != null) {
-			
+
 			try {
 				resultSet.close();
 			} catch (SQLException e) {
-				
+
 				logger.error(ERROR_MESSAGE_RESULT_SET_NOT_CLOSING, e);
 				throw new ConnectionPoolException(ERROR_MESSAGE_RESULT_SET_NOT_CLOSING, e);
 			}
@@ -215,16 +216,37 @@ public class ConnectionPool {
 			}
 
 		} catch (SQLException e) {
-			
+
 			logger.error(ERROR_MESSAGE_STATEMENT_NOT_CLOSING, e);
 			throw new ConnectionPoolException(ERROR_MESSAGE_STATEMENT_NOT_CLOSING, e);
 		}
 
 		if (connection != null) {
-			
+
 			releaseConnection(connection);
 		}
+
+	}
+
+	public void closeConnection(Statement statement1, Statement statement2, Connection connection)
+			throws ConnectionPoolException {
 		
+		try {
+			if (statement1 != null) {
+				statement1.close();
+			}
+			if (statement2 != null) {
+				statement2.close();
+			}
+		} catch (SQLException e) {
+			logger.error(ERROR_MESSAGE_STATEMENT_NOT_CLOSING, e);
+			throw new ConnectionPoolException(ERROR_MESSAGE_STATEMENT_NOT_CLOSING, e);
+		}
+
+		if (connection != null) {
+
+			releaseConnection(connection);
+		}
 	}
 
 }

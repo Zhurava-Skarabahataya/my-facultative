@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class GoToCoursePageCommand implements Command {
 
@@ -23,7 +23,7 @@ public class GoToCoursePageCommand implements Command {
 		Course course = new Course();
 		course.setCourseId(courseId);
 		
-		CourseInfoService courseInfoService = CourseInfoService.getInstance();
+		CourseInfoServiceImpl courseInfoService = CourseInfoServiceImpl.getInstance();
 		courseInfoService.findInfoAboutCourse(course);
 		
 		request.setAttribute("course", course);

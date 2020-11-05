@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.DepartmentInfoProviderService;
+import by.epamtc.facultative.service.impl.DepartmentInfoServiceImpl;
 
 public class GoToStudentsPageCommand implements Command {
 
@@ -50,7 +50,7 @@ public class GoToStudentsPageCommand implements Command {
 				}
 			} else {
 
-				DepartmentInfoProviderService userService = DepartmentInfoProviderService.getInstance();
+				DepartmentInfoServiceImpl userService = DepartmentInfoServiceImpl.getInstance();
 
 				// ЕСЛИ ДЕКАН
 				if (userRoleId == 3) {

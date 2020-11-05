@@ -22,7 +22,7 @@ import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
 import by.epamtc.facultative.service.CourseInfoService;
 import by.epamtc.facultative.service.FullNameService;
 import by.epamtc.facultative.service.ServiceProvider;
-import by.epamtc.facultative.service.impl.FullNameServiceImpl;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class CourseDAOImpl implements CourseDAO {
 
@@ -376,7 +376,8 @@ public class CourseDAOImpl implements CourseDAO {
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
 
-				CourseInfoService courseInfoService = CourseInfoService.getInstance();
+				ServiceProvider serviceProvider = ServiceProvider.getInstance();
+				CourseInfoService courseInfoService = serviceProvider.getCourseInfoService();
 				courseInfoService.defineCourseLaunchStatus(infoAboutRunnedCourse);
 
 				int courseLaunchStatus = infoAboutRunnedCourse.getCurrentState();
@@ -513,7 +514,7 @@ public class CourseDAOImpl implements CourseDAO {
 
 				infoAboutRunnedCourse.setInfoAboutCourse(infoAbourCourse);
 
-				CourseInfoService courseInfoService = CourseInfoService.getInstance();
+				CourseInfoServiceImpl courseInfoService = CourseInfoServiceImpl.getInstance();
 				courseInfoService.defineCourseLaunchStatus(infoAboutRunnedCourse);
 
 				int courseLaunchStatus;

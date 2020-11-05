@@ -13,7 +13,7 @@ import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.bean.StudentOnCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class GoToRunCoursePageCommand implements Command {
 
@@ -25,7 +25,7 @@ public class GoToRunCoursePageCommand implements Command {
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute("userLogin");
 
-		CourseInfoService courseInfoProvider = CourseInfoService.getInstance();
+		CourseInfoServiceImpl courseInfoProvider = CourseInfoServiceImpl.getInstance();
 		int runCourseId = Integer.parseInt(request.getParameter("run_course_id"));
 		RunnedCourse runCourse = courseInfoProvider.findRunCourseById(runCourseId);
 		

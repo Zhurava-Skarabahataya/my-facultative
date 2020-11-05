@@ -9,8 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.CourseInfoService;
 import by.epamtc.facultative.service.StudentStatusService;
+import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
 public class ApproveStudentForCourseCommand implements Command {
 

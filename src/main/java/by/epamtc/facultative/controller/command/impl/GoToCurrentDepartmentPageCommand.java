@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.DepartmentInfoProviderService;
+import by.epamtc.facultative.service.impl.DepartmentInfoServiceImpl;
 
 public class GoToCurrentDepartmentPageCommand implements Command {
 	
@@ -23,7 +23,7 @@ public class GoToCurrentDepartmentPageCommand implements Command {
 		String deanPhotoLink = request.getParameter("dean_photo_link");
 		String departmentName = request.getParameter("department_name");
 		
-		DepartmentInfoProviderService departmentService = DepartmentInfoProviderService.getInstance();
+		DepartmentInfoServiceImpl departmentService = DepartmentInfoServiceImpl.getInstance();
 		Department department = new Department();
 		department.setDepartmentID(departmentId);
 		department.setDeanName(deanName);

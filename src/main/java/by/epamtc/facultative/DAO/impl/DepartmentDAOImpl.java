@@ -1,6 +1,7 @@
 package by.epamtc.facultative.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,18 +9,42 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.UserInfo;
+import by.epamtc.facultative.dao.DepartmentDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
-import by.epamtc.facultative.service.impl.FullNameServiceImpl;
+import by.epamtc.facultative.service.FullNameService;
+import by.epamtc.facultative.service.ServiceProvider;
 
-public class DepartmentDAOImpl {
+public class DepartmentDAOImpl implements DepartmentDAO {
 
 	private static final DepartmentDAOImpl instance = new DepartmentDAOImpl();
+
+	private static final Logger logger = Logger.getLogger(DepartmentDAOImpl.class);
+
+	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
+
+	private final String DATABASE_PARAMETER_DEPARTMENT_ID = "departments.department_id";
+	private final String DATABASE_PARAMETER_DEAN_ID = "departments.dean_id";
+	private final String DATABASE_PARAMETER_DEPARTMENT_NAME = "departments.name";
+	private final String DATABASE_PARAMETER_DEPARTMENT_DESCRIPTION = "departments.description";
+	private final String DATABASE_PARAMETER_USER_LOGIN = "users.user_login";
+	private final String DATABASE_PARAMETER_USER_ID = "users.user_id";
+	private final String DATABASE_PARAMETER_USER_FIRST_NAME = "users.first_name";
+	private final String DATABASE_PARAMETER_USER_SECOND_NAME = "users.second_name";
+	private final String DATABASE_PARAMETER_USER_PATRONYMIC = "users.patronymic";
+	private final String DATABASE_PARAMETER_USER_PHONE = "user_details.user_mobile_number";
+	private final String DATABASE_PARAMETER_USER_ADRESS = "user_details.user_adress";
+	private final String DATABASE_PARAMETER_USER_BIRTH_DATE = "user_details.user_date_of_birth";
+	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
+	private final String DATABASE_PARAMETER_COURSE_DESCRIPTION = "courses.description";
+	private final String DATABASE_PARAMETER_COURSE_ID = "courses.course_id";
 
 	private final String QUERY_FOR_ALL_DEPARTMENTS = "SELECT "
 			+ "departments.department_id, departments.name, departments.description, departments.dean_id,"
@@ -52,102 +77,121 @@ public class DepartmentDAOImpl {
 		return instance;
 	}
 
+	@Override
 	public List<Department> findAllDepartments() throws DAOException {
 
 		List<Department> departmets = new ArrayList<Department>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
+			connection = connectionPool.getFreeConnection();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			String query = QUERY_FOR_ALL_DEPARTMENTS;
 
-		String query = QUERY_FOR_ALL_DEPARTMENTS;
+			statement = connection.prepareStatement(query);
 
-		try {
-			ps = conn.prepareStatement(query);
+			resultSet = statement.executeQuery();
 
-			rs = ps.executeQuery();
+			while (resultSet.next()) {
 
-			while (rs.next()) {
+				int departmentId;
+				int departmentDeanId;
 
-				int departmentId = rs.getInt("departments.department_id");
-				int departmentDeanId = rs.getInt("departments.dean_id");
-				String departmentName = rs.getString("departments.name");
-				String departmentDescription = rs.getString("departments.description");
-				String deanFirstName = rs.getString("users.first_name");
-				String deanSecondName = rs.getString("users.second_name");
-				String deanPatronymic = rs.getString("users.patronymic");
-				String deanLogin = rs.getString("users.user_login");
+				String departmentName;
+				String departmentDescription;
+				String deanFirstName;
+				String deanSecondName;
+				String deanPatronymic;
+				String deanLogin;
+
+				departmentId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
+				departmentDeanId = resultSet.getInt(DATABASE_PARAMETER_DEAN_ID);
+
+				departmentName = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+				departmentDescription = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_DESCRIPTION);
+				deanFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				deanSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				deanPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				deanLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
 
 				Department department = new Department();
+
 				department.setDepartmentID(departmentId);
 				department.setDeanId(departmentDeanId);
 				department.setDepartmentName(departmentName);
 				department.setDepartmentDescription(departmentDescription);
 
-				String deanFullName = FullNameServiceImpl.getInstance().createFullName(deanFirstName, deanSecondName,
-						deanPatronymic);
+				ServiceProvider serviceProvider = ServiceProvider.getInstance();
+				FullNameService fullNameService = serviceProvider.getFullNameService();
+
+				String deanFullName = fullNameService.createFullName(deanFirstName, deanSecondName, deanPatronymic);
+
 				department.setDeanName(deanFullName);
 				department.setDeanLogin(deanLogin);
 
 				departmets.add(department);
-
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+
 		} finally {
 			try {
-				cp.closeConnection(rs, ps, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
+
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
+
 			}
 		}
-
-		// TODO Auto-generated method stub
 		return departmets;
 	}
 
+	@Override
 	public List<UserInfo> findLecturersInDepartment(int departmentId) throws DAOException {
+
 		List<UserInfo> lecturers = new ArrayList<UserInfo>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
+			connection = connectionPool.getFreeConnection();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			String query = QUERY_FOR_LECTURERS_IN_DEPARTMENT;
 
-		String query = QUERY_FOR_LECTURERS_IN_DEPARTMENT;
+			statement = connection.prepareStatement(query);
 
-		try {
-			ps = conn.prepareStatement(query);
+			statement.setInt(1, departmentId);
 
-			ps.setInt(1, departmentId);
+			resultSet = statement.executeQuery();
 
-			rs = ps.executeQuery();
+			while (resultSet.next()) {
 
-			while (rs.next()) {
-				String firstName = rs.getString("users.first_name");
-				String secondName = rs.getString("users.second_name");
-				String patronymic = rs.getString("users.patronymic");
-				String userLogin = rs.getString("users.user_login");
+				String firstName;
+				String secondName;
+				String patronymic;
+				String userLogin;
+
+				firstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				secondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				patronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
 
 				UserInfo lecturer = new UserInfo();
+
 				lecturer.setUserFirstName(firstName);
 				lecturer.setUserSecondName(secondName);
 				lecturer.setUserPatronymic(patronymic);
@@ -157,52 +201,52 @@ public class DepartmentDAOImpl {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+
 		} finally {
 			try {
-				cp.closeConnection(rs, ps, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
 			}
 		}
-
-		// TODO Auto-generated method stub
 		return lecturers;
 	}
 
+	@Override
 	public List<Course> findCoursesInDepartment(int departmentId) throws DAOException {
 
 		List<Course> courses = new ArrayList<Course>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
+			connection = connectionPool.getFreeConnection();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			String query = QUERY_FOR_COURSES_IN_DEPARTMENT;
 
-		String query = QUERY_FOR_COURSES_IN_DEPARTMENT;
+			statement = connection.prepareStatement(query);
 
-		try {
-			ps = conn.prepareStatement(query);
+			statement.setInt(1, departmentId);
 
-			ps.setInt(1, departmentId);
+			resultSet = statement.executeQuery();
 
-			rs = ps.executeQuery();
+			while (resultSet.next()) {
 
-			while (rs.next()) {
-				String courseTitle = rs.getString("courses.title");
-				String courseDescription = rs.getString("courses.description");
-				int courseId = rs.getInt("courses.course_id");
+				String courseTitle = resultSet.getString(DATABASE_PARAMETER_COURSE_TITLE);
+				String courseDescription = resultSet.getString(DATABASE_PARAMETER_COURSE_DESCRIPTION);
+				int courseId = resultSet.getInt(DATABASE_PARAMETER_COURSE_ID);
 
 				Course course = new Course();
+
 				course.setCourseName(courseTitle);
 				course.setCourseDescription(courseDescription);
 				course.setCourseId(courseId);
@@ -211,55 +255,61 @@ public class DepartmentDAOImpl {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+
 		} finally {
 			try {
-				cp.closeConnection(rs, ps, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
+
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
 			}
 		}
-
 		return courses;
 	}
 
+	@Override
 	public List<UserInfo> findStudentsInDepartment(int departmentId) throws DAOException {
 
 		List<UserInfo> students = new ArrayList<UserInfo>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
 
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 		try {
-			conn = cp.getFreeConnection();
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-		}
+			connection = connectionPool.getFreeConnection();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			String query = QUERY_FOR_STUDENTS_IN_DEPARTMENT;
 
-		String query = QUERY_FOR_STUDENTS_IN_DEPARTMENT;
+			statement = connection.prepareStatement(query);
 
-		try {
-			ps = conn.prepareStatement(query);
+			statement.setInt(1, departmentId);
 
-			ps.setInt(1, departmentId);
+			resultSet = statement.executeQuery();
 
-			rs = ps.executeQuery();
+			while (resultSet.next()) {
 
-			while (rs.next()) {
-				
-				
-				int studentId = rs.getInt("users.user_id");
-				String firstName = rs.getString("users.first_name");
-				String secondName = rs.getString("users.second_name");
-				String patronymic = rs.getString("users.patronymic");
-				String userLogin = rs.getString("users.user_login");
+				int studentId;
+
+				String firstName;
+				String secondName;
+				String patronymic;
+				String userLogin;
+
+				studentId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
+				firstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				secondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				patronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
 
 				UserInfo student = new UserInfo();
+
 				student.setUserFirstName(firstName);
 				student.setUserSecondName(secondName);
 				student.setUserPatronymic(patronymic);
@@ -275,56 +325,79 @@ public class DepartmentDAOImpl {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+			
 		} finally {
 			try {
-				cp.closeConnection(rs, ps, conn);
+				connectionPool.closeConnection(resultSet, statement, connection);
+				
 			} catch (ConnectionPoolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DAOException(e);
 			}
 		}
 
 		return students;
 	}
 
+	@Override
 	public List<UserInfo> findStudentsInAllDepartments() throws DAOException {
 
 		List<UserInfo> studentsOfAllDepartments = new ArrayList<UserInfo>();
 
-		ConnectionPool cp = ConnectionPool.getInstance();
-		Connection conn = null;
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+		
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 
 		try {
-			conn = cp.getFreeConnection();
-
-			PreparedStatement ps = null;
-			ResultSet resultSet = null;
+			connection = connectionPool.getFreeConnection();
 
 			String query = QUERY_FOR_STUDENTS_IN_ALL_DEPARTMENTS;
 
-			ps = conn.prepareStatement(query);
+			statement = connection.prepareStatement(query);
 
-			resultSet = ps.executeQuery();
+			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				int userId = resultSet.getInt("users.user_id");
-				String userFirstName = resultSet.getString("users.first_name");
-				String userSecondName = resultSet.getString("users.second_name");
-				String userPatronymic = resultSet.getString("users.patronymic");
-				String userLogin = resultSet.getString("users.user_login");
-				String userMobile = resultSet.getString("user_details.user_mobile_number");
-				String userAdress = resultSet.getString("user_details.user_adress");
-				LocalDate userDateOfBirth = null;
-				java.sql.Date sqlDate = resultSet.getDate("user_details.user_date_of_birth");
+				
+				int userId;
+				int departmentId;
+				
+				String userFirstName;
+				String userSecondName;
+				String userPatronymic;
+				String userLogin;
+				String userMobile;
+				String userAdress;
+				String departmentName;
+
+				LocalDate userDateOfBirth;
+				Date sqlDate;
+
+				userId= resultSet.getInt(DATABASE_PARAMETER_USER_ID);
+				departmentId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
+
+				userFirstName= resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				userPatronymic= resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userLogin= resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
+				userMobile= resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
+				userAdress= resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
+				departmentName = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+				
+				userDateOfBirth = null;
+				sqlDate= resultSet.getDate(DATABASE_PARAMETER_USER_BIRTH_DATE);
 				if (sqlDate != null) {
 					userDateOfBirth = sqlDate.toLocalDate();
 				}
-				int departmentId = resultSet.getInt("departments.department_id");
-				String departmentName = resultSet.getString("departments.name");
 
 				UserInfo student = new UserInfo();
+
 				student.setUserId(userId);
 				student.setUserFirstName(userFirstName);
 				student.setUserSecondName(userSecondName);
@@ -335,7 +408,7 @@ public class DepartmentDAOImpl {
 				student.setUserDateOfBirth(userDateOfBirth);
 				student.setUserFacultyId(departmentId);
 				student.setUserFaculty(departmentName);
-				
+
 				UserDAOImpl userDAO = UserDAOImpl.getInstance();
 				List<Mark> studentMarks = userDAO.findStudentResults(userId);
 
@@ -346,9 +419,18 @@ public class DepartmentDAOImpl {
 
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+		}
+		finally {
+			try {
+				connectionPool.closeConnection(resultSet, statement, connection);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e);
+
+			}
 		}
 
 		return studentsOfAllDepartments;
