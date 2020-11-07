@@ -2,7 +2,6 @@ package by.epamtc.facultative.controller.command.impl.registration;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,9 +11,10 @@ import org.apache.log4j.Logger;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.bean.UserRegistrationInfo;
 import by.epamtc.facultative.controller.command.Command;
+import by.epamtc.facultative.service.RegistrationService;
+import by.epamtc.facultative.service.ServiceProvider;
 import by.epamtc.facultative.service.UserInfoService;
 import by.epamtc.facultative.service.exception.ServiceException;
-import by.epamtc.facultative.service.impl.RegistrationServiceImpl;
 
 public class RegistrationCommand implements Command {
 
@@ -25,8 +25,7 @@ public class RegistrationCommand implements Command {
 	private final String PARAMETER_PASSWORD = "password";
 	private final String PARAMETER_USER_EMAL = "user_email";
 	private final String PARAMETER_FACULTY = "faculty";
-	private final String PARAMETER_POSITION = "position";
-	private final String PARAMETER_MESSAGE_FROM_SERVLET = "messageFromServlet";
+	private final String PARAMETER_POSITION = "possition";
 
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
@@ -37,44 +36,55 @@ public class RegistrationCommand implements Command {
 	private final String MESSAGE_TO_REGISTRTAION_PAGE = "&message=";
 	private final String MESSAGE_GO_TO_ERROR_PAGE_REGISTRATION = "&message=promblems_with_registration";
 	private final String MESSAGE_GO_TO_ERROR_PAGE_ALREADY_AUTH = "&message=user_already_authorized";
-	
-	private final String REQUEST_ATTRIBUTE_BEAN = "bean";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
 
+	private final String REQUEST_ATTRIBUTE_BEAN = "bean";
 
 	private static final Logger logger = Logger.getLogger(RegistrationCommand.class);
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		HttpSession session = request.getSession();
 		String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
 
 		if (userLogin != null) {
-			// Значит, юзер уже авторизован
 			try {
 				response.sendRedirect(
 						request.getRequestURI() + COMMAND_GO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_ALREADY_AUTH);
+
 			} catch (IOException e) {
-				// ОБРТАББ
-				e.printStackTrace();
+
+				logger.error(e);
+				response.sendRedirect(request.getRequestURI() + COMMAND_GO_ERROR_PAGE
+						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 			}
 
 		} else {
 
 			UserRegistrationInfo userRegistrationInfo = new UserRegistrationInfo();
 
-			RegistrationServiceImpl registrationService = RegistrationServiceImpl.getInstance();
+			RegistrationService registrationService = ServiceProvider.getInstance().getRegistrationService();
 
 			userLogin = request.getParameter(PARAMETER_USER_LOGIN);
-			String firstName = request.getParameter(PARAMETER_FIRST_NAME);
-			String secondName = request.getParameter(PARAMETER_SECOND_NAME);
-			String patronymic = request.getParameter(PARAMETER_PATRONYMIC);
-			System.out.println("userLoginFromRegForm " + userLogin);
-			String password = request.getParameter(PARAMETER_PASSWORD);
-			String email = request.getParameter(PARAMETER_USER_EMAL);
 
-			Integer faculty = Integer.parseInt(request.getParameter(PARAMETER_FACULTY));
-			Integer position = Integer.parseInt(request.getParameter(PARAMETER_POSITION));
+			String firstName;
+			String secondName;
+			String patronymic;
+			String password;
+			String email;
+
+			int faculty;
+			int position;
+
+			firstName = request.getParameter(PARAMETER_FIRST_NAME);
+			secondName = request.getParameter(PARAMETER_SECOND_NAME);
+			patronymic = request.getParameter(PARAMETER_PATRONYMIC);
+			password = request.getParameter(PARAMETER_PASSWORD);
+			email = request.getParameter(PARAMETER_USER_EMAL);
+
+			faculty = Integer.parseInt(request.getParameter(PARAMETER_FACULTY));
+			position = Integer.parseInt(request.getParameter(PARAMETER_POSITION));
 
 			userRegistrationInfo.setFirstName(firstName);
 			userRegistrationInfo.setSecondName(secondName);
@@ -86,7 +96,7 @@ public class RegistrationCommand implements Command {
 			userRegistrationInfo.setDepartmentID(faculty);
 			userRegistrationInfo.setUserRoleID(position);
 
-			boolean registrationSuccess = true;
+			boolean registrationSuccess = false;
 
 			String messageFromRegistrationService = null;
 
@@ -95,59 +105,38 @@ public class RegistrationCommand implements Command {
 
 				if (messageFromRegistrationService != null) {
 					registrationSuccess = false;
+				} else {
+					registrationSuccess = true;
 				}
 
-			} catch (ServiceException e1) {
-				try {
-					e1.printStackTrace();
+			} catch (ServiceException e) {
 
-					response.sendRedirect(
-							request.getRequestURI() + COMMAND_GO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_REGISTRATION);
-
-				} catch (IOException e) {
-					// jnklscl
-				}
-
+				response.sendRedirect(
+						request.getRequestURI() + COMMAND_GO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_REGISTRATION);
 			}
 
 			if (registrationSuccess) {
 
-				session.setAttribute(SESSION_ATTRIBUTE_LOGIN, userLogin);
-				
-				System.out.println("userLoginSend To session " + userLogin);
-
-				
 				UserInfo userInfo = new UserInfo();
 				userInfo.setUserLogin(userLogin);
 
-				UserInfoService userPageInfoProviderService = UserInfoService.getInstance();
-				userPageInfoProviderService.findUserInfo(userInfo);
+				UserInfoService userInforService = ServiceProvider.getInstance().getUserInfoService();
+				try {
+					userInforService.findUserInfo(userInfo);
+				} catch (ServiceException e1) {
 
+				}
+
+				session.setAttribute(SESSION_ATTRIBUTE_LOGIN, userLogin);
 				session.setAttribute(REQUEST_ATTRIBUTE_BEAN, userInfo);
 
-				try {
-					response.sendRedirect(
-							request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE + MESSAGE_GO_TO_SUCCESS_PAGE);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				response.sendRedirect(
+						request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE + MESSAGE_GO_TO_SUCCESS_PAGE);
 
 			} else {
+				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_REGISTRATION_PAGE
+						+ MESSAGE_TO_REGISTRTAION_PAGE + messageFromRegistrationService);
 
-				try {
-					System.out.println(COMMAND_GO_TO_REGISTRATION_PAGE
-							+ MESSAGE_TO_REGISTRTAION_PAGE + messageFromRegistrationService);
-
-					response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_REGISTRATION_PAGE
-							+ MESSAGE_TO_REGISTRTAION_PAGE + messageFromRegistrationService);
-//					request.setAttribute(PARAMETER_MESSAGE_FROM_SERVLET, messageFromRegistrationService);
-//					request.getRequestDispatcher(REGISTRATION_PAGE_PATH).forward(request, response);
-
-				}  catch (IOException e) {
-					// ОБРАБ
-
-					e.printStackTrace();
-				}
 			}
 		}
 

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.WelcomePageInfoDealer;
+import by.epamtc.facultative.service.impl.WelcomePageServiceImpl;
 
 public class GoToWelcomePageCommand implements Command{
 	
@@ -27,7 +27,7 @@ public class GoToWelcomePageCommand implements Command{
 		
 		
 		try {
-			WelcomePageInfoDealer wcid = WelcomePageInfoDealer.getInstance();
+			WelcomePageServiceImpl wcid = WelcomePageServiceImpl.getInstance();
 			String hfh = wcid.getInfo();
 			request.setAttribute("popularCourses", hfh);			
 			request.getRequestDispatcher(WELCOME_PAGE_PATH).forward(request, response);

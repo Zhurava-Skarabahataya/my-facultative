@@ -91,6 +91,7 @@ public class CommandProvider {
 		commands.put(CommandName.APPROVE_EMPLOYEE, new ApproveEmployeeCommand());
 		commands.put(CommandName.DISAPPROVE_EMPLOYEE, new DisapproveEmployeeCommand());
 		commands.put(CommandName.GO_TO_ANOTHER_USER_PAGE, new GoToAnotherUserPageCommand());
+	
 		commands.put(CommandName.GIVE_THE_GRADE, new GiveStudentGradeCommand());
 		commands.put(CommandName.VIEW_ANOTHER_USER_RUN_COURSES, new ViewAnotherUserRunCoursesCommand());
 		commands.put(CommandName.VIEW_STUDENT_RATING_PAGE, new ViewStudentRatingPageCommand());

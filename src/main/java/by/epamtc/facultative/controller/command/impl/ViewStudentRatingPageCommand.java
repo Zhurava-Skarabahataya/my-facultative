@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.UserInfoService;
+import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
 
 public class ViewStudentRatingPageCommand implements Command {
 	
@@ -38,7 +38,7 @@ public class ViewStudentRatingPageCommand implements Command {
 		
 		if (userLoginFromRequest != null && userLoginFromRequest.equals(userLogin)) {
 			
-			UserInfoService userService = UserInfoService.getInstance();
+			UserInfoServiceImpl userService = UserInfoServiceImpl.getInstance();
 			userService.findUserRating(loggedUserInfo);
 			
 			request.setAttribute("student", loggedUserInfo);

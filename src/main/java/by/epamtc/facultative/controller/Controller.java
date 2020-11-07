@@ -19,6 +19,8 @@ import by.epamtc.facultative.controller.command.CommandProvider;
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private final String REQUEST_PARAMETER_COMMAND = "command";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,7 +36,7 @@ public class Controller extends HttpServlet {
 		
 		String commandName;
 		
-		commandName= request.getParameter("command");
+		commandName= request.getParameter(REQUEST_PARAMETER_COMMAND);
 		Command currentCommand = CommandProvider.getInstance().getCommand(commandName.toUpperCase());
 		currentCommand.execute(request, response);
 		
@@ -47,11 +49,7 @@ public class Controller extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String commandName;
-	    
-		commandName= request.getParameter("command");
-		Command currentCommand = CommandProvider.getInstance().getCommand(commandName.toUpperCase());
-		currentCommand.execute(request, response);
+		doGet(request, response);
 	}
 
 }

@@ -10,8 +10,8 @@ import javax.servlet.http.HttpSession;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.UserInfoService;
 import by.epamtc.facultative.service.impl.AuthorizationServiceImpl;
+import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
 
 public class AuthorizationCommand implements Command {
 
@@ -67,7 +67,7 @@ public class AuthorizationCommand implements Command {
 				UserInfo userInfo = new UserInfo();
 				userInfo.setUserLogin(login);
 
-				UserInfoService userPageInfoProviderService = UserInfoService.getInstance();
+				UserInfoServiceImpl userPageInfoProviderService = UserInfoServiceImpl.getInstance();
 				userPageInfoProviderService.findUserInfo(userInfo);
 
 				session.setAttribute(REQUEST_ATTRIBUTE_BEAN, userInfo);

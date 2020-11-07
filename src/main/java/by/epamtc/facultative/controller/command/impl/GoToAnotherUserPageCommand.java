@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.UserInfoService;
+import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
 
 public class GoToAnotherUserPageCommand implements Command {
 	
@@ -40,7 +40,7 @@ public class GoToAnotherUserPageCommand implements Command {
 				
 				UserInfo userInfo = new UserInfo();
 				userInfo.setUserId(userId);
-				UserInfoService.getInstance().findUserInfo(userInfo);
+				UserInfoServiceImpl.getInstance().findUserInfo(userInfo);
 				
 				
 				//response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_USER_PAGE );

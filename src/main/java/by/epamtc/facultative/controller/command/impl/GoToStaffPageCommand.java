@@ -12,8 +12,8 @@ import by.epamtc.facultative.bean.Department;
 import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.UserInfoService;
 import by.epamtc.facultative.service.impl.DepartmentInfoServiceImpl;
+import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
 
 public class GoToStaffPageCommand implements Command {
 	
@@ -53,7 +53,7 @@ public class GoToStaffPageCommand implements Command {
 			}
 			else {
 				
-				UserInfoService userService = UserInfoService.getInstance();
+				UserInfoServiceImpl userService = UserInfoServiceImpl.getInstance();
 
 				DepartmentStaff departmentStaff = null;
 				List<DepartmentStaff> allStaff = null;

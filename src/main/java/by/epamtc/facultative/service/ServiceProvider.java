@@ -10,6 +10,10 @@ import by.epamtc.facultative.service.impl.FullNameServiceImpl;
 import by.epamtc.facultative.service.impl.PasswordEncryptorImpl;
 import by.epamtc.facultative.service.impl.RatingServiceImpl;
 import by.epamtc.facultative.service.impl.RegistrationServiceImpl;
+import by.epamtc.facultative.service.impl.StudentStatusServiceImpl;
+import by.epamtc.facultative.service.impl.UpdateUserInfoServiceImpl;
+import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
+import by.epamtc.facultative.service.impl.WelcomePageServiceImpl;
 
 public class ServiceProvider {
 	
@@ -25,6 +29,10 @@ public class ServiceProvider {
 	private final EmployeeStatusService employeeStatusService = EmployeeStatusServiceImpl.getInstance();
 	private final PasswordEncryptor passwordEncryptor = PasswordEncryptorImpl.getInstance();
 	private final RegistrationService registrationService = RegistrationServiceImpl.getInstance();
+	private final StudentStatusService studentStatusService = StudentStatusServiceImpl.getInstance();
+	private final UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
+	private final UpdateUserInfoService updateUserInfoService = UpdateUserInfoServiceImpl.getInstance();
+	private final WelcomePageService welcomePageService = WelcomePageServiceImpl.getInstance();
 	
 	private ServiceProvider() {
 		
@@ -72,6 +80,22 @@ public class ServiceProvider {
 
 	public RegistrationService getRegistrationService() {
 		return registrationService;
+	}
+
+	public StudentStatusService getStudentStatusService() {
+		return studentStatusService;
+	}
+
+	public UserInfoService getUserInfoService() {
+		return userInfoService;
+	}
+
+	public UpdateUserInfoService getUpdateUserInfoService() {
+		return updateUserInfoService;
+	}
+
+	public WelcomePageService getWelcomePageService() {
+		return welcomePageService;
 	}
 
 	
