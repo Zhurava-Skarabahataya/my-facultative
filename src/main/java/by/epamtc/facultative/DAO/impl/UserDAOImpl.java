@@ -21,9 +21,9 @@ import by.epamtc.facultative.bean.UserInfo;
 
 public class UserDAOImpl implements UserDAO {
 
-	private static final UserDAOImpl instance = new UserDAOImpl();
+	private static final UserDAOImplTest instance = new UserDAOImplTest();
 
-	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
+	private static final Logger logger = Logger.getLogger(UserDAOImplTest.class);
 
 	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
 
@@ -52,6 +52,15 @@ public class UserDAOImpl implements UserDAO {
 			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
 			+ "JOIN departments ON users.department_department_id = departments.department_id "
 			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_login = ?";
+	
+	private final String QUERY_SELECT_USER_DATA_BY_ID = "SELECT users.first_name, users.second_name, users.patronymic, "
+			+ "users.user_email, users.department_department_id, departments.name, "
+			+ "users.user_role_id, user_roles.role_name, " + " user_details.user_adress,"
+			+ "user_details.user_mobile_number, user_details.user_date_of_birth, users.user_id, " 
+			+ "users.status, users.user_login "
+			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
+			+ "JOIN departments ON users.department_department_id = departments.department_id "
+			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_id = ?";
 
 	private final String QUERY_FOR_USER_DATA_BY_ID = "SELECT users.first_name, users.second_name, "
 			+ "users.patronymic, users.user_email, users.department_department_id, departments.name,"
@@ -93,12 +102,21 @@ public class UserDAOImpl implements UserDAO {
 			+ "JOIN run_courses ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
 			+ "JOIN courses ON courses.course_id = run_courses.courses_course_id"
 			+ " WHERE users_has_run_courses.users_user_id = ?";
+	
+	private final String QUERY_FOR_STUDENT_RESULTS_BY_LOGIN = "SELECT users_has_run_courses.user_result, "
+			+ "run_courses.run_courses_id, courses.title, users.user_id "
+			+ "FROM users JOIN users_has_run_courses "
+			+ "ON users.user_id = users_has_run_courses.users_user_id "
+			+ "JOIN run_courses "
+			+ "ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
+			+ "JOIN courses ON courses.course_id = run_courses.courses_course_id "
+			+ "WHERE users.user_login = ?";
 
 	private UserDAOImpl() {
 
 	}
 
-	public static UserDAOImpl getInstance() {
+	public static UserDAOImplTest getInstance() {
 		return instance;
 	}
 
@@ -119,6 +137,65 @@ public class UserDAOImpl implements UserDAO {
 			statement = connection.prepareStatement(QUERY_FOR_STUDENT_RESULTS);
 
 			statement.setInt(1, studentId);
+
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				int markNumber = resultSet.getInt(DATABASE_PARAMETER_USER_RESULT);
+
+				if (markNumber != 0) {
+
+					int runCourseId;
+					String courseTitle;
+
+					runCourseId = resultSet.getInt(DATABASE_PARAMETER_RUN_COURSE_ID);
+					courseTitle = resultSet.getString(DATABASE_PARAMETER_COURSE_TITLE);
+
+					Mark mark = new Mark();
+					mark.setMarkGrade(markNumber);
+					mark.setRunCourseId(runCourseId);
+					mark.setCourseTitle(courseTitle);
+
+					marks.add(mark);
+				}
+			}
+
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+
+		} catch (SQLException e) {
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} finally {
+			try {
+				connectionPool.closeConnection(resultSet, statement, connection);
+
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e);
+			}
+		}
+		return marks;
+	}
+	
+	@Override
+	public List<Mark> findStudentResults(String studentLogin) throws DAOException {
+
+		List<Mark> marks = new ArrayList<Mark>();
+
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = connectionPool.getFreeConnection();
+
+			statement = connection.prepareStatement(QUERY_FOR_STUDENT_RESULTS_BY_LOGIN);
+
+			statement.setString(1, studentLogin);
 
 			resultSet = statement.executeQuery();
 
@@ -256,6 +333,104 @@ public class UserDAOImpl implements UserDAO {
 			}
 		}
 
+	}
+	
+	@Override
+	public	void provideUserInfoById(UserInfo userPageInfo) throws DAOException{
+		ConnectionPool connectionPool = ConnectionPool.getInstance();
+		Connection connection = null;
+
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = connectionPool.getFreeConnection();
+
+			String query = QUERY_SELECT_USER_DATA_BY_ID;
+
+			statement = connection.prepareStatement(query);
+
+			int userId;
+			userId = userPageInfo.getUserId();
+
+			statement.setInt(1, userId);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+
+				int userRoleId;
+				int userFacultyId;
+				int userStatusId;
+
+				String userFirstName;
+				String userSecondName;
+				String userPatronymic;
+				String userEmail;
+				String userRole;
+				String userFaculty;
+				String userAdress;
+				String userPhone;
+				String userLogin;
+
+				LocalDate userDateOfBirth = null;
+
+				userId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
+				userFacultyId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
+				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
+				userStatusId = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
+
+				userFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				userPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+				userEmail = resultSet.getString(DATABASE_PARAMETER_USER_EMAIL);
+				userFaculty = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+				userRole = resultSet.getString(DATABASE_PARAMETER_USER_ROLE_NAME);
+				userAdress = resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
+				userPhone = resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
+				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
+
+				Date sqlDate = resultSet.getDate(DATABASE_PARAMETER_USER_DATE_OF_BIRTH);
+
+				if (sqlDate != null) {
+					userDateOfBirth = sqlDate.toLocalDate();
+				}
+
+				userPageInfo.setUserId(userId);
+
+				userPageInfo.setUserFirstName(userFirstName);
+				userPageInfo.setUserSecondName(userSecondName);
+				userPageInfo.setUserPatronymic(userPatronymic);
+				userPageInfo.setUserEmail(userEmail);
+				userPageInfo.setUserLogin(userLogin);
+
+				userPageInfo.setUserRoleId(userRoleId);
+				userPageInfo.setUserRole(userRole);
+				userPageInfo.setUserStatusId(userStatusId);
+
+				userPageInfo.setUserFacultyId(userFacultyId);
+				userPageInfo.setUserFaculty(userFaculty);
+
+				userPageInfo.setUserAdress(userAdress);
+				userPageInfo.setUserPhone(userPhone);
+				userPageInfo.setUserDateOfBirth(userDateOfBirth);
+			}
+
+		} catch (SQLException e) {
+			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
+			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
+
+		} catch (ConnectionPoolException e) {
+			throw new DAOException(e);
+
+		} finally {
+			try {
+				connectionPool.closeConnection(resultSet, statement, connection);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e);
+			}
+		}
+		
 	}
 
 	@Override

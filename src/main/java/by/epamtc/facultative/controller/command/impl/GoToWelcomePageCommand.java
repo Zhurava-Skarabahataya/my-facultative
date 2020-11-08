@@ -7,41 +7,47 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.impl.WelcomePageServiceImpl;
+import org.apache.log4j.Logger;
 
-public class GoToWelcomePageCommand implements Command{
+import by.epamtc.facultative.controller.command.Command;
+import by.epamtc.facultative.service.ServiceProvider;
+import by.epamtc.facultative.service.WelcomePageService;
+import by.epamtc.facultative.service.exception.ServiceException;
+
+public class GoToWelcomePageCommand implements Command {
+
+	private static final Logger logger = Logger.getLogger(GoToWelcomePageCommand.class);
+
+	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
 	
-	private static final String WELCOME_PAGE_PATH = "WEB-INF/jsp/welcome-page.jsp";
-	
-	private static final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
+	private final String WELCOME_PAGE_PATH = "WEB-INF/jsp/welcome-page.jsp";
+
+	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute(SESSION_ATTRIBUTE_LOGIN) == null){
+		if (session.getAttribute(SESSION_ATTRIBUTE_LOGIN) == null) {
 			session.setAttribute(SESSION_ATTRIBUTE_LOGIN, null);
 		}
-		
-		
-		try {
-			WelcomePageServiceImpl wcid = WelcomePageServiceImpl.getInstance();
-			String hfh = wcid.getInfo();
-			request.setAttribute("popularCourses", hfh);			
-			request.getRequestDispatcher(WELCOME_PAGE_PATH).forward(request, response);
-			
-		} catch (ServletException e) {
-			e.printStackTrace();
-			//ОБРАБООООООТАЙ
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			//ОБРАБООООООТАЙ
+		try {
+			WelcomePageService welcomePageService = ServiceProvider.getInstance().getWelcomePageService();
+			// String testString = welcomePageService.getInfo();
+			welcomePageService.getInfo();
+			
+			request.getRequestDispatcher(WELCOME_PAGE_PATH).forward(request, response);
+
+		} catch (ServletException | IOException | ServiceException e) {
+			logger.error(e);
+			response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+					+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 
 		}
-		
+
 	}
 
 }

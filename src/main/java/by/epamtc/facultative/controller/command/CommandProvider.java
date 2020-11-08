@@ -24,12 +24,10 @@ import by.epamtc.facultative.controller.command.impl.GoToCurrentDepartmentPageCo
 import by.epamtc.facultative.controller.command.impl.GoToDepartmentsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToErrorPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToNewsPage;
-import by.epamtc.facultative.controller.command.impl.GoToRegistrationSuccessPage;
 import by.epamtc.facultative.controller.command.impl.GoToRunCoursePageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToStaffPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToStudentsPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToSuccessPageCommand;
-import by.epamtc.facultative.controller.command.impl.GoToUniversityCoursesPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserCoursesPage;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageCommand;
 import by.epamtc.facultative.controller.command.impl.GoToUserPageEditingCommand;
@@ -58,7 +56,6 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_AUTHORIZATION_PAGE, new GoToAuthorizationPageCommand());
 		commands.put(CommandName.GO_TO_REGISTRATION_PAGE, new GoToRegistrationPageCommand());
 		commands.put(CommandName.GO_TO_USER_PAGE, new GoToUserPageCommand());
-		commands.put(CommandName.GO_TO_REGISTRATION_SUCCESS_PAGE, new GoToRegistrationSuccessPage());
 		commands.put(CommandName.GO_TO_ERROR_PAGE, new GoToErrorPageCommand());
 		commands.put(CommandName.GO_TO_EDIT_USER_INFO_COMMAND, new GoToUserPageEditingCommand());
 		commands.put(CommandName.GO_TO_USER_COURSES_PAGE, new GoToUserCoursesPage());
@@ -66,7 +63,6 @@ public class CommandProvider {
 		commands.put(CommandName.GO_TO_RUN_COURSE_PAGE, new GoToRunCoursePageCommand());
 		commands.put(CommandName.GO_TO_COURSE_PAGE_COMMAND, new GoToCoursePageCommand());
 		commands.put(CommandName.GO_TO_DEPARTMENTS_PAGE, new GoToDepartmentsPageCommand());
-		commands.put(CommandName.GO_TO_UNIVERCITY_COURSES_PAGE, new GoToUniversityCoursesPageCommand());
 		commands.put(CommandName.GO_TO_CONTACTS_PAGE, new GoToContactsPageCommand());
 		commands.put(CommandName.GO_TO_NEWS_PAGE, new GoToNewsPage());
 		commands.put(CommandName.GO_TO_ABOUT_UNIVERSITY_PAGE, new GoToAboutUniversityPage());

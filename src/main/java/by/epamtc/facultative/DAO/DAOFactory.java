@@ -4,7 +4,7 @@ import by.epamtc.facultative.dao.impl.AuthorizationDAOImpl;
 import by.epamtc.facultative.dao.impl.CourseDAOImpl;
 import by.epamtc.facultative.dao.impl.DepartmentDAOImpl;
 import by.epamtc.facultative.dao.impl.RegistrationDAOImpl;
-import by.epamtc.facultative.dao.impl.UserDAOImpl;
+import by.epamtc.facultative.dao.impl.UserDAOImplTest;
 import by.epamtc.facultative.dao.impl.WelcomePageDAOImpl;
 
 public class DAOFactory {
@@ -14,7 +14,7 @@ public class DAOFactory {
 	private CourseDAO courseDAO = CourseDAOImpl.getInstance();
 	private RegistrationDAO registrationDAO = RegistrationDAOImpl.getInstance();
 	private AuthorizationDAO authorizationDAO = AuthorizationDAOImpl.getInstance();
-	private UserDAO userDAO = UserDAOImpl.getInstance();
+	private UserDAO userDAO = UserDAOImplTest.getInstance();
 	private DepartmentDAO departmentDAO = DepartmentDAOImpl.getInstance();
 	private WelcomePageDAO welcomePageDAO = WelcomePageDAOImpl.getInstance();
 

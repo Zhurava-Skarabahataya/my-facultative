@@ -6,16 +6,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.controller.command.Command;
 
 public class ChangeLanguageCommand implements Command{
 	
-	public static final String PARAMETER_COMMAND = "commandToLanguageChanger";
-	public static final String PARAMETER_LOCAL = "local";
-	public static final String COMMAND_PREFIX = "?command=";
+	private static final Logger logger = Logger.getLogger(ChangeLanguageCommand.class);
+
+	public  final String PARAMETER_COMMAND = "commandToLanguageChanger";
+	public  final String PARAMETER_LOCAL = "local";
+	public  final String COMMAND_PREFIX = "?command=";
+	
+	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		HttpSession session = request.getSession();
 		String command = (String) session.getAttribute(PARAMETER_COMMAND);
@@ -24,10 +31,11 @@ public class ChangeLanguageCommand implements Command{
 
 		try {
 			response.sendRedirect(request.getRequestURI() + COMMAND_PREFIX + command);
-			//request.getRequestDispatcher(uri).forward(request, response);
+			
 		} catch (IOException e) {
-			e.printStackTrace();
-			//Я обработаю, честное слово
+			logger.error(e);
+			response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+					+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 		}
 	}
 

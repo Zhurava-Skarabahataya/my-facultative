@@ -12,6 +12,8 @@ public interface UserInfoService {
 
 	void findUserRating(UserInfo loggedUserInfo) throws ServiceException;
 
+	void findUserInfoById(UserInfo userInfo) throws ServiceException;
+
 	DepartmentStaff findFacultyStaffForDean(UserInfo userInfo) throws ServiceException;
 
 	List<DepartmentStaff> findUnivercityStaffForRector(UserInfo userInfo) throws ServiceException;

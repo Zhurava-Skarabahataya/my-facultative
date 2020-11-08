@@ -140,9 +140,11 @@
 		</tr>
 
 
-
-
 	</table>
+
+
+
+
 	<c:choose>
 		
 		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState >2)}">
@@ -299,9 +301,9 @@
 			</c:if>
 		</c:when>
 		
-		<c:otherwise>
+		<c:when test="${sessionScope.bean == null}">
 			<div class="inscription"><c:out value="${need_to_registrate}"></c:out></div>
-		</c:otherwise>
+		</c:when>
 
 
 	</c:choose>

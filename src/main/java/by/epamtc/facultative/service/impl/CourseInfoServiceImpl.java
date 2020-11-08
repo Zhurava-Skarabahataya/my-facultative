@@ -3,8 +3,6 @@ package by.epamtc.facultative.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.sql.rowset.serial.SerialException;
-
 import by.epamtc.facultative.bean.StudentOnCourse;
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.bean.Course;
@@ -12,7 +10,6 @@ import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.dao.CourseDAO;
 import by.epamtc.facultative.dao.DAOFactory;
 import by.epamtc.facultative.dao.exception.DAOException;
-import by.epamtc.facultative.dao.impl.CourseDAOImpl;
 import by.epamtc.facultative.service.CourseInfoService;
 import by.epamtc.facultative.service.exception.ServiceException;
 
@@ -96,6 +93,11 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 		countStudentsOnCourse(userPageInfo.getCanselledCourses());
 		countStudentsOnCourse(userPageInfo.getEndedCourses());
 		countStudentsOnCourse(userPageInfo.getCurrentCourses());
+	}
+	
+	@Override
+	public void findDeanRunCourses(UserInfo userPageInfo){
+		
 	}
 
 	@Override
@@ -233,8 +235,8 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 
 	}
 
-	
-	private int getUserMarkOnCourse(int userId, RunnedCourse runCourse) {
+	@Override
+	public int getUserMarkOnCourse(int userId, RunnedCourse runCourse) {
 
 		List<StudentOnCourse> studentsOnCourse;
 		studentsOnCourse = runCourse.getStudentsOnCourse();
@@ -362,8 +364,9 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 			}
 		}
 	}
-
-	private boolean isStudentOnRunCourse(int userId, RunnedCourse info) {
+	
+	@Override
+	public boolean isStudentOnRunCourse(int userId, RunnedCourse info) {
 
 		List<StudentOnCourse> studentsOnCourse;
 		studentsOnCourse = info.getStudentsOnCourse();
@@ -380,7 +383,8 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 		return false;
 	}
 
-	private int getUserOnCourseApprovalStatusId(int userId, RunnedCourse info) {
+	@Override
+	public int getUserOnCourseApprovalStatusId(int userId, RunnedCourse info) {
 
 		List<StudentOnCourse> studentsOnCourse;
 		studentsOnCourse = info.getStudentsOnCourse();

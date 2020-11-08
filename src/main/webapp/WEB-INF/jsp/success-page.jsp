@@ -74,6 +74,9 @@
 			</c:when>
 			<c:when test="${requestScope.message =='success_student_approved'}">
 					<c:out value="${success_student_approved}" />
+					<form action="Controller" method="post">
+				<input type="hidden" name="command"	value="go_to_user_courses_page" /> 
+					<input type="submit" value="${go_to_user_courses_page}" /></form>
 				
 			</c:when>
 			<c:when test="${requestScope.message =='success_employee_approved'}">

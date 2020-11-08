@@ -56,6 +56,25 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
+	public void findUserInfoById(UserInfo userInfo) throws ServiceException {
+
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		UserDAO userDAO = daoFactory.getUserDAO();
+
+		try {
+			userDAO.provideUserInfoById(userInfo);
+
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+
+		}
+
+		String userLogin = userInfo.getUserLogin();
+		userInfo.setUserPhotoLink(PHOTO_LINK_PREFIX + userLogin + PHOTO_LINK_POSTFIX);
+
+	}
+
+	@Override
 	public DepartmentStaff findFacultyStaffForDean(UserInfo userInfo) throws ServiceException {
 
 		DAOFactory daoFactory = DAOFactory.getInstance();
@@ -103,14 +122,23 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public void findUserRating(UserInfo loggedUserInfo) throws ServiceException {
 
 		int studentId;
+		String studentLogin;
+
 		studentId = loggedUserInfo.getUserId();
+		studentLogin = loggedUserInfo.getUserLogin();
 
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		UserDAO userDAO = daoFactory.getUserDAO();
 
 		List<Mark> marks;
 		try {
-			marks = userDAO.findStudentResults(studentId);
+
+			if (studentLogin != null) {
+				marks = userDAO.findStudentResults(studentLogin);
+			} else {
+				marks = userDAO.findStudentResults(studentId);
+			}
+			
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

@@ -14,7 +14,6 @@ import by.epamtc.facultative.controller.command.Command;
 public class GoToUserPageCommand implements Command {
 
 	private static final Logger logger = Logger.getLogger(GoToUserPageCommand.class);
-
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
 	private final String USER_PAGE_PATH = "WEB-INF/jsp/user-page.jsp";
@@ -28,7 +27,8 @@ public class GoToUserPageCommand implements Command {
 
 		HttpSession session = request.getSession();
 
-		String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
+		String userLogin;
+		userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
 
 		if (userLogin != null) {
 

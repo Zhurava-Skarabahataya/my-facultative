@@ -18,6 +18,8 @@ import by.epamtc.facultative.service.exception.ServiceException;
 
 public class RegistrationCommand implements Command {
 
+	private static final Logger logger = Logger.getLogger(RegistrationCommand.class);
+
 	private final String PARAMETER_FIRST_NAME = "firstName";
 	private final String PARAMETER_SECOND_NAME = "secondName";
 	private final String PARAMETER_PATRONYMIC = "patronymic";
@@ -40,7 +42,6 @@ public class RegistrationCommand implements Command {
 
 	private final String REQUEST_ATTRIBUTE_BEAN = "bean";
 
-	private static final Logger logger = Logger.getLogger(RegistrationCommand.class);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {

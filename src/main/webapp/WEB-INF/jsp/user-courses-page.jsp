@@ -101,7 +101,6 @@
 					</c:if>
 
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
-						<th><c:out value="${lecturer}"/></th>
 						<th><c:out value="${available_places}"/></th>
 					</c:if>
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
@@ -135,7 +134,6 @@
 						</c:if>
 
 						<c:if test="${sessionScope.bean.userRoleId == 1}">
-							<td><c:out value="${course.lecturerName}" /></td>
 							<td><c:out
 									value="${course.studentLimit - course.studentAmount}" /></td>
 						</c:if>

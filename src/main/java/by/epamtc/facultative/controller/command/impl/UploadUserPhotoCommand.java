@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,19 +12,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.controller.command.Command;
 
 public class UploadUserPhotoCommand implements Command {
 
-	private static final String REQUEST_PRAMETER_PART = "file";
-	private static final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
-	private static final String FILENAME_EXTENSION = ".jpg";
-	private static final String PARAMETER_COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
-	private static final String PROJECT_PATH = "D:/Java";
-	private static final String FOLDER_PATH = "/user_photos/";
+	private static final Logger logger = Logger.getLogger(UploadUserPhotoCommand.class);
+
+	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
+	private final String PARAMETER_COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
+	
+	private final String REQUEST_PRAMETER_PART = "file";
+	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
+
+	private final String FILENAME_EXTENSION = ".jpg";
+	private final String PROJECT_PATH = "D:/Java";
+	private final String FOLDER_PATH = "/user_photos/";
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		Part file;
 		InputStream inputStream = null;
@@ -40,8 +47,9 @@ public class UploadUserPhotoCommand implements Command {
 			inputStream.read(buffer);
 
 			HttpSession session = request.getSession();
-			String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
-			
+			String userLogin;
+			userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
+
 			File targetFile = new File(
 					PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);
 
@@ -52,16 +60,12 @@ public class UploadUserPhotoCommand implements Command {
 			outStream = new FileOutputStream(targetFile);
 			outStream.write(buffer);
 
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} catch (ServletException e1) {
-			e1.printStackTrace();
-		}
-
-		try {
 			response.sendRedirect(request.getRequestURI() + PARAMETER_COMMAND_GO_TO_USER_PAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		} catch (IOException | ServletException e) {
+			logger.error(e);
+			response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+					+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 		}
 
 	}

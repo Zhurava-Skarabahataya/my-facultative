@@ -7,84 +7,75 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import by.epamtc.facultative.bean.Mark;
+import org.apache.log4j.Logger;
+
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
-import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
+import by.epamtc.facultative.service.ServiceProvider;
+import by.epamtc.facultative.service.UserInfoService;
+import by.epamtc.facultative.service.exception.ServiceException;
 
 public class ViewStudentRatingPageCommand implements Command {
-	
+
+	private static final Logger logger = Logger.getLogger(ViewStudentRatingPageCommand.class);
+
+	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
+	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
+	private final String MESSAGE_TO_ERROR_PAGE_NOT_AUTHORIZED = "&message=user_not_authorized";
+
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
+	private final String REQUEST_ATTRIBUTE_LOGIN = "userLogin";
+	private final String REQUEST_ATTRIBUTE_ID = "userId";
+	private final String REQUEST_ATTRIBUTE_STUDENT = "student";
 
 	private final String SESSION_ATTRIBUTE_BEAN = "bean";
 	private final String USER_RATING_PAGE_PATH = "WEB-INF/jsp/user-rating-page.jsp";
-	
-	private final String ERROR_PAGE_PATH = "WEB-INF/jsp/error-page.jsp";
-	
-	private final String COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 		HttpSession session = request.getSession();
 
-		String userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
-		
+		String userLogin;
+		userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
+
 		if (userLogin != null) {
-		
-		String userLoginFromRequest = request.getParameter("userLogin");
-		UserInfo loggedUserInfo = (UserInfo) session.getAttribute("bean");
 
-		
-		if (userLoginFromRequest != null && userLoginFromRequest.equals(userLogin)) {
+			String userLoginFromRequest;
+			UserInfo studentUserInfo;
+
+			userLoginFromRequest = request.getParameter(REQUEST_ATTRIBUTE_LOGIN);
 			
-			UserInfoServiceImpl userService = UserInfoServiceImpl.getInstance();
-			userService.findUserRating(loggedUserInfo);
-			
-			request.setAttribute("student", loggedUserInfo);
-			
-			for (Mark m: loggedUserInfo.getStudentMarks()) {
-				System.out.println(m);
-			}
-			
+			studentUserInfo = new UserInfo();
+			studentUserInfo.setUserLogin(userLoginFromRequest);
+
+			UserInfoService userService = ServiceProvider.getInstance().getUserInfoService();
 			try {
+				userService.findUserRating(studentUserInfo);
+
+				request.setAttribute(REQUEST_ATTRIBUTE_STUDENT, studentUserInfo);
 				request.getRequestDispatcher(USER_RATING_PAGE_PATH).forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			//значи, для самого студня
-		}
-		else {
-			//для других
-			int userRoleId = loggedUserInfo.getUserRoleId();
-			
-			
-			
-			
-		}
-		
-		
-		
-		}
-		else {
-			try {
-				session.setAttribute("errorMessage", "Необходимо войти в систему.");
-				request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 
+			} catch (ServletException | IOException | ServiceException e) {
+				e.printStackTrace();
+				logger.error(e);
+				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
+			}
+
+		} else
+
+		{
+			try {
+				response.sendRedirect(
+						request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_TO_ERROR_PAGE_NOT_AUTHORIZED);
+
+			} catch (IOException e) {
+				logger.error(e);
+				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 
 }

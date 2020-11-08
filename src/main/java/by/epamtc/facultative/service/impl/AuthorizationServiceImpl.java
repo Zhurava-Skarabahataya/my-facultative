@@ -3,7 +3,6 @@ package by.epamtc.facultative.service.impl;
 import by.epamtc.facultative.dao.AuthorizationDAO;
 import by.epamtc.facultative.dao.DAOFactory;
 import by.epamtc.facultative.dao.exception.DAOException;
-import by.epamtc.facultative.dao.impl.AuthorizationDAOImpl;
 import by.epamtc.facultative.service.AuthorizationService;
 import by.epamtc.facultative.service.exception.ServiceException;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;

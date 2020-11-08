@@ -19,6 +19,8 @@ public interface CourseInfoService {
 
 	void findLecturerRunCourses(UserInfo userPageInfo) throws ServiceException;
 
+	void findDeanRunCourses(UserInfo userPageInfo);
+
 	void applyStudentForRunCourse(int userId, int runCourseId) throws ServiceException;
 
 	void findInfoAboutCourse(Course course) throws ServiceException;
@@ -30,4 +32,11 @@ public interface CourseInfoService {
 	void defineCourseLaunchStatus(RunnedCourse runnedCourse);
 
 	void defineCourseLaunchStatus(List<RunnedCourse> courses);
+
+	boolean isStudentOnRunCourse(int userId, RunnedCourse info);
+
+	int getUserOnCourseApprovalStatusId(int userId, RunnedCourse info);
+
+	int getUserMarkOnCourse(int userId, RunnedCourse runCourse);
+
 }

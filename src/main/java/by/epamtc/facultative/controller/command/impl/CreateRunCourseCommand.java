@@ -93,6 +93,8 @@ public class CreateRunCourseCommand implements Command {
 			infoAboutRunnedCourse.setClassroomNumber(classroom);
 			infoAboutRunnedCourse.setStudentLimit(studentLimit);
 			infoAboutRunnedCourse.setCourseStatus(courseStatus);
+			
+			
 
 			CourseCreatorService courseCreatorService = ServiceProvider.getInstance().getCourseCreatorService();
 

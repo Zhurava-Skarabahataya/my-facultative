@@ -30,7 +30,6 @@ public class UpdateUserInfoServiceImpl implements UpdateUserInfoService{
 		String message = validator.validate(userPageInfo);
 		
 		if (message != null) {
-			
 			throw new ValidationException(message);
 		}
 		

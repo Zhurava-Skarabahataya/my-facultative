@@ -79,6 +79,9 @@
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="view_student_rating_page" /> 
+					<input type="hidden" name="userLogin" value="${requestScope.user.userLogin}"/>
+					<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+					
 					<input type="submit" value="${see_student_rating}" />
 		</form>
 		<c:if test="${sessionScope.bean.userRoleId > 2 && 
@@ -86,11 +89,15 @@
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="view_another_user_run_courses" /> 
+					<input type="hidden" name="userLogin" value="${requestScope.user.userLogin}"/>
+															<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+					
 					<input type="submit" value="${see_student_run_courses}" />
 		</form>
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="expel_student" /> 
+					<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
 					<input type="submit" value="${expell_student}" onclick="return confirm('Are you sure you want to expell?')" />
 		</form>
 		</c:if>
@@ -103,11 +110,15 @@
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="view_another_user_run_courses" /> 
+										<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+					
 					<input type="submit" value="${see_lecturer_run_courses}" />
 		</form>
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="fire_user_command" /> 
+										<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+					
 					<input type="submit" value="${fire_employee}" onclick="return confirm('Are you sure you want to fire?')" />
 		</form>
 	</c:if>

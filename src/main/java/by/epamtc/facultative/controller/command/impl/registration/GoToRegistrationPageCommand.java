@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import by.epamtc.facultative.controller.command.Command;
 
 public class GoToRegistrationPageCommand implements Command {
+	
+	private static final Logger logger = Logger.getLogger(GoToRegistrationPageCommand.class);
 
 	private final String REGISTRATION_PAGE_PATH = "WEB-INF/jsp/registration-page.jsp";
 
@@ -25,19 +27,20 @@ public class GoToRegistrationPageCommand implements Command {
 
 	private final String ATTRIBUTE_TO_REQUEST = "message_from_registration";
 
-	private static final Logger logger = Logger.getLogger(GoToRegistrationPageCommand.class);
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		HttpSession session = request.getSession();
-		String userLogin = (String) session.getAttribute(SESSION_PARAMETER_LOGIN);
+		String userLogin;
+		userLogin = (String) session.getAttribute(SESSION_PARAMETER_LOGIN);
 
 		if (userLogin != null) {
 
 			try {
 				response.sendRedirect(
 						request.getRequestURI() + COMMAND_GO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_ALREADY_AUTH);
+				
 			} catch (IOException e) {
 				logger.error(e);
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_ERROR_PAGE

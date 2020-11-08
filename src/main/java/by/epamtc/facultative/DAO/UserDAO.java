@@ -15,12 +15,17 @@ public interface UserDAO {
 
 	List<Mark> findStudentResults(int studentId) throws DAOException;
 
+	List<Mark> findStudentResults(String studentLogin) throws DAOException;
+
 	void provideUserInfo(UserInfo userPageInfo) throws DAOException;
+	
+	void provideUserInfoById(UserInfo userPageInfo) throws DAOException;
 
 	void updateUserInfo(UserInfo userPageInfo) throws DAOException;
 
 	void changeEmployeeStatus(int employeeId, int status) throws DAOException;
 
 	void findUserInfoById(UserInfo userInfo) throws DAOException;
+
 
 }
