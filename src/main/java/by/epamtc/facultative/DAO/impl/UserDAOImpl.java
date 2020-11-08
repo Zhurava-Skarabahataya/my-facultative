@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import by.epamtc.facultative.dao.QueryManager;
 import by.epamtc.facultative.dao.UserDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
@@ -19,48 +20,62 @@ import by.epamtc.facultative.bean.DepartmentStaff;
 import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 
+/**
+ * Sends SQL requests concerning info about user: personal info, students' marks, user's courses 
+ * to the database using Connections from ConnectionPool.
+ */
+
 public class UserDAOImpl implements UserDAO {
 
-	private static final UserDAOImplTest instance = new UserDAOImplTest();
+	/** A single instance of the class (pattern Singleton) */
+	private static final UserDAOImpl instance = new UserDAOImpl();
 
-	private static final Logger logger = Logger.getLogger(UserDAOImplTest.class);
+	/**	Logger of the class */
+	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
 
+	/** An error message sending while throwing exception */
 	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
 
+	/** Database parameter for user first name */
 	private final String DATABASE_PARAMETER_USER_FIRST_NAME = "users.first_name";
+	/** Database parameter for user second name */
 	private final String DATABASE_PARAMETER_USER_SECOND_NAME = "users.second_name";
+	/** Database parameter for user patronymic */
 	private final String DATABASE_PARAMETER_USER_PATRONYMIC = "users.patronymic";
+	/** Database parameter for user email */
 	private final String DATABASE_PARAMETER_USER_EMAIL = "users.user_email";
+	/** Database parameter for user role id */
 	private final String DATABASE_PARAMETER_USER_ROLE_ID = "users.user_role_id";
+	/** Database parameter for user id */
 	private final String DATABASE_PARAMETER_USER_ID = "users.user_id";
+	/** Database parameter for user role name */
 	private final String DATABASE_PARAMETER_USER_ROLE_NAME = "user_roles.role_name";
+	/** Database parameter for user result */
 	private final String DATABASE_PARAMETER_USER_RESULT = "users_has_run_courses.user_result";
+	/** Database parameter for user status */
 	private final String DATABASE_PARAMETER_USER_STATUS = "users.status";
+	/** Database parameter for user login */
 	private final String DATABASE_PARAMETER_USER_LOGIN = "users.user_login";
+	/** Database parameter for user adress */
 	private final String DATABASE_PARAMETER_USER_ADRESS = "user_details.user_adress";
+	/** Database parameter for user phone */
 	private final String DATABASE_PARAMETER_USER_PHONE = "user_details.user_mobile_number";
+	/** Database parameter for user date of birth */
 	private final String DATABASE_PARAMETER_USER_DATE_OF_BIRTH = "user_details.user_date_of_birth";
+	/** Database parameter for run course id */
 	private final String DATABASE_PARAMETER_RUN_COURSE_ID = "run_courses.run_courses_id";
+	/** Database parameter for department id */
 	private final String DATABASE_PARAMETER_DEPARTMENT_ID = "users.department_department_id";
+	/** Database parameter for user department name */
 	private final String DATABASE_PARAMETER_DEPARTMENT_NAME = "departments.name";
+	/** Database parameter for user course title */
 	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
 
-	private final String QUERY_SELECT_USER_DATA = "SELECT users.first_name, users.second_name, users.patronymic, "
-			+ "users.user_email, users.department_department_id, departments.name, "
-			+ "users.user_role_id, user_roles.role_name, " + " user_details.user_adress,"
-			+ "user_details.user_mobile_number, user_details.user_date_of_birth, users.user_id, " + "users.status "
-			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
-			+ "JOIN departments ON users.department_department_id = departments.department_id "
-			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_login = ?";
 	
-	private final String QUERY_SELECT_USER_DATA_BY_ID = "SELECT users.first_name, users.second_name, users.patronymic, "
-			+ "users.user_email, users.department_department_id, departments.name, "
-			+ "users.user_role_id, user_roles.role_name, " + " user_details.user_adress,"
-			+ "user_details.user_mobile_number, user_details.user_date_of_birth, users.user_id, " 
-			+ "users.status, users.user_login "
-			+ " FROM users  JOIN user_details ON users.user_id = user_details.users_user_id "
-			+ "JOIN departments ON users.department_department_id = departments.department_id "
-			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id" + " where users.user_id = ?";
+	
+	private final String QUERY_SELECT_USER_DATA = "query.select_user_data";
+	
+	private final String QUERY_SELECT_USER_DATA_BY_ID = "query.select_user_data_by_id";
 
 	private final String QUERY_FOR_USER_DATA_BY_ID = "SELECT users.first_name, users.second_name, "
 			+ "users.patronymic, users.user_email, users.department_department_id, departments.name,"
@@ -116,7 +131,7 @@ public class UserDAOImpl implements UserDAO {
 
 	}
 
-	public static UserDAOImplTest getInstance() {
+	public static UserDAOImpl getInstance() {
 		return instance;
 	}
 
@@ -250,7 +265,8 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			connection = connectionPool.getFreeConnection();
 
-			String query = QUERY_SELECT_USER_DATA;
+			QueryManager queryManager = QueryManager.getInstance();
+			String query = queryManager.getValue(QUERY_SELECT_USER_DATA);
 
 			statement = connection.prepareStatement(query);
 
@@ -319,16 +335,21 @@ public class UserDAOImpl implements UserDAO {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
 
 		} catch (ConnectionPoolException e) {
+			e.printStackTrace();
+
 			throw new DAOException(e);
 
 		} finally {
 			try {
 				connectionPool.closeConnection(resultSet, statement, connection);
 			} catch (ConnectionPoolException e) {
+				e.printStackTrace();
+
 				throw new DAOException(e);
 			}
 		}

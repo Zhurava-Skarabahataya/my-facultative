@@ -316,7 +316,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 				student.setUserLogin(userLogin);
 				student.setUserId(studentId);
 
-				UserDAOImplTest userDAO = UserDAOImplTest.getInstance();
+				UserDAOImpl userDAO = UserDAOImpl.getInstance();
 				List<Mark> studentMarks = userDAO.findStudentResults(studentId);
 
 				student.setStudentMarks(studentMarks);
@@ -409,7 +409,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 				student.setUserFacultyId(departmentId);
 				student.setUserFaculty(departmentName);
 
-				UserDAOImplTest userDAO = UserDAOImplTest.getInstance();
+				UserDAOImpl userDAO = UserDAOImpl.getInstance();
 				List<Mark> studentMarks = userDAO.findStudentResults(userId);
 
 				student.setStudentMarks(studentMarks);
