@@ -25,7 +25,5 @@ public interface UserDAO {
 
 	void changeEmployeeStatus(int employeeId, int status) throws DAOException;
 
-	void findUserInfoById(UserInfo userInfo) throws DAOException;
-
 
 }

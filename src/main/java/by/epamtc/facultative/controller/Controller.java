@@ -54,7 +54,11 @@ public class Controller extends HttpServlet {
 
 		commandName = request.getParameter(REQUEST_PARAMETER_COMMAND);
 		Command currentCommand = CommandProvider.getInstance().getCommand(commandName.toUpperCase());
-		currentCommand.execute(request, response);
+
+		try{currentCommand.execute(request, response);}
+		catch (ServletException| IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

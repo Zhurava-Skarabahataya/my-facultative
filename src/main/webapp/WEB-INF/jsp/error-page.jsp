@@ -23,6 +23,7 @@
 <fmt:message bundle="${loc}" key="to_main_page" var="to_main_page" />
 <fmt:message bundle="${loc}" key="to_user_page" var="to_user_page" />
 <fmt:message bundle="${loc}" key="user_already_authorized" var="user_already_authorized" />
+<fmt:message bundle="${loc}" key="server_error" var="server_error" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_error_page" />
 <body>
@@ -52,6 +53,9 @@
 			</c:when>
 			<c:when test="${requestScope.errorMessage=='promblems_with_authorization'}">
 					<c:out value="${promblems_with_authorization}" />
+			</c:when>
+			<c:when test="${requestScope.errorMessage=='server_error'}">
+					<c:out value="${server_error}" />
 			</c:when>
 			
 			

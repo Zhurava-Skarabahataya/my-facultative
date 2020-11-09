@@ -31,6 +31,7 @@
 <fmt:message bundle="${loc}" key="my_status" var="my_status" />
 <fmt:message bundle="${loc}" key="more" var="more" />
 <fmt:message bundle="${loc}" key="mark" var="mark" />
+<fmt:message bundle="${loc}" key="log_out" var="log_out" />
 <fmt:message bundle="${loc}" key="more_about_course" var="more_about_course" />
 <fmt:message bundle="${loc}" key="no_courses_yet" var="no_courses_yet" />
 <fmt:message bundle="${loc}" key="view_available_run_courses" var="view_available_run_courses" />
@@ -64,7 +65,9 @@
 
 			<form style="display: inline; float: center" action="Controller"
 				method="post">
-				<input type="hidden" name="command" value="go_to_user_rating_page" />
+				<input type="hidden" name="command" value="view_student_rating_page" />
+								<input type="hidden" name="userLogin"	value="${bean.userLogin}" /> 
+				
 				<input type="submit" value="${my_rating}" /><br />
 			</form>
 
@@ -79,6 +82,11 @@
 			</form>
 
 		</c:if>
+		<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="logout" /> <input type="submit"
+					value="${log_out}" /><br />
+			</form>
 	</div>
 
 	<div>

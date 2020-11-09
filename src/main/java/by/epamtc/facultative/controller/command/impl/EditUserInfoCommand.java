@@ -36,7 +36,6 @@ public class EditUserInfoCommand implements Command {
 	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
 	private final String MESSAGE_GO_TO_ERROR_PAGE_NOT_AUTHORIZED = "&message=user_not_authorized";
 
-	private final String COMMAND_GO_TO_USER_PAGE = "?command=go_to_user_page";
 	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
 	private final String MESSAGE_TO_ERROR_PAGE_WRONG_DATE_FORMAT = "&message=wrong_date_format";
 	private final String MESSAGE_TO_ERROR_PAGE_INVALID_USER_DATA = "&message=invalid_user_data";

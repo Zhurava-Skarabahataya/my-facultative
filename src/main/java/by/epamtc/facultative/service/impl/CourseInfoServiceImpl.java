@@ -17,7 +17,8 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 
 	private static final CourseInfoServiceImpl instance = new CourseInfoServiceImpl();
 
-	private final String PHOTO_LINK_PREFIX = "D:/Java/facultative-project/user_photos/";
+	//private final String PHOTO_LINK_PREFIX = "D:/Java/facultative-project/user_photos/";
+	private final String PHOTO_LINK_PREFIX = "image/";
 	private final String PHOTO_LINK_POSTFIX = ".jpg";
 	private final int APPROVED_STUDENT_STATUS = 2;
 	private final int RUN_COURSE_STATUS_CANSELLED = 2;

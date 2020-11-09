@@ -21,8 +21,8 @@ import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 
 /**
- * Sends SQL requests concerning info about user: personal info, students' marks, user's courses 
- * to the database using Connections from ConnectionPool.
+ * Sends SQL requests concerning info about user: personal info, students'
+ * marks, user's courses to the database using Connections from ConnectionPool.
  */
 
 public class UserDAOImpl implements UserDAO {
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
 	/** A single instance of the class (pattern Singleton) */
 	private static final UserDAOImpl instance = new UserDAOImpl();
 
-	/**	Logger of the class */
+	/** Logger of the class */
 	private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
 
 	/** An error message sending while throwing exception */
@@ -71,70 +71,54 @@ public class UserDAOImpl implements UserDAO {
 	/** Database parameter for user course title */
 	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
 
-	
-	
+	/** Property key for query for selecting data about user by login */
 	private final String QUERY_SELECT_USER_DATA = "query.select_user_data";
-	
-	private final String QUERY_SELECT_USER_DATA_BY_ID = "query.select_user_data_by_id";
 
-	private final String QUERY_FOR_USER_DATA_BY_ID = "SELECT users.first_name, users.second_name, "
-			+ "users.patronymic, users.user_email, users.department_department_id, departments.name,"
-			+ " users.user_role_id, user_roles.role_name, user_details.user_adress, "
-			+ "user_details.user_mobile_number, user_details.user_date_of_birth, users.status, users.user_login "
-			+ "FROM users  " + "JOIN user_details ON users.user_id = user_details.users_user_id "
-			+ "JOIN departments ON users.department_department_id = departments.department_id "
-			+ "JOIN user_roles ON user_roles.role_id = users.user_role_id " + "WHERE users.user_id = ?";
+	/** Property key for query for selecting data about user by id */
+	private final String QUERY_SELECT_USER_DATA_BY_ID = "query.select_user_by_id";
 
-	private final String QUERY_UPDATE_USER_DATA_IN_USERS = "UPDATE users "
-			+ "SET users.first_name = ? , users.second_name = ?, users.patronymic = ?, "
-			+ " users.department_department_id = ? WHERE users.user_id = ?";
+	/** Property key for query for updating user data in users table */
+	private final String QUERY_UPDATE_USER_DATA_IN_USERS = "query.update_user_data_in_users";
 
-	private final String QUERY_UPDATE_USER_DATA_IN_USER_DETAILS = "UPDATE user_details "
-			+ "SET user_adress = ? , user_mobile_number = ?, user_date_of_birth = ?" + " WHERE users_user_id = ?";
+	/** Property key for query for updating user data in user details table */
+	private final String QUERY_UPDATE_USER_DATA_IN_USER_DETAILS = "query.update_user_data_in_user_details";
 
-	private final String QUERY_FOR_CHANGING_EMPLOYEE_STATUS = "UPDATE users " + "SET status = ? WHERE user_id = ?";
+	/** Property key for query for changing employee status */
+	private final String QUERY_FOR_CHANGING_EMPLOYEE_STATUS = "query.change_employee_status";
 
-	private final String QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT = "SELECT "
-			+ "users.user_id, users.first_name, users.second_name, users.patronymic, users.user_login, "
-			+ "users.user_role_id, users.status, user_roles.role_name, "
-			+ "user_details.user_mobile_number, user_details.user_adress, " + "user_details.user_date_of_birth "
-			+ "FROM users JOIN user_details ON users.user_id = user_details.users_user_id "
-			+ " JOIN user_roles ON user_roles.role_id = users.user_role_id "
-			+ "WHERE users.user_role_id = 2 AND users.department_department_id = ?";
+	/** Property key for query for selecting department staff by department id */
+	private final String QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT = "query.select_staff_of_department";
 
-	private final String QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY = "SELECT "
-			+ "users.user_id, users.first_name, users.second_name, users.patronymic, users.user_login, "
-			+ "departments.name, departments.department_id, "
-			+ "users.user_role_id, users.status, user_roles.role_name, "
-			+ "user_details.user_mobile_number, user_details.user_adress, " + "user_details.user_date_of_birth "
-			+ "FROM users JOIN user_details ON users.user_id = user_details.users_user_id "
-			+ " JOIN user_roles ON user_roles.role_id = users.user_role_id "
-			+ "JOIN departments ON departments.department_id = users.department_department_id "
-			+ "WHERE users.user_role_id = 2 OR users.user_role_id = 3";
+	/** Property key for query for selecting university staff */
+	private final String QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY = "query.select_staff_of_university";
 
-	private final String QUERY_FOR_STUDENT_RESULTS = "SELECT users_has_run_courses.user_result, "
-			+ "run_courses.run_courses_id, courses.title FROM users_has_run_courses "
-			+ "JOIN run_courses ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
-			+ "JOIN courses ON courses.course_id = run_courses.courses_course_id"
-			+ " WHERE users_has_run_courses.users_user_id = ?";
-	
-	private final String QUERY_FOR_STUDENT_RESULTS_BY_LOGIN = "SELECT users_has_run_courses.user_result, "
-			+ "run_courses.run_courses_id, courses.title, users.user_id "
-			+ "FROM users JOIN users_has_run_courses "
-			+ "ON users.user_id = users_has_run_courses.users_user_id "
-			+ "JOIN run_courses "
-			+ "ON run_courses.run_courses_id = users_has_run_courses.run_courses_id "
-			+ "JOIN courses ON courses.course_id = run_courses.courses_course_id "
-			+ "WHERE users.user_login = ?";
+	/** Property key for query for selecting student results by id */
+	private final String QUERY_FOR_STUDENT_RESULTS = "query.select_student_results";
 
+	/** Property key for query for selecting student results by login */
+	private final String QUERY_FOR_STUDENT_RESULTS_BY_LOGIN = "query.select_student_results_by_login";
+
+	/** Private constructor for singleton */
 	private UserDAOImpl() {
 
 	}
 
+	/**
+	 * Method returns single instance of the class
+	 * 
+	 * @return single instance of the class
+	 */
 	public static UserDAOImpl getInstance() {
 		return instance;
 	}
 
+	/**
+	 * Method finds all marks of student with this id and returns them as
+	 * collection.
+	 * 
+	 * @param studentId Student's user id
+	 * @return ArrayList <Marks> of marks
+	 */
 	@Override
 	public List<Mark> findStudentResults(int studentId) throws DAOException {
 
@@ -149,7 +133,8 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			connection = connectionPool.getFreeConnection();
 
-			statement = connection.prepareStatement(QUERY_FOR_STUDENT_RESULTS);
+			String query = QueryManager.getInstance().getValue(QUERY_FOR_STUDENT_RESULTS);
+			statement = connection.prepareStatement(query);
 
 			statement.setInt(1, studentId);
 
@@ -193,7 +178,14 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return marks;
 	}
-	
+
+	/**
+	 * Method finds all marks of student with current login and returns them as
+	 * collection.
+	 * 
+	 * @param studentLogin student's user login
+	 * @return ArrayList <Marks> of marks
+	 */
 	@Override
 	public List<Mark> findStudentResults(String studentLogin) throws DAOException {
 
@@ -208,7 +200,8 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			connection = connectionPool.getFreeConnection();
 
-			statement = connection.prepareStatement(QUERY_FOR_STUDENT_RESULTS_BY_LOGIN);
+			String query = QueryManager.getInstance().getValue(QUERY_FOR_STUDENT_RESULTS_BY_LOGIN);
+			statement = connection.prepareStatement(query);
 
 			statement.setString(1, studentLogin);
 
@@ -253,6 +246,11 @@ public class UserDAOImpl implements UserDAO {
 		return marks;
 	}
 
+	/**
+	 * Finds info about user: name, role, email, faculty, adress and phone.
+	 * 
+	 * @param userPageInfo Object of UserInfo, containing info about user login
+	 */
 	@Override
 	public void provideUserInfo(UserInfo userPageInfo) throws DAOException {
 
@@ -355,9 +353,14 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 	}
-	
+
+	/**
+	 * Finds info about user: name, role, email, faculty, adress and phone.
+	 * 
+	 * @param userPageInfo Object of UserInfo, containing info about user id
+	 */
 	@Override
-	public	void provideUserInfoById(UserInfo userPageInfo) throws DAOException{
+	public void provideUserInfoById(UserInfo userPageInfo) throws DAOException {
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 
@@ -367,7 +370,7 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			connection = connectionPool.getFreeConnection();
 
-			String query = QUERY_SELECT_USER_DATA_BY_ID;
+			String query = QueryManager.getInstance().getValue(QUERY_SELECT_USER_DATA_BY_ID);
 
 			statement = connection.prepareStatement(query);
 
@@ -396,7 +399,6 @@ public class UserDAOImpl implements UserDAO {
 
 				LocalDate userDateOfBirth = null;
 
-				userId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
 				userFacultyId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
 				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
 				userStatusId = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
@@ -417,7 +419,6 @@ public class UserDAOImpl implements UserDAO {
 					userDateOfBirth = sqlDate.toLocalDate();
 				}
 
-				userPageInfo.setUserId(userId);
 
 				userPageInfo.setUserFirstName(userFirstName);
 				userPageInfo.setUserSecondName(userSecondName);
@@ -451,9 +452,14 @@ public class UserDAOImpl implements UserDAO {
 				throw new DAOException(e);
 			}
 		}
-		
+
 	}
 
+	/**
+	 * Updates user info in database.
+	 * 
+	 * @param userPageInfo Object of UserInfo class, contains changed information
+	 */
 	@Override
 	public void updateUserInfo(UserInfo userPageInfo) throws DAOException {
 
@@ -465,8 +471,12 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			connection = connectionPool.getFreeConnection();
 
-			statement1 = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USERS);
-			statement2 = connection.prepareStatement(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
+			QueryManager queryManager = QueryManager.getInstance();
+			String query1 = queryManager.getValue(QUERY_UPDATE_USER_DATA_IN_USERS);
+			String query2 = queryManager.getValue(QUERY_UPDATE_USER_DATA_IN_USER_DETAILS);
+
+			statement1 = connection.prepareStatement(query1);
+			statement2 = connection.prepareStatement(query2);
 
 			statement1.setString(1, userPageInfo.getUserFirstName());
 			statement1.setString(2, userPageInfo.getUserSecondName());
@@ -508,6 +518,13 @@ public class UserDAOImpl implements UserDAO {
 
 	}
 
+	/**
+	 * Finds info about staff of the department.
+	 * 
+	 * @param departmentId id of current department
+	 * @return object of DepartmentStaff class, which contains three collections:
+	 *         with working lecturers, not approved lecturers and fired lecturers.
+	 */
 	@Override
 	public DepartmentStaff findFacultyStaffInfo(int departmentId) throws DAOException {
 
@@ -525,7 +542,9 @@ public class UserDAOImpl implements UserDAO {
 
 		try {
 			connection = connectionPool.getFreeConnection();
-			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
+
+			String query = QueryManager.getInstance().getValue(QUERY_FOR_FINDING_STAFF_OF_DEPARTMENT);
+			statement = connection.prepareStatement(query);
 
 			statement.setInt(1, departmentId);
 
@@ -610,6 +629,12 @@ public class UserDAOImpl implements UserDAO {
 		return facultyStaffInfo;
 	}
 
+	/**
+	 * Finds info about staff of all departments.
+	 * 
+	 * @return object of DepartmentStaff class, which contains collection of all
+	 *         lecturers.
+	 */
 	@Override
 	public DepartmentStaff findAllFacultiesStaffInfo() throws DAOException {
 
@@ -625,7 +650,9 @@ public class UserDAOImpl implements UserDAO {
 
 		try {
 			connection = connectionPool.getFreeConnection();
-			statement = connection.prepareStatement(QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY);
+
+			String query = QueryManager.getInstance().getValue(QUERY_FOR_FINDING_STAFF_OF_UNIVERSITY);
+			statement = connection.prepareStatement(query);
 
 			resultSet = statement.executeQuery();
 
@@ -706,6 +733,12 @@ public class UserDAOImpl implements UserDAO {
 		return allFacultiesStaffInfo;
 	}
 
+	/**
+	 * Changes status of the employee.
+	 * 
+	 * @param employeeId user id of the employee
+	 * @param status     id of the working status
+	 */
 	@Override
 	public void changeEmployeeStatus(int employeeId, int status) throws DAOException {
 
@@ -717,7 +750,9 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			connection = connectionPool.getFreeConnection();
 
-			statement = connection.prepareStatement(QUERY_FOR_CHANGING_EMPLOYEE_STATUS);
+			String query = QueryManager.getInstance().getValue(QUERY_FOR_CHANGING_EMPLOYEE_STATUS);
+
+			statement = connection.prepareStatement(query);
 
 			statement.setInt(1, status);
 			statement.setInt(2, employeeId);
@@ -741,107 +776,6 @@ public class UserDAOImpl implements UserDAO {
 
 		}
 
-	}
-
-	@Override
-	public void findUserInfoById(UserInfo userInfo) throws DAOException {
-
-		int userId;
-		userId = userInfo.getUserId();
-
-		ConnectionPool connectionPool = ConnectionPool.getInstance();
-		Connection connection = null;
-
-		PreparedStatement statement = null;
-
-		ResultSet resultSet = null;
-
-		try {
-			connection = connectionPool.getFreeConnection();
-
-			String query = QUERY_FOR_USER_DATA_BY_ID;
-
-			statement = connection.prepareStatement(query);
-
-			statement.setInt(1, userId);
-
-			resultSet = statement.executeQuery();
-
-			if (resultSet.next()) {
-
-				int userStatusId;
-				int userRoleId;
-				int userFacultyId;
-
-				String userFirstName;
-				String userSecondName;
-				String userPatronymic;
-				String userEmail;
-
-				String userRole;
-				String userFaculty;
-				String userAdress;
-				String userPhone;
-				String userLogin;
-
-				LocalDate userDateOfBirth;
-				Date sqlDate;
-
-				userFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
-				userSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
-				userPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
-				userEmail = resultSet.getString(DATABASE_PARAMETER_USER_EMAIL);
-				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
-
-				userFacultyId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
-				userFaculty = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
-
-				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
-				userRole = resultSet.getString(DATABASE_PARAMETER_USER_ROLE_NAME);
-				userStatusId = resultSet.getInt(DATABASE_PARAMETER_USER_STATUS);
-
-				userAdress = resultSet.getString(DATABASE_PARAMETER_USER_ADRESS);
-				userPhone = resultSet.getString(DATABASE_PARAMETER_USER_PHONE);
-
-				sqlDate = resultSet.getDate(DATABASE_PARAMETER_USER_DATE_OF_BIRTH);
-				userDateOfBirth = null;
-
-				if (sqlDate != null) {
-					userDateOfBirth = sqlDate.toLocalDate();
-				}
-
-				userInfo.setUserFirstName(userFirstName);
-				userInfo.setUserSecondName(userSecondName);
-				userInfo.setUserPatronymic(userPatronymic);
-				userInfo.setUserEmail(userEmail);
-				userInfo.setUserLogin(userLogin);
-
-				userInfo.setUserRoleId(userRoleId);
-				userInfo.setUserRole(userRole);
-				userInfo.setUserStatusId(userStatusId);
-
-				userInfo.setUserFacultyId(userFacultyId);
-				userInfo.setUserFaculty(userFaculty);
-
-				userInfo.setUserAdress(userAdress);
-				userInfo.setUserPhone(userPhone);
-				userInfo.setUserDateOfBirth(userDateOfBirth);
-			}
-
-		} catch (SQLException e) {
-			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
-			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
-
-		} catch (ConnectionPoolException e) {
-			throw new DAOException(e);
-
-		} finally {
-			try {
-				connectionPool.closeConnection(resultSet, statement, connection);
-			} catch (ConnectionPoolException e) {
-				throw new DAOException(e);
-			}
-		}
 	}
 
 }

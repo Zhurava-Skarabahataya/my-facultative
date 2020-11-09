@@ -20,7 +20,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	private static final UserInfoServiceImpl instance = new UserInfoServiceImpl();
 
-	private final String PHOTO_LINK_PREFIX = "D:/Java/facultative-project/user_photos/";
+	//private final String PHOTO_LINK_PREFIX = "D:/Java/JavaWorkspace/facultative-project/src/main/webapp/image";
+	private final String PHOTO_LINK_PREFIX = "image/";
 	private final String PHOTO_LINK_POSTFIX = ".jpg";
 	private final int LECTURER_STATUS_WORKING = 2;
 	private final int LECTURER_STATUS_NOT_APPROVED = 1;

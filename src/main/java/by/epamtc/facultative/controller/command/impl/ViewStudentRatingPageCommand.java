@@ -33,7 +33,6 @@ public class ViewStudentRatingPageCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
 		HttpSession session = request.getSession();
 
 		String userLogin;
@@ -45,15 +44,22 @@ public class ViewStudentRatingPageCommand implements Command {
 			UserInfo studentUserInfo;
 
 			userLoginFromRequest = request.getParameter(REQUEST_ATTRIBUTE_LOGIN);
-			
 			studentUserInfo = new UserInfo();
-			studentUserInfo.setUserLogin(userLoginFromRequest);
 
+			if (userLoginFromRequest == null) {
+				studentUserInfo.setUserLogin(userLogin);
+
+			} else {
+				studentUserInfo.setUserLogin(userLoginFromRequest);
+			}
+			
 			UserInfoService userService = ServiceProvider.getInstance().getUserInfoService();
 			try {
+
 				userService.findUserRating(studentUserInfo);
 
 				request.setAttribute(REQUEST_ATTRIBUTE_STUDENT, studentUserInfo);
+
 				request.getRequestDispatcher(USER_RATING_PAGE_PATH).forward(request, response);
 
 			} catch (ServletException | IOException | ServiceException e) {
@@ -63,9 +69,8 @@ public class ViewStudentRatingPageCommand implements Command {
 						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 			}
 
-		} else
+		} else{
 
-		{
 			try {
 				response.sendRedirect(
 						request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_TO_ERROR_PAGE_NOT_AUTHORIZED);

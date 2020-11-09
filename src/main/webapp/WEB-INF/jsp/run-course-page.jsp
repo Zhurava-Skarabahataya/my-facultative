@@ -213,7 +213,7 @@
 		<c:when test="${(sessionScope.bean.userRoleId == 2 && 
 		requestScope.run_course.lecturerId == sessionScope.bean.userId) ||
 		 (sessionScope.bean.userRoleId == 3 
-		 && sessionScope.bean.userFacultyId == run_course.infoAboutCoursecourseDepartment) ||
+		 && sessionScope.bean.userFacultyId == run_course.infoAboutCourse.courseDepartment) ||
 		 sessionScope.bean.userRoleId == 4}">
 			<div class="inscription"><c:out value="${student_list}"/></div>
 			<c:if test="${empty requestScope.run_course.studentsOnCourse }">

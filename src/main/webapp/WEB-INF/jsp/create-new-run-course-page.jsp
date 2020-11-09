@@ -24,6 +24,7 @@
 <fmt:message bundle="${loc}" key="schedule" var="schedule" />
 <fmt:message bundle="${loc}" key="classroom" var="classroom" />
 <fmt:message bundle="${loc}" key="max_amount_students" var="max_amount_students" />
+<fmt:message bundle="${loc}" key="log_out" var="log_out" />
 
 <fmt:message bundle="${loc}" key="button.my_page" var="my_page" />
 <fmt:message bundle="${loc}" key="button.my_courses" var="my_courses" />
@@ -56,6 +57,11 @@
 			</form>
 
 		</c:if>
+		<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="logout" /> <input type="submit"
+					value="${log_out}" /><br />
+			</form>
 	</div>
 
 	<div class="creatingCourse">

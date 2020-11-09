@@ -108,6 +108,8 @@
 <fmt:message bundle="${loc}" key="login_is_too_long"
 	var="login_is_too_long" />
 <fmt:message bundle="${loc}" key="data_is_empty" var="data_is_empty" />
+<fmt:message bundle="${loc}" key="login_is_busy" var="login_is_busy" />
+<fmt:message bundle="${loc}" key="email_is_busy" var="email_is_busy" />
 
 
 <c:set var="commandToLanguageChanger" scope="session"
@@ -179,6 +181,13 @@
 					test="${requestScope.message_from_registration == 'data_is_empty'}">
 					<c:out value="${data_is_empty}" />
 				</c:when>
+				<c:when
+					test="${requestScope.message_from_registration == 'login_is_busy'}">
+					<c:out value="${login_is_busy}" />
+				</c:when>
+				<c:when	test="${requestScope.message_from_registration == 'email_is_busy'}">
+					<c:out value="${email_is_busy}" />
+				</c:when>
 
 			</c:choose>
 
@@ -225,7 +234,7 @@
 			</tr>
 			<tr>
 				<td><c:out value="${position}" /></td>
-				<td><input type="radio" name=position value="1"> <c:out
+				<td><input type="radio" name=position required value="1"> <c:out
 						value="${student}" /> <input type="radio" name="position"
 					value="2"> <c:out value="${lecturer}" /> <input
 					type="radio" name="position" value="3"> <c:out
@@ -234,7 +243,7 @@
 			</tr>
 			<tr>
 				<td><c:out value="${faculty}" /></td>
-				<td><br> <input type="radio" name=faculty value="1">
+				<td><br> <input type="radio" name=faculty required value="1">
 					<c:out value="${herbology_and_potions}" /> <br> <input
 					type="radio" name=faculty value="2"> <c:out
 						value="${applied_magic}" /> <br> <input type="radio"

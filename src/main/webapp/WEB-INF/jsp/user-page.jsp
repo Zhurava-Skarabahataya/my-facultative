@@ -50,6 +50,7 @@
 <fmt:message bundle="${loc}" key="button.edit"	var="edit" />
 <fmt:message bundle="${loc}" key="button.go_to_staff_page"	var="go_to_staff_page" />
 <fmt:message bundle="${loc}" key="button.go_to_students_page"	var="go_to_students_page" />
+<fmt:message bundle="${loc}" key="log_out"	var="log_out" />
 
 
 
@@ -111,7 +112,7 @@
 		<form style = "display:inline" action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="logout" /> <input type="submit"
-					value="Выйти" /><br />
+					value="${log_out}" /><br />
 			</form>
 		</div>
 		

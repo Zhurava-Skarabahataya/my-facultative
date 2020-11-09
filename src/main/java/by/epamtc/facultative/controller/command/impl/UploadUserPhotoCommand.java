@@ -28,8 +28,11 @@ public class UploadUserPhotoCommand implements Command {
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
 	private final String FILENAME_EXTENSION = ".jpg";
-	private final String PROJECT_PATH = "D:/Java";
-	private final String FOLDER_PATH = "/user_photos/";
+//	private final String FOLDER_PATH = "image/";
+	private final String FOLDER_PATH = "D:/Java/JavaWorkspace/facultative-project/src/main/webapp/image/";
+
+	//private final String PROJECT_PATH = "D:/Java";
+	//private final String FOLDER_PATH = "/user_photos/";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,7 +54,9 @@ public class UploadUserPhotoCommand implements Command {
 			userLogin = (String) session.getAttribute(SESSION_ATTRIBUTE_LOGIN);
 
 			File targetFile = new File(
-					PROJECT_PATH + request.getContextPath() + FOLDER_PATH + userLogin + FILENAME_EXTENSION);
+					//request.getContextPath() + 
+					FOLDER_PATH + userLogin + FILENAME_EXTENSION);
+			System.out.println(FOLDER_PATH + userLogin + FILENAME_EXTENSION);
 
 			if (!targetFile.exists()) {
 				targetFile.createNewFile();

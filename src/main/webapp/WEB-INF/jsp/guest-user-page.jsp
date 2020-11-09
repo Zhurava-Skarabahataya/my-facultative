@@ -90,9 +90,9 @@
 				<input type="hidden" name="command"
 					value="view_another_user_run_courses" /> 
 					<input type="hidden" name="userLogin" value="${requestScope.user.userLogin}"/>
-															<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
-					
-					<input type="submit" value="${see_student_run_courses}" />
+					<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+							<input type="hidden" name="userRole" value="${requestScope.user.userRoleId}"/>
+						<input type="submit" value="${see_student_run_courses}" />
 		</form>
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
@@ -107,13 +107,17 @@
 	
 	<c:if test="${requestScope.user.userRoleId > 1 && sessionScope.bean.userRoleId > 2 && (
 	sessionScope.bean.userFacultyId == requestScope.user.userFacultyId ||  sessionScope.bean.userRoleId ==4) }">
+		<c:if test="${requestScope.user.userRoleId != 3}">
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="view_another_user_run_courses" /> 
-										<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
-					
+				<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+									<input type="hidden" name="userLogin" value="${requestScope.user.userLogin}"/>
+				
+					<input type="hidden" name="userRole" value="${requestScope.user.userRoleId}"/>
 					<input type="submit" value="${see_lecturer_run_courses}" />
 		</form>
+		</c:if>
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
 					value="fire_user_command" /> 

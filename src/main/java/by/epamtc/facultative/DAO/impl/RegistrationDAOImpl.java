@@ -23,7 +23,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			+ "first_name, second_name, patronymic, user_role_id, department_department_id, status"
 			+ ") VALUES (?, ?,?,?,?,?,?,?, 1)";
 
-	private final String DB_PARAMETER_USER_ID = "users_user_id";
+	private final String DB_PARAMETER_USER_ID = "users.user_id";
 
 	private final String QUERY_FIND_USER_ID_BY_LOGIN = "SELECT user_id FROM users WHERE user_login = ?";
 

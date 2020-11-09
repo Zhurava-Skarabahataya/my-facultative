@@ -22,7 +22,6 @@ public class GoToRunCoursePageCommand implements Command {
 
 	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
 	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
-	private final String MESSAGE_TO_ERROR_PAGE_NOT_AUTHORIZED = "&message=user_not_authorized";
 	private final String RUN_COURSE_PAGE_PATH = "WEB-INF/jsp/run-course-page.jsp";
 
 	private final String SESSION_PARAMETER_USER_LOGIN = "userLogin";
@@ -36,32 +35,31 @@ public class GoToRunCoursePageCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
 		HttpSession session = request.getSession();
 		String userLogin;
 		userLogin = (String) session.getAttribute(SESSION_PARAMETER_USER_LOGIN);
 
-		if (userLogin != null) {
+		int runCourseId;
+		RunnedCourse runCourse;
 
-			RunnedCourse runCourse = null;
-			UserInfo userInfo;
-			int runCourseId;
-			int userId;
-			int userRoleId;
+		runCourseId = Integer.parseInt(request.getParameter(REQUEST_PARAMETER_RUN_COURSE_ID));
 
-			userInfo = (UserInfo) session.getAttribute(SESSION_PARAMETER_BEAN);
-			userId = userInfo.getUserId();
-			userRoleId = userInfo.getUserRoleId();
+		runCourse = null;
 
-			CourseInfoService courseInfoProvider = ServiceProvider.getInstance().getCourseInfoService();
+		CourseInfoService courseInfoProvider = ServiceProvider.getInstance().getCourseInfoService();
+		try {
+			runCourse = courseInfoProvider.findRunCourseById(runCourseId);
+			request.setAttribute(REQUEST_PARAMETER_RUN_COURSE, runCourse);
 
-			runCourseId = Integer.parseInt(request.getParameter(REQUEST_PARAMETER_RUN_COURSE_ID));
+			if (userLogin != null) {
 
-			try {
-				runCourse = courseInfoProvider.findRunCourseById(runCourseId);
+				UserInfo userInfo;
+				int userId;
+				int userRoleId;
 
-				request.setAttribute(REQUEST_PARAMETER_RUN_COURSE, runCourse);
-
+				userInfo = (UserInfo) session.getAttribute(SESSION_PARAMETER_BEAN);
+				userId = userInfo.getUserId();
+				userRoleId = userInfo.getUserRoleId();
 				if (userRoleId == USER_ROLE_STUDENT) {
 
 					int userStatusOnCourse;
@@ -74,26 +72,14 @@ public class GoToRunCoursePageCommand implements Command {
 					request.setAttribute(REQUEST_PARAMETER_APPROVAL_STATUS_ID, userStatusOnCourse);
 					request.setAttribute(REQUEST_PARAMETER_MARK, studentMarkOnCourse);
 				}
-				request.getRequestDispatcher(RUN_COURSE_PAGE_PATH).forward(request, response);
-
-			} catch (ServiceException | ServletException e) {
-
-				logger.error(e);
-				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
-						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 			}
 
-		}
-
-		else {
-			try {
-				response.sendRedirect(
-						request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_TO_ERROR_PAGE_NOT_AUTHORIZED);
-			} catch (IOException e) {
-				logger.error(e);
-				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
-						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
-			}
+			request.getRequestDispatcher(RUN_COURSE_PAGE_PATH).forward(request, response);
+			
+		} catch (ServiceException | ServletException e) {
+			logger.error(e);
+			response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+					+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 		}
 
 	}

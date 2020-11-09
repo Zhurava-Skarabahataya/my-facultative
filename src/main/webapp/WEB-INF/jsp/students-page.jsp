@@ -21,6 +21,7 @@
 	scope="session" />
 <fmt:message bundle="${loc}" key="students" var="students" />
 <fmt:message bundle="${loc}" key="my_page" var="my_page" />
+<fmt:message bundle="${loc}" key="my_courses" var="my_courses" />
 <fmt:message bundle="${loc}" key="create_course" var="create_course" />
 <fmt:message bundle="${loc}" key="go_to_staff_page" var="go_to_staff_page" />
 <fmt:message bundle="${loc}" key="go_to_students_page" var="go_to_students_page" />
@@ -45,7 +46,11 @@
 			type="submit" value="${my_page}" /><br />
 	</form>
 
-
+	<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_user_courses_page" /> <input type="submit"
+					value="${my_courses}" /><br />
+			</form>
 
 	<c:if test="${sessionScope.bean.userRoleId == 2}">
 
@@ -155,9 +160,7 @@
 		
 		</c:forEach>
 	
-		<table>
-			
-		</table>
+		
 	</c:if>
 	
 	

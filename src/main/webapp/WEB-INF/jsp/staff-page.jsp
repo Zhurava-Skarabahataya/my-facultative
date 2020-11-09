@@ -37,8 +37,8 @@
 <fmt:message bundle="${loc}" key="approve" var="approve" />
 <fmt:message bundle="${loc}" key="disapprove" var="disapprove" />
 <fmt:message bundle="${loc}" key="watch_page" var="watch_page" />
-<fmt:message bundle="${loc}" key="go_to_staff_page"
-	var="go_to_staff_page" />
+<fmt:message bundle="${loc}" key="go_to_staff_page"	var="go_to_staff_page" />
+<fmt:message bundle="${loc}" key="go_to_students_page"	var="go_to_students_page" />
 <fmt:message bundle="${loc}" key="log_out" var="log_out" />
 
 
@@ -52,7 +52,11 @@
 			type="submit" value="${my_page}" /><br />
 	</form>
 
-
+	<form style = "display:inline" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_user_courses_page" /> <input type="submit"
+					value="${my_courses}" /><br />
+			</form>
 
 	<c:if test="${sessionScope.bean.userRoleId == 2}">
 
@@ -72,6 +76,11 @@
 			<input type="hidden" name="command" value="go_to_staff_page" /> <input
 				type="submit" value="${go_to_staff_page}" /><br />
 		</form>
+		<form style = "display:inline; float:center" action="Controller" method="post">
+				<input type="hidden" name="command"
+					value="go_to_students_page" /> <input type="submit"
+					value="${go_to_students_page}" /><br />
+			</form>
 
 	</c:if>
 

@@ -45,7 +45,6 @@ public class GoToAnotherUserPageCommand implements Command {
 		if (userLogin != null && loggedUserRole > 1) {
 			
 			int userId = Integer.parseInt(request.getParameter("userId"));
-
 			try {
 				
 				UserInfo userInfo = new UserInfo();
@@ -59,10 +58,10 @@ public class GoToAnotherUserPageCommand implements Command {
 				request.getRequestDispatcher(USER_PAGE_PATH).forward(request, response);
 				
 			} catch (ServletException | IOException | ServiceException e) {
-				
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
 						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 			}
+			
 		} else if (userLogin != null){
 			response.sendRedirect(
 					request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_TO_ERROR_PAGE_NOT_RIGHTS);

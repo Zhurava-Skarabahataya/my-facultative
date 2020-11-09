@@ -39,7 +39,6 @@ public class UpdateUserInfoServiceImpl implements UpdateUserInfoService{
 		try {
 			userInfoDAO.updateUserInfo(userPageInfo);
 		} catch (DAOException e) {
-			
 			throw new ServiceException(e);
 		}
 		

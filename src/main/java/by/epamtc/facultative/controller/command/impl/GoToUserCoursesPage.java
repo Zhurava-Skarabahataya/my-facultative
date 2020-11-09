@@ -54,6 +54,7 @@ public class GoToUserCoursesPage implements Command {
 				try {
 					courseInfoProvider.findStudentRunCourses(userPageInfo);
 				} catch (ServiceException e) {
+					e.printStackTrace();
 					logger.error(e);
 
 					response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
@@ -64,6 +65,8 @@ public class GoToUserCoursesPage implements Command {
 				try {
 					courseInfoProvider.findLecturerRunCourses(userPageInfo);
 				} catch (ServiceException e) {
+					e.printStackTrace();
+
 					logger.error(e);
 
 					response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
@@ -84,6 +87,8 @@ public class GoToUserCoursesPage implements Command {
 						request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE + MESSAGE_TO_ERROR_PAGE_NOT_AUTHORIZED);
 
 			} catch (IOException e) {
+				e.printStackTrace();
+
 				logger.error(e);
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
 						+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);

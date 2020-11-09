@@ -24,12 +24,20 @@ import by.epamtc.facultative.service.FullNameService;
 import by.epamtc.facultative.service.ServiceProvider;
 import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 
+/**
+ * Sends SQL requests concerning info about courses: description, duration,
+ * students and lecturers of the course, to the database using Connections from
+ * ConnectionPool.
+ */
 public class CourseDAOImpl implements CourseDAO {
 
+	/** A single instance of the class (pattern Singleton) */
 	private static final CourseDAOImpl instance = new CourseDAOImpl();
 
+	/** Logger of the class */
 	private static final Logger logger = Logger.getLogger(CourseDAOImpl.class);
 
+	/** Message about problems with database executing query */
 	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
 
 	private final String DATABASE_PARAMETER_COURSE_ID = "courses.course_id";
@@ -703,8 +711,8 @@ public class CourseDAOImpl implements CourseDAO {
 
 				ServiceProvider serviceProvider = ServiceProvider.getInstance();
 				FullNameService fullNameService = serviceProvider.getFullNameService();
-				String lecturerFullName = fullNameService.createFullName(lecturerFirstName,
-						lecturerSecondName, lecturerPatronymic);
+				String lecturerFullName = fullNameService.createFullName(lecturerFirstName, lecturerSecondName,
+						lecturerPatronymic);
 
 				RunnedCourse infoAboutRunnedCourse = new RunnedCourse();
 
@@ -832,9 +840,9 @@ public class CourseDAOImpl implements CourseDAO {
 
 				ServiceProvider serviceProvider = ServiceProvider.getInstance();
 				FullNameService fullNameService = serviceProvider.getFullNameService();
-				String lecturerFullName = fullNameService.createFullName(lecturerFirstName,
-						lecturerSecondName, lecturerPatronymic);
-				
+				String lecturerFullName = fullNameService.createFullName(lecturerFirstName, lecturerSecondName,
+						lecturerPatronymic);
+
 				infoAboutRunnedCourse = new RunnedCourse();
 
 				infoAboutRunnedCourse.setRunCourseId(runCourseId);
@@ -1010,22 +1018,22 @@ public class CourseDAOImpl implements CourseDAO {
 
 		try {
 			connection = connectionPool.getFreeConnection();
-		
+
 			statement = connection.prepareStatement(QUERY_FOR_RUN_COURSE_INFO_BY_COURSE_ID);
 			statement.setInt(1, courseId);
 
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				
+
 				int runCourseId;
 				int studentLimit;
 				int classroom;
 				int runCourseStatusId;
-				
+
 				String shcedule;
 				String lecturerFirstName;
-				String lecturerSecondName ;
+				String lecturerSecondName;
 				String lecturerPatronymic;
 
 				Date sqlDateStart;
@@ -1033,23 +1041,23 @@ public class CourseDAOImpl implements CourseDAO {
 				LocalDate startDate;
 				LocalDate endDate;
 
-				runCourseId= resultSet.getInt(DATABASE_PARAMETER_RUN_COURSE_ID);
-				studentLimit= resultSet.getInt(DATABASE_PARAMETER_STUDENT_LIMIT);
+				runCourseId = resultSet.getInt(DATABASE_PARAMETER_RUN_COURSE_ID);
+				studentLimit = resultSet.getInt(DATABASE_PARAMETER_STUDENT_LIMIT);
 				classroom = resultSet.getInt(DATABASE_PARAMETER_CLASSROOM);
-				runCourseStatusId= resultSet.getInt(DATABASE_PARAMETER_COURSE_STATUS);
-				
+				runCourseStatusId = resultSet.getInt(DATABASE_PARAMETER_COURSE_STATUS);
+
 				shcedule = resultSet.getString(DATABASE_PARAMETER_SCHEDULE);
-				lecturerFirstName= resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
-				lecturerSecondName= resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
-				lecturerPatronymic= resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
-				
-				sqlDateStart= resultSet.getDate(DATABASE_PARAMETER_START_DATE);
-				sqlDateEnd= resultSet.getDate(DATABASE_PARAMETER_END_DATE);
-				startDate= sqlDateStart.toLocalDate();
+				lecturerFirstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
+				lecturerSecondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
+				lecturerPatronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
+
+				sqlDateStart = resultSet.getDate(DATABASE_PARAMETER_START_DATE);
+				sqlDateEnd = resultSet.getDate(DATABASE_PARAMETER_END_DATE);
+				startDate = sqlDateStart.toLocalDate();
 				endDate = sqlDateEnd.toLocalDate();
 
 				RunnedCourse infoAboutRunnedCourse = new RunnedCourse();
-				
+
 				infoAboutRunnedCourse.setRunCourseId(runCourseId);
 				infoAboutRunnedCourse.setCourseId(courseId);
 				infoAboutRunnedCourse.setClassroomNumber(classroom);
@@ -1063,8 +1071,8 @@ public class CourseDAOImpl implements CourseDAO {
 
 				ServiceProvider serviceProvider = ServiceProvider.getInstance();
 				FullNameService fullNameService = serviceProvider.getFullNameService();
-				String lecturerFullName = fullNameService.createFullName(lecturerFirstName,
-						lecturerSecondName, lecturerPatronymic);
+				String lecturerFullName = fullNameService.createFullName(lecturerFirstName, lecturerSecondName,
+						lecturerPatronymic);
 
 				infoAboutRunnedCourse.setLecturerName(lecturerFullName);
 
@@ -1124,7 +1132,7 @@ public class CourseDAOImpl implements CourseDAO {
 		} finally {
 			try {
 				connectionPool.closeConnection(statement, connection);
-				
+
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 
@@ -1135,7 +1143,7 @@ public class CourseDAOImpl implements CourseDAO {
 
 	@Override
 	public void changeStudentApprovalStatusOnRunCourse(int studentId, int runCourseId, int status) throws DAOException {
-		
+
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
 
@@ -1153,7 +1161,7 @@ public class CourseDAOImpl implements CourseDAO {
 
 		} catch (ConnectionPoolException e) {
 			throw new DAOException(e);
-			
+
 		} catch (SQLException e) {
 			logger.error(ERROR_MESSAGE_PROBLEM_SQL, e);
 			throw new DAOException(ERROR_MESSAGE_PROBLEM_SQL, e);
@@ -1161,7 +1169,7 @@ public class CourseDAOImpl implements CourseDAO {
 		} finally {
 			try {
 				connectionPool.closeConnection(statement, connection);
-				
+
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
 			}

@@ -27,7 +27,7 @@ public class RegistrationCommand implements Command {
 	private final String PARAMETER_PASSWORD = "password";
 	private final String PARAMETER_USER_EMAL = "user_email";
 	private final String PARAMETER_FACULTY = "faculty";
-	private final String PARAMETER_POSITION = "possition";
+	private final String PARAMETER_POSITION = "position";
 
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
@@ -111,21 +111,20 @@ public class RegistrationCommand implements Command {
 				}
 
 			} catch (ServiceException e) {
-
 				response.sendRedirect(
 						request.getRequestURI() + COMMAND_GO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_REGISTRATION);
 			}
 
 			if (registrationSuccess) {
-
 				UserInfo userInfo = new UserInfo();
 				userInfo.setUserLogin(userLogin);
 
 				UserInfoService userInforService = ServiceProvider.getInstance().getUserInfoService();
 				try {
 					userInforService.findUserInfo(userInfo);
-				} catch (ServiceException e1) {
-
+				} catch (ServiceException e) {
+					response.sendRedirect(
+							request.getRequestURI() + COMMAND_GO_ERROR_PAGE + MESSAGE_GO_TO_ERROR_PAGE_REGISTRATION);
 				}
 
 				session.setAttribute(SESSION_ATTRIBUTE_LOGIN, userLogin);
@@ -135,6 +134,7 @@ public class RegistrationCommand implements Command {
 						request.getRequestURI() + COMMAND_GO_TO_SUCCESS_PAGE + MESSAGE_GO_TO_SUCCESS_PAGE);
 
 			} else {
+
 				response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_REGISTRATION_PAGE
 						+ MESSAGE_TO_REGISTRTAION_PAGE + messageFromRegistrationService);
 

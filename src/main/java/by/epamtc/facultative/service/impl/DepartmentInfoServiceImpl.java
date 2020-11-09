@@ -23,7 +23,8 @@ public class DepartmentInfoServiceImpl implements DepartmentInfoService {
 	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle(UNIVERSITY_PROPERTIES_FILE);
 	private static final String AMOUNT_OF_DEPARTMENTS = "university.amount_of_departments";
 
-	private final String PHOTO_PATH_PREFIX = "D:/Java/facultative-project/user_photos/";
+//	private final String PHOTO_PATH_PREFIX = "D:/Java/facultative-project/user_photos/";
+	private final String PHOTO_PATH_PREFIX = "image/";
 	private final String PHOTO_PATH_POSTFIX = ".jpg";
 
 	private DepartmentInfoServiceImpl() {
