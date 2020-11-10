@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,7 @@
 
 
 <c:set var="commandToLanguageChanger" scope="session"
-	value="go_to_another_user_page" />
+	value="go_to_another_user_page&userId=${requestScope.user.userId}" />
 
 <fmt:setLocale value="${sessionScope.local}" />
 
