@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri = "/myTag" prefix = "my" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -162,7 +164,7 @@
 			</tr>
 			<tr>
 				<td><c:out value="${date_of_birth}"/></td>
-				<td><c:out value="${sessionScope.bean.userDateOfBirth}" /></td>
+				<td><my:formDate date="${sessionScope.bean.userDateOfBirth}"/></td>
 			</tr>
 			<tr>
 				<td><c:out value="${tel_number}"/></td>
@@ -183,6 +185,7 @@
 
 	</div>
 	
+
 
 	<jsp:include page="footer.jsp" />
 

@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri = "/myTag" prefix = "my" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,8 +80,8 @@
 			</tr>
 			<c:forEach var="run_course" items="${requestScope.course.runCourses}">
 				<tr>
-					<td><c:out value="${run_course.dateOfStart}"/></td>
-					<td><c:out value="${run_course.dateOfEnd}"/></td>
+					<td><my:formDate date="${run_course.dateOfStart}"/></td>
+					<td><my:formDate date="${run_course.dateOfEnd}"/></td>
 					<td><c:out value="${run_course.lecturerName}"/></td>
 					<td><c:out value="${run_course.shedule}"/></td>
 					<td><c:out value="${run_course.studentLimit - run_course.studentAmount}"/></td>

@@ -1,0 +1,25 @@
+<taglib version="2.0" xmlns="http://java.sun.com/xml/j2ee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2
+_0.xsd">
+
+
+   <tlib-version>1.0</tlib-version>
+   <jsp-version>2.0</jsp-version>
+   <short-name>MyTag</short-name>
+   <uri>/myTag</uri>
+   
+   <tag>
+      <name>formDate</name>
+      <tag-class>by.epamtc.facultative.tag.DateTag</tag-class>
+      <body-content>empty</body-content>
+      
+        <attribute>
+      <name>date</name>
+      <type>java.util.LocalDate</type>
+       <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <elexprvalue>true</elexprvalue>
+   </attribute>
+   </tag>
+</taglib>

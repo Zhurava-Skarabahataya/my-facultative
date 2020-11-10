@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,12 +70,12 @@
 		</div>
 </c:if>
 	</div>
-
+	
+	
 
 
 	<img src="image/welcome-cat.png" alt="Здесь должен был быть кот."
 		height=200 >
-
 
 
 	<c:out value="${popularCourses}" />

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri = "/myTag" prefix = "my" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,11 +83,11 @@
 		</tr>
 		<tr>
 			<td><c:out value="${start_date}" /></td>
-			<td><c:out value="${run_course.dateOfStart}" /></td>
+			<td><my:formDate date="${run_course.dateOfStart}" /></td>
 		</tr>
 		<tr>
 			<td><c:out value="${end_date}" /></td>
-			<td><c:out value="${run_course.dateOfEnd}" /></td>
+			<td><my:formDate date="${run_course.dateOfEnd}" /></td>
 		</tr>
 		<tr>
 			<td><c:out value="${course_status}" /></td>
