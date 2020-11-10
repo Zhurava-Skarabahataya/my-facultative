@@ -7,11 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
+
 <style>
 <%@ include file="/css/footer.css"%>
 </style>
-<fmt:setLocale value="${sessionScope.local}" />
 
+<fmt:setLocale value="${sessionScope.local}" />
 
 <fmt:setBundle basename="localization.footer.footer" var="loc_footer"
 	scope="session" />

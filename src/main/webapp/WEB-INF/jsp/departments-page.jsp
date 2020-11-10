@@ -41,9 +41,6 @@
 				<td><form  action="Controller"	method="post">
 					<input type="hidden" name="command" value="go_to_current_department_page_command" /> 
 					<input	type="hidden" name="department_id" value="${department.departmentID}" /> 
-					<input	type="hidden" name="department_name" value="${department.departmentName}" /> 
-					<input type = "hidden" name="dean_name" value="${department.deanName}"/>
-					<input type = "hidden" name="dean_photo_link" value="${department.deanImagePath}"/>
 					<input type="submit" value="${about_dpt}" />
 		</form></td>
 			</tr>

@@ -30,6 +30,7 @@ public class ViewAnotherUserRunCoursesCommand implements Command {
 
 	private final String REQUEST_PARAMETER_USER_ID = "userId";
 	private final String REQUEST_PARAMETER_USER_ROLE_ID = "userRole";
+	private final String REQUEST_PARAMETER_COURSES = "courses";
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 
 	@Override
@@ -68,7 +69,7 @@ public class ViewAnotherUserRunCoursesCommand implements Command {
 			List<RunnedCourse> userCourses = userFromRequest.getCurrentCourses();
 			userCourses.addAll(userFromRequest.getEndedCourses());
 			
-			request.setAttribute("courses", userCourses);
+			request.setAttribute(REQUEST_PARAMETER_COURSES, userCourses);
 			
 			request.getRequestDispatcher(AVAILABLE_RUN_COURSES_PATH).forward(request, response);
 

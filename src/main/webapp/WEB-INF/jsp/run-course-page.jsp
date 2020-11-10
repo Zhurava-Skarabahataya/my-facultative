@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title><c:out value="${title}" /></title>
+
 <style>
 <%@ include file="/css/style.css"%>
 </style>
@@ -65,15 +66,13 @@
 <fmt:message bundle="${loc}" key="no_vacant_places"
 	var="no_vacant_places" />
 
-
 <c:set var="commandToLanguageChanger" scope="session"
-	value="go_to_run_course_page" />
+	value="go_to_run_course_page&run_course_id=${requestScope.run_course.runCourseId}" />
 
 </head>
 <body>
 	<jsp:include page="header.jsp" />
 <div class="inscription"><c:out value="${requestScope.run_course.courseName}" /></div>
-
 
 	<table class="courses_table">
 		
@@ -140,12 +139,7 @@
 			<td><c:out
 					value="${run_course.studentLimit - run_course.studentAmount}" /></td>
 		</tr>
-
-
 	</table>
-
-
-
 
 	<c:choose>
 		
@@ -296,7 +290,6 @@
 						
 						</c:choose>
 					</td>
-				
 				</tr>
 			</c:forEach>
 			</table>
@@ -307,9 +300,7 @@
 			<div class="inscription"><c:out value="${need_to_registrate}"></c:out></div>
 		</c:when>
 
-
 	</c:choose>
-
 
 	<jsp:include page="footer.jsp" />
 

@@ -1,6 +1,7 @@
 package by.epamtc.facultative.controller.command.impl;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -28,6 +29,7 @@ public class GoToCreateCoursePage implements Command {
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 	private final String SESSION_ATTRIBUTE_BEAN = "bean";
 	private final String REQUEST_ATTRIBUTE_LIST_COURSES = "listOfCourses";
+	private final String REQUEST_ATTRIBUTE_TODAY = "today";
 
 	private final int LECTURER_STATUS_APPROVED = 2;
 
@@ -73,10 +75,13 @@ public class GoToCreateCoursePage implements Command {
 
 				CourseInfoService courseInfoProvider = ServiceProvider.getInstance().getCourseInfoService();
 
+				LocalDate today = LocalDate.now();
+				
 				try {
 					availableCoursesForDepartment = courseInfoProvider
 							.findAvailableCoursesForDepartment(userDeparttmentId);
 
+					request.setAttribute(REQUEST_ATTRIBUTE_TODAY, today);
 					request.setAttribute(REQUEST_ATTRIBUTE_LIST_COURSES, availableCoursesForDepartment);
 					request.getRequestDispatcher(CREATE_COURSE_PAGE_PATH).forward(request, response);
 

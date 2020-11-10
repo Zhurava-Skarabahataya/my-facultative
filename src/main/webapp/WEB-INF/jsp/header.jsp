@@ -74,9 +74,6 @@
 				name="uri" value="${adress}" /><input type="submit"
 				value="${by_button}" />
 		</form>
-
-
-
 	</div>
 	
 	<ul class="menu-main">

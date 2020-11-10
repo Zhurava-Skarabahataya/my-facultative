@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Authorization</title>
+<title><c:out value="${authorization}"/></title>
 <style>
 <%@ include file="/css/style.css"%>
 </style>
@@ -16,8 +16,6 @@
 
 <fmt:setBundle basename="localization.authorization_page.authorization" var="loc"
 	scope="session" />
-
-
 
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_authorization_page" />
@@ -31,6 +29,9 @@
 <fmt:message bundle="${loc}" key="authorization.button.forgot_password"
 	var="forgot_password" />
 <fmt:message bundle="${loc}" key="no_user_found"	var="no_user_found" />
+<fmt:message bundle="${loc}" key="authorization"	var="authorization" />
+
+
 	<jsp:include page="header.jsp" />
 
 </head>
@@ -47,7 +48,6 @@
 					<c:out value="${no_user_found}" />
 				</c:when>
 				
-
 			</c:choose>
 
 		</div>

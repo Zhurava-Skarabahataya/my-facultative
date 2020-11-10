@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title><c:out value="${title}"/></title>
+
 <style>
 <%@ include file="/css/style.css"%>
 </style>
@@ -29,6 +30,8 @@
 <fmt:message bundle="${loc}" key="rector_message" var="rector_message" />
 <fmt:message bundle="${loc}" key="faculties_message" var="faculties_message" />
 
+<c:set var="commandToLanguageChanger" scope="session"
+	value="go_to_about_university_page" />
 
 <body>
 <jsp:include page="header.jsp" />

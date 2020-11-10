@@ -37,10 +37,13 @@
 <fmt:message bundle="${loc}" key="approve" var="approve" />
 <fmt:message bundle="${loc}" key="disapprove" var="disapprove" />
 <fmt:message bundle="${loc}" key="watch_page" var="watch_page" />
-<fmt:message bundle="${loc}" key="go_to_staff_page"	var="go_to_staff_page" />
-<fmt:message bundle="${loc}" key="go_to_students_page"	var="go_to_students_page" />
+<fmt:message bundle="${loc}" key="go_to_staff_page"
+	var="go_to_staff_page" />
+<fmt:message bundle="${loc}" key="go_to_students_page"
+	var="go_to_students_page" />
 <fmt:message bundle="${loc}" key="log_out" var="log_out" />
-
+<fmt:message bundle="${loc}" key="working" var="working" />
+<fmt:message bundle="${loc}" key="fired" var="fired" />
 
 
 </head>
@@ -52,11 +55,10 @@
 			type="submit" value="${my_page}" /><br />
 	</form>
 
-	<form style = "display:inline" action="Controller" method="post">
-				<input type="hidden" name="command"
-					value="go_to_user_courses_page" /> <input type="submit"
-					value="${my_courses}" /><br />
-			</form>
+	<form style="display: inline" action="Controller" method="post">
+		<input type="hidden" name="command" value="go_to_user_courses_page" />
+		<input type="submit" value="${my_courses}" /><br />
+	</form>
 
 	<c:if test="${sessionScope.bean.userRoleId == 2}">
 
@@ -76,12 +78,11 @@
 			<input type="hidden" name="command" value="go_to_staff_page" /> <input
 				type="submit" value="${go_to_staff_page}" /><br />
 		</form>
-		<form style = "display:inline; float:center" action="Controller" method="post">
-				<input type="hidden" name="command"
-					value="go_to_students_page" /> <input type="submit"
-					value="${go_to_students_page}" /><br />
-			</form>
-
+		<form style="display: inline; float: center" action="Controller"
+			method="post">
+			<input type="hidden" name="command" value="go_to_students_page" /> <input
+				type="submit" value="${go_to_students_page}" /><br />
+		</form>
 	</c:if>
 
 
@@ -89,7 +90,6 @@
 		<input type="hidden" name="command" value="logout" /> <input
 			type="submit" value="${log_out}" /><br />
 	</form>
-
 
 	<c:choose>
 		<c:when test="${sessionScope.bean.userRoleId == 3}">
@@ -103,8 +103,7 @@
 			</div>
 		</c:when>
 	</c:choose>
-	
-	
+
 	<c:if test="${sessionScope.bean.userRoleId == 3 }">
 		<table>
 			<tr>
@@ -124,12 +123,15 @@
 							<c:out value="${employee.userPatronymic}" />
 						</c:if> <c:out value="${employee.userSecondName}" /><br>
 						<form action="Controller" method="post">
-									<input type="hidden" name="command" value="go_to_another_user_page" />
-									<input type="hidden" name="employeeId" value="${employee.userId}" />
-									<input type="submit" value="${watch_page}" />
-								</form></td>
+							<input type="hidden" name="command"
+								value="go_to_another_user_page" /> <input type="hidden"
+								name="employeeId" value="${employee.userId}" /> <input
+								type="submit" value="${watch_page}" />
+						</form></td>
+						
 					<td><img src="${employee.userPhotoLink}" width=100px
 						alt="${no_photo}" /></td>
+						
 					<td><c:out value="${employee.userRole}" /></td>
 					<td><c:out value="${employee.userPhone}" /></td>
 					<td><c:out value="${employee.userAdress}" /></td>
@@ -138,18 +140,24 @@
 							<c:when test="${employee.userStatusId == 1}">
 								<form action="Controller" method="post">
 									<input type="hidden" name="command" value="approve_employee" />
-									<input type="hidden" name="employeeId" value="${employee.userId}" />
-									<input type="submit" value="${approve}" />
+									<input type="hidden" name="employeeId"
+										value="${employee.userId}" /> <input type="submit"
+										value="${approve}" />
 								</form>
 								<form action="Controller" method="post">
 									<input type="hidden" name="command" value="disapprove_employee" />
-									<input type="hidden" name="employeeId" value="${employee.userId}" />
-									<input type="submit" value="${disapprove}" />
+									<input type="hidden" name="employeeId"
+										value="${employee.userId}" /> <input type="submit"
+										value="${disapprove}" />
 								</form>
 
 							</c:when>
-							<c:when test="${employee.userStatusId == 2}">Работает</c:when>
-							<c:when test="${employee.userStatusId == 4}">Уволен</c:when>
+							<c:when test="${employee.userStatusId == 2}">
+								<c:out value="${working}" />
+							</c:when>
+							<c:when test="${employee.userStatusId == 4}">
+								<c:out value="${fired}" />
+							</c:when>
 						</c:choose></td>
 				</tr>
 
@@ -161,27 +169,24 @@
 							<c:out value="${employee.userPatronymic}" />
 						</c:if> <c:out value="${employee.userSecondName}" />
 						<form action="Controller" method="post">
-									<input type="hidden" name="command" value="go_to_another_user_page" />
-									<input type="hidden" name="userId" value="${employee.userId}" />
-									<input type="submit" value="${watch_page}" />
-								</form></td>
+							<input type="hidden" name="command"
+								value="go_to_another_user_page" /> <input type="hidden"
+								name="userId" value="${employee.userId}" /> <input
+								type="submit" value="${watch_page}" />
+						</form></td>
 					<td><img src="${employee.userPhotoLink}" width=100px
 						alt="${no_photo}" /></td>
 					<td><c:out value="${employee.userRole}" /></td>
 					<td><c:out value="${employee.userPhone}" /></td>
 					<td><c:out value="${employee.userAdress}" /></td>
 					<td><c:out value="${employee.userDateOfBirth}" /></td>
-					<td>Няхай работает</td>
+					<td><c:out value="${working}" /></td>
 				</tr>
 			</c:forEach>
 
-
-
 		</table>
 	</c:if>
-	
-	
-	
+
 	<c:if test="${sessionScope.bean.userRoleId == 4 }">
 		<c:forEach var="departmentStaff" items="${requestScope.allStaff}">
 			<div class="inscription">
@@ -197,75 +202,72 @@
 					<th><c:out value="${date_of_birth}" /></th>
 					<th><c:out value="${status}" /></th>
 				</tr>
-				
-				<c:forEach var="employee" items="${departmentStaff.notApprovedStaff}">
-				<tr>
-					<td><c:out value="${employee.userFirstName}" /> <c:if
-							test="${employee.userPatronymic != null}">
-							<c:out value="${employee.userPatronymic}" />
-						</c:if> <c:out value="${employee.userSecondName}" />
-						<br>
-						<form action="Controller" method="post">
-									<input type="hidden" name="command" value="go_to_another_user_page" />
-									<input type="hidden" name="userId" value="${employee.userId}" />
-									<input type="submit" value="${watch_page}" />
-								</form></td>
-					<td><img src="${employee.userPhotoLink}" width=100px
-						alt="${no_photo}" /></td>
-					<td><c:out value="${employee.userRole}" /></td>
-					<td><c:out value="${employee.userPhone}" /></td>
-					<td><c:out value="${employee.userAdress}" /></td>
-					<td><c:out value="${employee.userDateOfBirth}" /></td>
-					<td>
-								<form action="Controller" method="post">
-									<input type="hidden" name="command" value="approve_employee" />
-									<input type="hidden" name="employeeId" value="${employee.userId}" />
-									<input type="submit" value="${approve}" />
-								</form>
-								<form action="Controller" method="post">
-									<input type="hidden" name="command" value="disapprove_employee" />
-									<input type="hidden" name="employeeId" value="${employee.userId}" />
-									
-									<input type="submit" value="${disapprove}" />
-								</form>
 
-							</td>
-				</tr>
-				
+				<c:forEach var="employee"
+					items="${departmentStaff.notApprovedStaff}">
+					<tr>
+						<td><c:out value="${employee.userFirstName}" /> <c:if
+								test="${employee.userPatronymic != null}">
+								<c:out value="${employee.userPatronymic}" />
+							</c:if> <c:out value="${employee.userSecondName}" /> <br>
+							<form action="Controller" method="post">
+								<input type="hidden" name="command"
+									value="go_to_another_user_page" /> <input type="hidden"
+									name="userId" value="${employee.userId}" /> <input
+									type="submit" value="${watch_page}" />
+							</form></td>
+						<td><img src="${employee.userPhotoLink}" width=100px
+							alt="${no_photo}" /></td>
+						<td><c:out value="${employee.userRole}" /></td>
+						<td><c:out value="${employee.userPhone}" /></td>
+						<td><c:out value="${employee.userAdress}" /></td>
+						<td><c:out value="${employee.userDateOfBirth}" /></td>
+						<td>
+							<form action="Controller" method="post">
+								<input type="hidden" name="command" value="approve_employee" />
+								<input type="hidden" name="employeeId"
+									value="${employee.userId}" /> <input type="submit"
+									value="${approve}" />
+							</form>
+							<form action="Controller" method="post">
+								<input type="hidden" name="command" value="disapprove_employee" />
+								<input type="hidden" name="employeeId"
+									value="${employee.userId}" /> <input type="submit"
+									value="${disapprove}" />
+							</form>
+
+						</td>
+					</tr>
+
 				</c:forEach>
-				
+
 				<c:forEach var="employee" items="${departmentStaff.workingStaff}">
 					<tr>
-					<td><c:out value="${employee.userFirstName}" /> <c:if
-							test="${employee.userPatronymic != null}">
-							<c:out value="${employee.userPatronymic}" />
-						</c:if> <c:out value="${employee.userSecondName}" />
-						<form action="Controller" method="post">
-									<input type="hidden" name="command" value="go_to_another_user_page" />
-									<input type="hidden" name="userId" value="${employee.userId}" />
-									<input type="submit" value="${watch_page}" />
-								</form></td>
-					<td><img src="${employee.userPhotoLink}" width=100px
-						alt="${no_photo}" /></td>
-					<td><c:out value="${employee.userRole}" /></td>
-					<td><c:out value="${employee.userPhone}" /></td>
-					<td><c:out value="${employee.userAdress}" /></td>
-					<td><c:out value="${employee.userDateOfBirth}" /></td>
-					<td>>Няхай работает</td>
-				</tr>
-				
+						<td><c:out value="${employee.userFirstName}" /> <c:if
+								test="${employee.userPatronymic != null}">
+								<c:out value="${employee.userPatronymic}" />
+							</c:if> <c:out value="${employee.userSecondName}" />
+							<form action="Controller" method="post">
+								<input type="hidden" name="command"
+									value="go_to_another_user_page" /> <input type="hidden"
+									name="userId" value="${employee.userId}" /> <input
+									type="submit" value="${watch_page}" />
+							</form></td>
+						<td><img src="${employee.userPhotoLink}" width=100px
+							alt="${no_photo}" /></td>
+						<td><c:out value="${employee.userRole}" /></td>
+						<td><c:out value="${employee.userPhone}" /></td>
+						<td><c:out value="${employee.userAdress}" /></td>
+						<td><c:out value="${employee.userDateOfBirth}" /></td>
+						<td>><c:out value="${working}" /></td>
+					</tr>
 				</c:forEach>
-				
-				
-			
+
 			</table>
 		</c:forEach>
 	</c:if>
-	
-
 
 	<jsp:include page="footer.jsp" />
-
 
 </body>
 </html>

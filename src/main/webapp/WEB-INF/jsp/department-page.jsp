@@ -18,7 +18,7 @@
 	scope="session" />
 
 <c:set var="commandToLanguageChanger" scope="session"
-	value="go_to_current_department_page_command" />
+	value="go_to_current_department_page_command&department_id=${requestScope.department.departmentID}" />
 
 <fmt:message bundle="${loc}" key="title" var="title" />
 <fmt:message bundle="${loc}" key="our_dean" var="our_dean" />
@@ -36,7 +36,7 @@
 		<tr>
 			<td><c:out value="${requestScope.department.deanName}"/>
 			</td>
-			<td><img src="${requestScope.department.deanImagePath}" width=200px>
+			<td><img src="${requestScope.department.dean.userPhotoLink}" width=200px>
 			</td>
 		</tr>
 	</table>
@@ -44,6 +44,7 @@
 	<div class="inscription"><c:out value="${our_lecturers}"/></div>
 	<table  class="dept_table">
 		<c:forEach var="lecturer" items="${requestScope.department.lecturers}">
+			<c:if test="${lecturer.userRoleId == 2}">
 			<tr>
 				<td><c:out value="${lecturer.userFirstName}"/> 
 					<c:if test="${lecturer.userPatronymic != null}">
@@ -55,7 +56,7 @@
 				<td><img src="${lecturer.userPhotoLink}"  width=200px>
 				</td>
 			</tr>
-		
+			</c:if>
 		</c:forEach>
 		
 	</table>

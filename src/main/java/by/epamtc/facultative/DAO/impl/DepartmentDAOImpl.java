@@ -41,6 +41,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 	private final String DATABASE_PARAMETER_USER_PATRONYMIC = "users.patronymic";
 	private final String DATABASE_PARAMETER_USER_PHONE = "user_details.user_mobile_number";
 	private final String DATABASE_PARAMETER_USER_ADRESS = "user_details.user_adress";
+	private final String DATABASE_PARAMETER_USER_ROLE_ID = "users.user_role_id";
 	private final String DATABASE_PARAMETER_USER_BIRTH_DATE = "user_details.user_date_of_birth";
 	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
 	private final String DATABASE_PARAMETER_COURSE_DESCRIPTION = "courses.description";
@@ -54,8 +55,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 	private final String QUERY_FOR_COURSES_IN_DEPARTMENT = "SELECT * " + "FROM courses WHERE courses.department_id = ?";
 
 	private final String QUERY_FOR_LECTURERS_IN_DEPARTMENT = "SELECT "
-			+ "users.first_name, users.second_name, users.patronymic, users.user_login "
-			+ "FROM users WHERE users.user_role_id = 2 AND users.department_department_id = ? AND users.status < 4";
+			+ "users.first_name, users.second_name, users.patronymic, users.user_login, users.user_role_id, "
+			+ " departments.name  "
+			+ "FROM users JOIN departments ON users.department_department_id = departments.department_id "
+			+ " WHERE users.user_role_id > 1 AND users.user_role_id <4  AND users.department_department_id = ? AND users.status < 4";
 
 	private final String QUERY_FOR_STUDENTS_IN_DEPARTMENT = "SELECT "
 			+ "users.user_id , users.first_name, users.second_name, users.patronymic, users.user_login "
@@ -184,19 +187,25 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 				String secondName;
 				String patronymic;
 				String userLogin;
+				String departmentName;
+				int userRoleId;
 
 				firstName = resultSet.getString(DATABASE_PARAMETER_USER_FIRST_NAME);
 				secondName = resultSet.getString(DATABASE_PARAMETER_USER_SECOND_NAME);
 				patronymic = resultSet.getString(DATABASE_PARAMETER_USER_PATRONYMIC);
 				userLogin = resultSet.getString(DATABASE_PARAMETER_USER_LOGIN);
-
+				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);
+				departmentName = resultSet.getString(DATABASE_PARAMETER_DEPARTMENT_NAME);
+				
 				UserInfo lecturer = new UserInfo();
 
 				lecturer.setUserFirstName(firstName);
 				lecturer.setUserSecondName(secondName);
 				lecturer.setUserPatronymic(patronymic);
 				lecturer.setUserLogin(userLogin);
-
+				lecturer.setUserRoleId(userRoleId);
+				lecturer.setUserFaculty(departmentName);
+				
 				lecturers.add(lecturer);
 			}
 

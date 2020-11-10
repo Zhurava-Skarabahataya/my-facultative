@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title><c:out value="${title}"/></title>
+
 <style>
 <%@ include file="/css/style.css"%>
 </style>
@@ -37,6 +38,8 @@
 <fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
 <fmt:message bundle="${loc}" key="course_running" var="course_running" />
 
+<c:set var="commandToLanguageChanger" scope="session"
+	value="go_to_course_page_command&courseId=${requestScope.course.courseId}" />
 
 </head>
 <body>

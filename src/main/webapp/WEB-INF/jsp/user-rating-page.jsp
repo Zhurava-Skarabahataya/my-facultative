@@ -15,7 +15,7 @@
 </style>
 
 <c:set var="commandToLanguageChanger" scope="session"
-	value="go_to_user_rating_page" />
+	value="view_student_rating_page&userLogin=${requestScope.student.userLogin}" />
 
 <fmt:setLocale value="${sessionScope.local}" />
 

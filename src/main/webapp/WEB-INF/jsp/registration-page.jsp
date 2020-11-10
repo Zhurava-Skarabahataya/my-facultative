@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title><c:out value="${title}"/></title>
+<title><c:out value="${title}" /></title>
 
 <style>
 <%@ include file="/css/style.css"%>
@@ -18,11 +18,10 @@
 
 <fmt:setBundle basename="localization.registration_page.registration"
 	var="loc" scope="session" />
-	
+
 <fmt:message bundle="${loc}" key="registration.message.enter_data"
 	var="message" />
-<fmt:message bundle="${loc}" key="title"
-	var="title" />
+<fmt:message bundle="${loc}" key="title" var="title" />
 <fmt:message bundle="${loc}" key="registration.parameter.userName"
 	var="userName" />
 <fmt:message bundle="${loc}" key="registration.parameter.password"
@@ -75,7 +74,7 @@
 <fmt:message bundle="${loc}"
 	key="registration.parameter.faculty_variant.jurisprudence"
 	var="jurisprudence" />
-	
+
 <fmt:message bundle="${loc}" key="Email_is_empty" var="Email_is_empty" />
 <fmt:message bundle="${loc}"
 	key="Email_does_not_correspond_to_the_norms"
@@ -185,7 +184,8 @@
 					test="${requestScope.message_from_registration == 'login_is_busy'}">
 					<c:out value="${login_is_busy}" />
 				</c:when>
-				<c:when	test="${requestScope.message_from_registration == 'email_is_busy'}">
+				<c:when
+					test="${requestScope.message_from_registration == 'email_is_busy'}">
 					<c:out value="${email_is_busy}" />
 				</c:when>
 
@@ -234,8 +234,8 @@
 			</tr>
 			<tr>
 				<td><c:out value="${position}" /></td>
-				<td><input type="radio" name=position required value="1"> <c:out
-						value="${student}" /> <input type="radio" name="position"
+				<td><input type="radio" name=position required value="1">
+					<c:out value="${student}" /> <input type="radio" name="position"
 					value="2"> <c:out value="${lecturer}" /> <input
 					type="radio" name="position" value="3"> <c:out
 						value="${dean}" /><br></td>
@@ -243,9 +243,9 @@
 			</tr>
 			<tr>
 				<td><c:out value="${faculty}" /></td>
-				<td><br> <input type="radio" name=faculty required value="1">
-					<c:out value="${herbology_and_potions}" /> <br> <input
-					type="radio" name=faculty value="2"> <c:out
+				<td><br> <input type="radio" name=faculty required
+					value="1"> <c:out value="${herbology_and_potions}" /> <br>
+					<input type="radio" name=faculty value="2"> <c:out
 						value="${applied_magic}" /> <br> <input type="radio"
 					name=faculty value="3"> <c:out
 						value="${healing_witchcraft}" /> <br> <input type="radio"
@@ -256,7 +256,6 @@
 					<input type="radio" name=faculty value="7"> <c:out
 						value="${warlock}" /> <br> <input type="radio" name=faculty
 					value="8"> <c:out value="${jurisprudence}" /></td>
-
 			</tr>
 
 		</table>

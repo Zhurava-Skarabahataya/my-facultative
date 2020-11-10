@@ -9,6 +9,10 @@
 
 <title><c:out value="${create_new_run_course}"/></title>
 
+<style>
+<%@ include file="/css/style.css"%>
+</style>
+
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_create_course_page" />
 
@@ -84,12 +88,12 @@
 				</tr>
 				<tr>
 					<td><c:out value="${start_date}"/></td>
-					<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="startDate" value="" /></td>
+					<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="startDate" min ="${requestScope.today}" value="" /></td>
 
 				</tr>
 				<tr>
 					<td><c:out value="${end_date}"/></td>
-					<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="endDate" value="" /></td>
+					<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="endDate"   min ="${requestScope.today}"  value="" /></td>
 
 				</tr>
 				<tr>
@@ -99,7 +103,7 @@
 				</tr>
 				<tr>
 					<td><c:out value="${classroom}"/></td>
-					<td><input type="text" required name="classroom" value="" /></td>
+					<td><input type="text" required name="classroom" pattern="^[0-9]+$" value="" /></td>
 
 				</tr>
 				<tr>

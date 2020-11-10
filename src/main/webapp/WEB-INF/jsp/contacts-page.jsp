@@ -28,6 +28,10 @@
 <fmt:message bundle="${loc}" key="legal_dep" var="legal_dep" />
 <fmt:message bundle="${loc}" key="adress_message" var="adress_message" />
 
+
+<c:set var="commandToLanguageChanger" scope="session"
+	value="go_to_contacts_page" />
+	
 </head>
 <body>
 <jsp:include page="header.jsp" />
@@ -102,7 +106,6 @@
 			8 (017) 323 11 22
 		</td>
 	</tr>
-
 
 </table>
 

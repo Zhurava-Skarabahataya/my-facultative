@@ -11,6 +11,7 @@ import by.epamtc.facultative.dao.DAOFactory;
 import by.epamtc.facultative.dao.DepartmentDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.service.DepartmentInfoService;
+import by.epamtc.facultative.service.FullNameService;
 import by.epamtc.facultative.service.RatingService;
 import by.epamtc.facultative.service.ServiceProvider;
 import by.epamtc.facultative.service.exception.ServiceException;
@@ -71,6 +72,7 @@ public class DepartmentInfoServiceImpl implements DepartmentInfoService {
 
 		try {
 			lecturers = departmentDAO.findLecturersInDepartment(departmentId);
+			
 			courses = departmentDAO.findCoursesInDepartment(departmentId);
 
 		} catch (DAOException e) {
@@ -80,7 +82,32 @@ public class DepartmentInfoServiceImpl implements DepartmentInfoService {
 		createUsersPhotoPath(lecturers);
 
 		department.setLecturers(lecturers);
+		findDean(department);
 		department.setCourses(courses);
+	}
+
+	private void findDean(Department department) {
+		
+		List <UserInfo> lecturers = department.getLecturers();
+		
+		for (UserInfo lecturer : lecturers) {
+			
+			int userRoleId = lecturer.getUserRoleId();
+			
+			if (userRoleId == 3) {
+				String departmentName = lecturer.getUserFaculty();
+				String deanFirstName = lecturer.getUserFirstName();
+				String deanSecondName = lecturer.getUserSecondName();
+				String deanPatronymic = lecturer.getUserPatronymic();
+				
+				FullNameService fullNameService = ServiceProvider.getInstance().getFullNameService();
+				String deanFullName = fullNameService.createFullName(deanFirstName, deanSecondName, deanPatronymic);
+				
+				department.setDean(lecturer);
+				department.setDeanName(deanFullName);
+				department.setDepartmentName(departmentName);
+			}
+		}
 	}
 
 	@Override

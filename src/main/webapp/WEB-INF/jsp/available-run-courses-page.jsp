@@ -32,9 +32,9 @@
 <fmt:message bundle="${loc}" key="course_cancelled" var="course_cancelled" />
 <fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
 <fmt:message bundle="${loc}" key="course_running" var="course_running" />
+<fmt:message bundle="${loc}" key="no_available_courses" var="no_available_courses" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_available_run_courses_page" />
-
 
 </head>
 <body>
@@ -77,7 +77,6 @@
 					<input type="hidden" name="run_course_id" value = "${run_course.runCourseId}"/>
 					<input type="submit" value="${more}" />
 					</form></td>
-					
 				
 				</tr>
 				
@@ -88,7 +87,7 @@
 		
 		</c:when>
 		<c:otherwise>
-			<c:out value="Доступных курсов нет"/>
+			<c:out value="${no_available_courses}"/>
 		</c:otherwise>
 	
 	

@@ -68,13 +68,10 @@
 		<td><c:out value="${phone}"/></td>
 		<td><c:out value="${requestScope.user.userPhone}"/></td>
 		</tr>
-		
-	
 	
 	</table>
 	
 	<c:if test="${requestScope.user.userRoleId == 1 }">
-		
 		
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
@@ -84,6 +81,7 @@
 					
 					<input type="submit" value="${see_student_rating}" />
 		</form>
+		
 		<c:if test="${sessionScope.bean.userRoleId > 2 && 
 		(sessionScope.bean.userFacultyId == requestScope.user.userFacultyId || sessionScope.bean.userRoleId == 4)}">
 		<form action="Controller" method="post">
@@ -126,9 +124,6 @@
 					<input type="submit" value="${fire_employee}" onclick="return confirm('Are you sure you want to fire?')" />
 		</form>
 	</c:if>
-	
-	
-	
 	
 	
 	<jsp:include page="footer.jsp" />

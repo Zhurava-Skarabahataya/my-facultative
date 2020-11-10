@@ -33,27 +33,17 @@ public class GoToCurrentDepartmentPageCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int departmentId;
-		String deanName;
-		String deanPhotoLink ;
-		String departmentName;
 
 		departmentId = Integer.parseInt(request.getParameter(REQUEST_PARAMETER_DEPARTMENT_ID));
-		deanName = request.getParameter(REQUEST_PARAMETER_DEAN_NAME);
-		deanPhotoLink = request.getParameter(REQUEST_PARAMETER_DEAN_PHOTO_LINK);
-		departmentName = request.getParameter(REQUEST_PARAMETER_DEPARTMENT_NAME);
 		
 		DepartmentInfoService departmentService = ServiceProvider.getInstance().getDepartmentInfoService();
 		
 		Department department = new Department();
 		department.setDepartmentID(departmentId);
-		department.setDeanName(deanName);
-		department.setDeanImagePath(deanPhotoLink);
-		department.setDepartmentName(departmentName);
 		
 		try {
-
 			departmentService.findLecturersAndCoursesForDepartment(department);
-			
+
 			request.setAttribute(REQUEST_PARAMETER_DEPARTMENT, department);
 			request.getRequestDispatcher(DEPARTMENTS_PAGE_PATH).forward(request, response);
 			
