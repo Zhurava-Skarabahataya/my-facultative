@@ -2,11 +2,13 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title><c:out value="${editing_page_title}"/></title>
+
 <style>
 <%@include file ="/css/style.css"%>
 </style>
@@ -14,7 +16,30 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_edit_user_info_command" />
 
+<fmt:setLocale value="${sessionScope.local}" />
+
+<fmt:setBundle basename="localization.user_page.user_page" var="loc"
+	scope="session" />
+<fmt:message bundle="${loc}" key="editing_page_title"
+	var="editing_page_title" />
+<fmt:message bundle="${loc}" key="upload_photo" var="upload_photo" />
+<fmt:message bundle="${loc}" key="field.first_name"
+	var="field.first_name" />
+<fmt:message bundle="${loc}" key="field.second_name"
+	var="field.second_name" />
+<fmt:message bundle="${loc}" key="field.patronymic"
+	var="field.patronymic" />
+<fmt:message bundle="${loc}" key="field.role" var="field.role" />
+<fmt:message bundle="${loc}" key="field.faculty" var="field.faculty" />
+<fmt:message bundle="${loc}" key="field.adress" var="field.adress" />
+<fmt:message bundle="${loc}" key="field.date_of_birth"
+	var="field.date_of_birth" />
+<fmt:message bundle="${loc}" key="field.tel_number"
+	var="field.tel_number" />
+<fmt:message bundle="${loc}" key="save_changes" var="save_changes" />
+
 </head>
+
 <body>
 	<jsp:include page="header.jsp" />
 
@@ -29,7 +54,7 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 			<form action="Controller" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="command" value="upload_user_photo" /> <input
 					type="file" id="image" name="file" accept="image/*" /><br> <input
-					type="submit" value="Загрузить фото" name="Загрузить фото" />
+					type="submit" value="${upload_photo}" name="${upload_photo}" />
 			</form>
 		</div>
 	</div>
@@ -38,30 +63,28 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 		<form action="Controller" method="post">
 			<input type="hidden" name="command" value="edit_user_info" />
 
-			<table  class="table_user_info">
+			<table class="table_user_info">
 				<tr>
-					<td>Имя:</td>
+					<td><c:out value="${field.first_name}" /></td>
 					<td><input type="text" name="userFirstName" required
 						value="${sessionScope.bean.userFirstName}" /></td>
 				</tr>
 				<tr>
-					<td>Фамилия:</td>
+					<td><c:out value="${field.field.second_name}" /></td>
 					<td><input type="text" name="userSecondName" required
 						value="${sessionScope.bean.userSecondName}" /></td>
 				</tr>
 				<tr>
-					<td>Отчество:</td>
-					<td><input type="text" name="userPatronymic" 
+					<td><c:out value="${field.patronymic}" /></td>
+					<td><input type="text" name="userPatronymic"
 						value="${sessionScope.bean.userPatronymic}" /></td>
 				</tr>
 				<tr>
-					<td>Должность:</td>
-					<td><c:out
-									value="${sessionScope.bean.userRole}" />
-							</td>
+					<td><c:out value="${field.role}" /></td>
+					<td><c:out value="${sessionScope.bean.userRole}" /></td>
 				</tr>
 				<tr>
-					<td>Факультет:</td>
+					<td><c:out value="${field.faculty}" /></td>
 					<td><select name="faculty" size="1">
 							<option selected="selected" disabled><c:out
 									value="${sessionScope.bean.userFaculty}" /></option>
@@ -77,30 +100,28 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 					</select></td>
 				</tr>
 				<tr>
-					<td>Адрес:</td>
+					<td><c:out value="${field.adress}" /></td>
 					<td><input type="text" name="userAdress"
 						value="${sessionScope.bean.userAdress}" /></td>
 				</tr>
 				<tr>
-					<td>Дата рождения:</td>
-					<td><input type="date"  id="userDateOfBirth"
+					<td><c:out value="${field.date_of_birth}" /></td>
+					<td><input type="date" id="userDateOfBirth"
 						name="userDateOfBirth"
 						value="${sessionScope.bean.userDateOfBirth}" />
 				</tr>
 				<tr>
-					<td>Номер телефона:</td>
+					<td><c:out value="${field.tel_number}" /></td>
 					<td><input type="text" name="userPhone"
 						value="${sessionScope.bean.userPhone}" /></td>
 				</tr>
-
-
 			</table>
 
 			<br>
 			<div align="center">
-				<input type="submit" value="Сохранить данные" /><br />
-		</form>
+				<input type="submit" value="${save_changes}" /><br />
 			</div>
+		</form>
 
 
 	</div>
