@@ -21,10 +21,9 @@ import by.epamtc.facultative.bean.Mark;
 import by.epamtc.facultative.bean.UserInfo;
 
 /**
- * Sends SQL requests concerning info about user: personal info, students'
+ * Implementation of {@link UserDAO}. Sends SQL requests concerning info about user: personal info, students'
  * marks, user's courses to the database using Connections from ConnectionPool.
  */
-
 public class UserDAOImpl implements UserDAO {
 
 	/** A single instance of the class (pattern Singleton) */
@@ -118,6 +117,7 @@ public class UserDAOImpl implements UserDAO {
 	 * 
 	 * @param studentId Student's user id
 	 * @return ArrayList <Marks> of marks
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public List<Mark> findStudentResults(int studentId) throws DAOException {
@@ -185,6 +185,7 @@ public class UserDAOImpl implements UserDAO {
 	 * 
 	 * @param studentLogin student's user login
 	 * @return ArrayList <Marks> of marks
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public List<Mark> findStudentResults(String studentLogin) throws DAOException {
@@ -250,6 +251,7 @@ public class UserDAOImpl implements UserDAO {
 	 * Finds info about user: name, role, email, faculty, adress and phone.
 	 * 
 	 * @param userPageInfo Object of UserInfo, containing info about user login
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public void provideUserInfo(UserInfo userPageInfo) throws DAOException {
@@ -358,6 +360,7 @@ public class UserDAOImpl implements UserDAO {
 	 * Finds info about user: name, role, email, faculty, adress and phone.
 	 * 
 	 * @param userPageInfo Object of UserInfo, containing info about user id
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public void provideUserInfoById(UserInfo userPageInfo) throws DAOException {
@@ -459,6 +462,7 @@ public class UserDAOImpl implements UserDAO {
 	 * Updates user info in database.
 	 * 
 	 * @param userPageInfo Object of UserInfo class, contains changed information
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public void updateUserInfo(UserInfo userPageInfo) throws DAOException {
@@ -524,6 +528,7 @@ public class UserDAOImpl implements UserDAO {
 	 * @param departmentId id of current department
 	 * @return object of DepartmentStaff class, which contains three collections:
 	 *         with working lecturers, not approved lecturers and fired lecturers.
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public DepartmentStaff findFacultyStaffInfo(int departmentId) throws DAOException {
@@ -634,6 +639,7 @@ public class UserDAOImpl implements UserDAO {
 	 * 
 	 * @return object of DepartmentStaff class, which contains collection of all
 	 *         lecturers.
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public DepartmentStaff findAllFacultiesStaffInfo() throws DAOException {
@@ -738,6 +744,7 @@ public class UserDAOImpl implements UserDAO {
 	 * 
 	 * @param employeeId user id of the employee
 	 * @param status     id of the working status
+	 * @throws DAOException when problems with database access occur. 
 	 */
 	@Override
 	public void changeEmployeeStatus(int employeeId, int status) throws DAOException {

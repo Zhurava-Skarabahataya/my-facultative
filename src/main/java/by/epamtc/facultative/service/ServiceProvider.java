@@ -7,6 +7,7 @@ import by.epamtc.facultative.service.impl.DepartmentInfoServiceImpl;
 import by.epamtc.facultative.service.impl.EmployeeStatusServiceImpl;
 import by.epamtc.facultative.service.impl.FeedbackServiceImpl;
 import by.epamtc.facultative.service.impl.FullNameServiceImpl;
+import by.epamtc.facultative.service.impl.NewsServiceImpl;
 import by.epamtc.facultative.service.impl.PasswordEncryptorImpl;
 import by.epamtc.facultative.service.impl.RatingServiceImpl;
 import by.epamtc.facultative.service.impl.RegistrationServiceImpl;
@@ -33,6 +34,7 @@ public class ServiceProvider {
 	private final UserInfoService userInfoService = UserInfoServiceImpl.getInstance();
 	private final UpdateUserInfoService updateUserInfoService = UpdateUserInfoServiceImpl.getInstance();
 	private final WelcomePageService welcomePageService = WelcomePageServiceImpl.getInstance();
+	private final NewsService newsService = NewsServiceImpl.getInstance();
 	
 	private ServiceProvider() {
 		
@@ -97,6 +99,12 @@ public class ServiceProvider {
 	public WelcomePageService getWelcomePageService() {
 		return welcomePageService;
 	}
+
+	public NewsService getNewsService() {
+		return newsService;
+	}
+	
+	
 
 	
 	

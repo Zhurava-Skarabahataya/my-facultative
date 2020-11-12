@@ -65,7 +65,7 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 		CourseDAO courseInfoDAO = daoFactory.getCourseDAO();
 
 		try {
-			courseInfoDAO.getRunCoursesOfStudent(userPageInfo);
+			courseInfoDAO.findRunCoursesOfStudent(userPageInfo);
 
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -84,7 +84,7 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 		CourseDAO courseDAO = daoFactory.getCourseDAO();
 
 		try {
-			courseDAO.getRunCoursesOfLecturer(userPageInfo);
+			courseDAO.findRunCoursesOfLecturer(userPageInfo);
 
 		} catch (DAOException e) {
 			throw new ServiceException(e);

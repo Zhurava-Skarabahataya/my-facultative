@@ -27,7 +27,8 @@ import by.epamtc.facultative.service.impl.CourseInfoServiceImpl;
 /**
  * Sends SQL requests concerning info about courses: description, duration,
  * students and lecturers of the course, to the database using Connections from
- * ConnectionPool.
+ * ConnectionPool. Implements CourseDAO interface. All methods use
+ * {@link ConnectionPool} to connect to database.
  */
 public class CourseDAOImpl implements CourseDAO {
 
@@ -40,35 +41,62 @@ public class CourseDAOImpl implements CourseDAO {
 	/** Message about problems with database executing query */
 	private final String ERROR_MESSAGE_PROBLEM_SQL = "Problems with database while executing query.";
 
+	/** Database parameter course id */
 	private final String DATABASE_PARAMETER_COURSE_ID = "courses.course_id";
+	/** Database parameter course title */
 	private final String DATABASE_PARAMETER_COURSE_TITLE = "title";
+	/** Database parameter run course id */
 	private final String DATABASE_PARAMETER_RUN_COURSE_ID = "run_courses.run_courses_id";
+	/** Database parameter student limit */
 	private final String DATABASE_PARAMETER_STUDENT_LIMIT = "run_courses.student_limit";
+	/** Database parameter classroom */
 	private final String DATABASE_PARAMETER_CLASSROOM = "run_courses.classroom";
+	/** Database parameter course status */
 	private final String DATABASE_PARAMETER_COURSE_STATUS = "run_courses.run_courses_status";
+	/** Database parameter user result */
 	private final String DATABASE_PARAMETER_USER_RESULT = "users_has_run_courses.user_result";
+	/** Database parameter duration */
 	private final String DATABASE_PARAMETER_DURATION = "courses.duration_in_hours";
+	/** Database parameter department id */
 	private final String DATABASE_PARAMETER_DEPARTMENT_ID = "courses.department_id";
+	/** Database parameter schedule */
 	private final String DATABASE_PARAMETER_SCHEDULE = "run_courses.shcedule";
+	/** Database parameter title */
 	private final String DATABASE_PARAMETER_TITLE = "courses.title";
+	/** Database parameter course description */
 	private final String DATABASE_PARAMETER_COURSE_DESCRIPTION = "courses.description";
+	/** Database parameter course program */
 	private final String DATABASE_PARAMETER_COURSE_PROGRAM = "courses.course_program";
+	/** Database parameter course requirement */
 	private final String DATABASE_PARAMETER_COURSE_REQUIREMENT = "courses.requirement";
+	/** Database parameter course approval status */
 	private final String DATABASE_PARAMETER_APPROVAL_STATUS = "approval_statuses.approval_status_name";
+	/** Database parameter course start date */
 	private final String DATABASE_PARAMETER_START_DATE = "run_courses.start_date";
+	/** Database parameter course end date */
 	private final String DATABASE_PARAMETER_END_DATE = "run_courses.end_date";
+	/** Database parameter user id */
 	private final String DATABASE_PARAMETER_USER_ID = "users_has_run_courses.users_user_id";
+	/** Database parameter lecturer id */
 	private final String DATABASE_PARAMETER_LECTURER_ID = "run_courses.lecturer_user_id";
+	/** Database parameter user login */
 	private final String DATABASE_PARAMETER_USER_LOGIN = "users.user_login";
+	/** Database parameter user first name */
 	private final String DATABASE_PARAMETER_USER_FIRST_NAME = "users.first_name";
+	/** Database parameter user second name */
 	private final String DATABASE_PARAMETER_USER_SECOND_NAME = "users.second_name";
+	/** Database parameter user patronymic */
 	private final String DATABASE_PARAMETER_USER_PATRONYMIC = "users.patronymic";
+	/** Database parameter approval user status id */
 	private final String DATABASE_PARAMETER_APPROVAL_STATUS_ID = "users_has_run_courses.approval_status_id";
+	/** Database parameter department name */
 	private final String DATABASE_PARAMETER_DEPARTMENT_NAME = "departments.name";
 
+	/** Query for database for selecting available courses in department */
 	private final String QUERY_FOR_AVAILABLE_COURSES_IN_DEPARTMENT = "SELECT courses.course_id,"
 			+ "title FROM courses WHERE department_id = ?";
 
+	/** Query for database for selecting available courses in university */
 	private final String QUERY_FOR_ALL_AVAILABLE_COURSES = "SELECT run_courses.run_courses_id, "
 			+ "run_courses.start_date, run_courses.end_date, run_courses.shcedule, "
 			+ "run_courses.student_limit, run_courses.classroom, run_courses.run_courses_status, run_courses.lecturer_user_id, "
@@ -81,10 +109,14 @@ public class CourseDAOImpl implements CourseDAO {
 			+ "run_courses.run_courses_status JOIN users ON users.user_id = run_courses.lecturer_user_id"
 			+ " WHERE run_courses_statuses.run_courses_statuses_id = 1";
 
+	/**
+	 * Query for database for inserting new run course into database when creating
+	 */
 	private final String QUERY_FOR_CREATING_RUN_COURSE = "INSERT INTO run_courses (courses_course_id, "
 			+ " start_date, end_date, shcedule, student_limit, classroom, lecturer_user_id, run_courses_status) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+	/** Query for database for selecting run course info by run course id */
 	private final String QUERY_FOR_RUN_COURSE_INFO_BY_RUN_COURSE_ID = "SELECT run_courses.run_courses_id, "
 			+ "run_courses.start_date, run_courses.end_date, run_courses.shcedule, "
 			+ "run_courses.student_limit, run_courses.classroom, run_courses.run_courses_status, run_courses.lecturer_user_id, "
@@ -98,6 +130,7 @@ public class CourseDAOImpl implements CourseDAO {
 			+ " JOIN departments ON courses.department_id = departments.department_id"
 			+ " WHERE run_courses.run_courses_id = ?";
 
+	/** Query for database for selecting run courses of the lecturer */
 	private final String QUERY_FOR_LECTURER_RUN_COURSE = "SELECT run_courses.run_courses_id,"
 			+ " run_courses.start_date, run_courses.end_date, run_courses.shcedule, run_courses.student_limit, "
 			+ " run_courses.classroom, run_courses.run_courses_status, "
@@ -107,8 +140,10 @@ public class CourseDAOImpl implements CourseDAO {
 			+ "JOIN run_courses_statuses ON run_courses_statuses.run_courses_statuses_id = "
 			+ "run_courses.run_courses_status WHERE run_courses.lecturer_user_id = ? ";
 
+	/** Query for database for selecting info about course by run course id */
 	private final String QUERY_FOR_COURSE_INFO = "SELECT * FROM courses WHERE course_id = ?";
 
+	/** Query for database for selecting run course info of course by course id */
 	private final String QUERY_FOR_RUN_COURSE_INFO_BY_COURSE_ID = "SELECT run_courses.run_courses_id, "
 			+ "run_courses.start_date, run_courses.end_date, run_courses.shcedule, "
 			+ "run_courses.student_limit, run_courses.classroom, run_courses.run_courses_status, "
@@ -119,6 +154,7 @@ public class CourseDAOImpl implements CourseDAO {
 			+ "run_courses.run_courses_status JOIN users ON users.user_id = run_courses.lecturer_user_id"
 			+ " JOIN departments ON courses.department_id = departments.department_id" + " WHERE courses.course_id = ?";
 
+	/** Query for database for selecting run courses of a student by student id */
 	private final String QUERY_FOR_STUDENT_RUN_COURSES = "SELECT "
 			+ "run_courses.run_courses_id, run_courses.start_date, " + "run_courses.end_date, run_courses.shcedule, "
 			+ "run_courses.student_limit, run_courses.classroom, "
@@ -133,6 +169,7 @@ public class CourseDAOImpl implements CourseDAO {
 			+ "JOIN approval_statuses ON approval_statuses.approval_status_id = users_has_run_courses.approval_status_id"
 			+ " WHERE users_has_run_courses.users_user_id = ?";
 
+	/** Query for database for selecting students on some course */
 	private final String QUERY_FOR_STUDENTS_ON_COURSE = "SELECT users.user_login, users.first_name, users.second_name, "
 			+ "users.patronymic, users_has_run_courses.users_user_id, "
 			+ "users_has_run_courses.user_result, users_has_run_courses.approval_status_id, "
@@ -141,29 +178,57 @@ public class CourseDAOImpl implements CourseDAO {
 			+ "ON users_has_run_courses.approval_status_id = approval_statuses.approval_status_id"
 			+ " WHERE users_has_run_courses.run_courses_id = ?";
 
+	/**
+	 * Query for database for inserting student application when student applying
+	 * for a course
+	 */
 	private final String QUERY_FOR_APPLYING_STUDENT_FOR_RUN_COURSE = "INSERT INTO users_has_run_courses "
 			+ "(users_user_id, run_courses_id, approval_status_id) VALUES (?, ?, ?);";
 
+	/** Query for database for deleting students application for a course */
 	private final String QUERY_FOR_REMOVE_APPLICATION_STUDENT_FOR_RUN_COURSE = "DELETE "
 			+ "FROM users_has_run_courses WHERE users_user_id = ? AND run_courses_id = ?";
 
+	/**
+	 * Query for database for updating student status on course when lecturer
+	 * approve or disapprove student
+	 */
 	private final String QUERY_FOR_CHANGING_APPROVAL_STATUS_ON_COURSE = "UPDATE users_has_run_courses"
 			+ " SET approval_status_id = ? WHERE users_user_id = ? AND run_courses_id = ?";
 
+	/** Query for database for updating tudent's mark when giving student a grave */
 	private final String QUERY_FOR_GIVING_STUDENT_GRADE = "UPDATE users_has_run_courses "
 			+ " SET user_result = ? WHERE users_user_id = ? AND run_courses_id = ?";
 
+	/**
+	 * Query for database for inserting a feedback from student about course into
+	 * database
+	 */
 	private final String QUERY_FOR_LEAVING_FEEDBACK = "INSERT INTO courses_feedbacks "
 			+ "(course_feedback_text, users_user_id_author, courses_course_id) VALUES (?, ?, ?)";
 
+	/** private constructor without parameters */
 	private CourseDAOImpl() {
 
 	}
 
+	/**
+	 * Returns singleton object of the class
+	 * 
+	 * @return Object of {@link CourseDAOImpl}
+	 */
 	public static CourseDAOImpl getInstance() {
 		return instance;
 	}
 
+	/**
+	 * Method connects to database and finds courses of current department. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param departmentId id of department
+	 * @return List of {@link Course} of courses of this department
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public List<Course> findCoursesFromDepartment(int departmentId) throws DAOException {
 
@@ -217,6 +282,15 @@ public class CourseDAOImpl implements CourseDAO {
 		return courses;
 	}
 
+	/**
+	 * Method that connects to database and is used when creating a new run course.
+	 * Methods uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param infoAboutRunnedCourse Object of {@link RunnedCourse} which contains
+	 *                              info about new course: it's title, dates of
+	 *                              start and end, classroom and schedule.
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void createRunCourse(RunnedCourse infoAboutRunnedCourse) throws DAOException {
 
@@ -287,8 +361,15 @@ public class CourseDAOImpl implements CourseDAO {
 
 	}
 
+	/**
+	 * Method that connects to database and finds run courses of student. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param userPageInfo Object of {@link UserInfo} with info about student
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
-	public void getRunCoursesOfStudent(UserInfo userPageInfo) throws DAOException {
+	public void findRunCoursesOfStudent(UserInfo userPageInfo) throws DAOException {
 
 		ConnectionPool connectionPool = ConnectionPool.getInstance();
 		Connection connection = null;
@@ -430,8 +511,15 @@ public class CourseDAOImpl implements CourseDAO {
 		}
 	}
 
+	/**
+	 * Method that connects to database and finds run courses of lecturer. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param userPageInfo Object of {@link UserInfo} with info about lecturer
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
-	public void getRunCoursesOfLecturer(UserInfo userPageInfo) throws DAOException {
+	public void findRunCoursesOfLecturer(UserInfo userPageInfo) throws DAOException {
 
 		List<RunnedCourse> currentCourses = new ArrayList<RunnedCourse>();
 		List<RunnedCourse> endedCourses = new ArrayList<RunnedCourse>();
@@ -566,6 +654,15 @@ public class CourseDAOImpl implements CourseDAO {
 		}
 	}
 
+	/**
+	 * Method connects to database and finds students on run course. Methods uses
+	 * {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param runCourseId id of the course
+	 * @return List of {@link StudentOnCourse} of students that are enrolled for the
+	 *         course
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public List<StudentOnCourse> findStudentsOnRunCourse(int runCourseId) throws DAOException {
 
@@ -642,6 +739,14 @@ public class CourseDAOImpl implements CourseDAO {
 		return students;
 	}
 
+	/**
+	 * Connects to database and finds runned courses of a certain course. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param courseId id of the course
+	 * @return List of {@link RunnedCourse} runned courses of the course
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public List<RunnedCourse> findAllAvailableRunCourses() throws DAOException {
 
@@ -770,6 +875,15 @@ public class CourseDAOImpl implements CourseDAO {
 		return courses;
 	}
 
+	/**
+	 * Connects to database and finds info about runned course. Methods uses
+	 * {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param runCourseId id of the run course
+	 * @return Object {@link RunnedCourse} which contains detailed info about
+	 *         course.
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public RunnedCourse findRunCourse(int runCourseId) throws DAOException {
 
@@ -897,6 +1011,14 @@ public class CourseDAOImpl implements CourseDAO {
 		return infoAboutRunnedCourse;
 	}
 
+	/**
+	 * Method connects to database and applies student for a run course. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param userId      id of user
+	 * @param runCourseId id of run course
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void applyStudentForRunCourse(int userId, int runCourseId) throws DAOException {
 
@@ -931,12 +1053,17 @@ public class CourseDAOImpl implements CourseDAO {
 
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
-
 			}
 		}
-
 	}
 
+	/**
+	 * Method that connects to database and finds information about course. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param course Object of class {@link Course} with info about course id
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void findInfoAboutCourse(Course course) throws DAOException {
 
@@ -1005,6 +1132,14 @@ public class CourseDAOImpl implements CourseDAO {
 		}
 	}
 
+	/**
+	 * Connects to database and finds runned courses of a certain course. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param courseId id of the course
+	 * @return List of {@link RunnedCourse} runned courses of the course
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public List<RunnedCourse> findRunnedCoursesByCourseId(int courseId) throws DAOException {
 
@@ -1105,6 +1240,14 @@ public class CourseDAOImpl implements CourseDAO {
 		return runCourses;
 	}
 
+	/**
+	 * Method connects to database and removes student's application for a run
+	 * course. Methods uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param userId      id of user
+	 * @param runCourseId id of run course
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void removeApplicationForRunCourse(int userId, int runCourseId) throws DAOException {
 
@@ -1135,12 +1278,19 @@ public class CourseDAOImpl implements CourseDAO {
 
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
-
 			}
 		}
-
 	}
 
+	/**
+	 * Connects to database and changes user's approval status on course. Methods
+	 * uses {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param studentId   id of student
+	 * @param runCourseId id of the run course
+	 * @param status      approval status id
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void changeStudentApprovalStatusOnRunCourse(int studentId, int runCourseId, int status) throws DAOException {
 
@@ -1177,6 +1327,15 @@ public class CourseDAOImpl implements CourseDAO {
 
 	}
 
+	/**
+	 * Connects to database and gives student a grave for the course. Methods uses
+	 * {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param studentId   id of the student
+	 * @param runCourseId id of the run course
+	 * @param grade       grade for the course
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void giveStudentGraveOnRunCourse(int studentId, int runCourseId, int grade) throws DAOException {
 
@@ -1210,12 +1369,19 @@ public class CourseDAOImpl implements CourseDAO {
 				connectionPool.closeConnection(statement, connection);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e);
-
 			}
 		}
-
 	}
 
+	/**
+	 * Method leaves feedbacks about course into database. Methods uses
+	 * {@link ConnectionPool} to connect to database.
+	 * 
+	 * @param userId   id of the user
+	 * @param courseId id of the course
+	 * @param comment  text of the feedback
+	 * @throws DAOException when problems with database access occur.
+	 */
 	@Override
 	public void leaveFeedback(int userId, int courseId, String comment) throws DAOException {
 

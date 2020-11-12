@@ -85,8 +85,25 @@
 		</c:if>
 	</div>
 
+
 	<img src="image/welcome-cat.png" alt="Здесь должен был быть кот."
-		height=200>
+		height=200 style="opacity:0.9">
+
+	<div style = "display:inline-block; padding:5px; ">
+		<c:forEach var="news" items="${requestScope.info.news}">
+		
+		<div style="width:45%; float:left;background-color: #f1f1f1; 	opacity:0.9;
+	border-radius: 10px;padding:5px; margin:5px;font-weight: bold;"><c:out value="${news.title}"/><hr>
+		
+			<div style = "display:inline-block;font-weight: normal;">
+				<div style="width:40%; float:left;"><img width = 100% alt="" src="${news.imagePath}"></div>
+				<div style="width:40%; float:left;"><c:out value="${news.text}"/></div>
+			</div>
+	
+		</div>
+		</c:forEach>
+	
+	</div>
 
 	<c:out value="${popularCourses}" />
 	<jsp:include page="footer.jsp" />

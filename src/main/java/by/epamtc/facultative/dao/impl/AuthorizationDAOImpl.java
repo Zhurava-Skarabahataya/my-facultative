@@ -14,26 +14,51 @@ import by.epamtc.facultative.dao.impl.pool.ConnectionPool;
 import by.epamtc.facultative.dao.impl.pool.exception.ConnectionPoolException;
 import by.epamtc.facultative.bean.UserAuthorizationInfo;
 
+/**
+ * Implementation of {@link AuthorizationDAO}. Methods use
+ * {@link ConnectionPool} to connect to database and make attempt to authorize
+ * user.
+ */
 public class AuthorizationDAOImpl implements AuthorizationDAO {
 
+	/** A single instance of the class (pattern Singleton) */
 	private static final AuthorizationDAOImpl instance = new AuthorizationDAOImpl();
 
+	/** Logger of the class */
 	private static final Logger logger = Logger.getLogger(AuthorizationDAOImpl.class);
 
+	/** Query for database for selecting users with entered login */
 	private final String QUERY_FIND_USER_IN_DATABASE = "SELECT * FROM users WHERE user_login = ? ";
 
+	/** Database parameter user password */
 	private final String PARAMETER_USER_PASSWORD = "user_password";
 
+	/** Message occurs when problems with database */
 	private final String ERROR_MESSAGE_DATABASE_PROBLEM = "Problem with database execution.";
 
+	/** private constructor without parameters */
 	private AuthorizationDAOImpl() {
 
 	}
 
+	/**
+	 * Returns singleton object of the class
+	 * 
+	 * @return Object of {@link CourseDAOImpl}
+	 */
 	public static AuthorizationDAOImpl getInstance() {
 		return instance;
 	}
 
+	/**
+	 * Method connects to database via {@link ConnectionPool} and makes attempt to
+	 * authorize user, if entered login and password are valid
+	 * 
+	 * @param info data transfer object {@link UserAuthorizationInfo} which contains
+	 *             info about entered password and login
+	 * @return true if user exists, false if user not found
+	 * @throws DAOException when problems with database access occur. 
+	 */
 	@Override
 	public boolean authorizeUser(UserAuthorizationInfo info) throws DAOException {
 
@@ -88,9 +113,7 @@ public class AuthorizationDAOImpl implements AuthorizationDAO {
 				throw new DAOException(e);
 			}
 		}
-
 		return false;
-
 	}
 
 }
