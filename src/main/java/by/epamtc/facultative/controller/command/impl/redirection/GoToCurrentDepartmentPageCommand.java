@@ -1,7 +1,6 @@
-package by.epamtc.facultative.controller.command.impl;
+package by.epamtc.facultative.controller.command.impl.redirection;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,30 +14,37 @@ import by.epamtc.facultative.service.DepartmentInfoService;
 import by.epamtc.facultative.service.ServiceProvider;
 import by.epamtc.facultative.service.exception.ServiceException;
 
-public class GoToDepartmentsPageCommand implements Command {
-
-	private static final Logger logger = Logger.getLogger(GoToDepartmentsPageCommand.class);
+public class GoToCurrentDepartmentPageCommand implements Command {
+	
+	private static final Logger logger = Logger.getLogger(GoToCurrentDepartmentPageCommand.class);
 
 	private final String COMMAND_GO_TO_ERROR_PAGE = "?command=go_to_error_page";
 	private final String MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR = "&message=server_error";
+	private final String DEPARTMENTS_PAGE_PATH = "WEB-INF/jsp/department-page.jsp";
 	
-	private final String DEPARTMENTS_PAGE_PATH = "WEB-INF/jsp/departments-page.jsp";
-	
-	private final String REQUEST_PARAMETER_DEPARTMENTS = "departments";
+	private final String REQUEST_PARAMETER_DEPARTMENT_ID = "department_id";
+	private final String REQUEST_PARAMETER_DEAN_NAME = "dean_name";
+	private final String REQUEST_PARAMETER_DEAN_PHOTO_LINK = "dean_photo_link";
+	private final String REQUEST_PARAMETER_DEPARTMENT_NAME = "department_name";
+	private final String REQUEST_PARAMETER_DEPARTMENT = "department";
+
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		List<Department> departments;
-		departments = null;
+		int departmentId;
 
+		departmentId = Integer.parseInt(request.getParameter(REQUEST_PARAMETER_DEPARTMENT_ID));
+		
 		DepartmentInfoService departmentService = ServiceProvider.getInstance().getDepartmentInfoService();
-
-
+		
+		Department department = new Department();
+		department.setDepartmentID(departmentId);
+		
 		try {
-			departments = departmentService.findAllDepartmentsInfo();
+			departmentService.findLecturersAndCoursesForDepartment(department);
 
-			request.setAttribute(REQUEST_PARAMETER_DEPARTMENTS, departments);
+			request.setAttribute(REQUEST_PARAMETER_DEPARTMENT, department);
 			request.getRequestDispatcher(DEPARTMENTS_PAGE_PATH).forward(request, response);
 			
 		} catch (ServletException | IOException | ServiceException e) {
@@ -48,4 +54,5 @@ public class GoToDepartmentsPageCommand implements Command {
 		}
 
 	}
+
 }

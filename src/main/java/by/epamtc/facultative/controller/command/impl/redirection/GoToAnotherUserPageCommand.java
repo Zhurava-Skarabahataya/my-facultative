@@ -1,4 +1,4 @@
-package by.epamtc.facultative.controller.command.impl;
+package by.epamtc.facultative.controller.command.impl.redirection;
 
 import java.io.IOException;
 
@@ -22,6 +22,7 @@ public class GoToAnotherUserPageCommand implements Command {
 	private final String SESSION_ATTRIBUTE_LOGIN = "userLogin";
 	private final String SESSION_ATTRIBUTE_BEAN = "bean";
 	private final String REQUEST_ATTRIBUTE_USER = "user";
+	private final String REQUEST_ATTRIBUTE_USER_ID = "userId";
 	
 	private final String USER_PAGE_PATH = "WEB-INF/jsp/guest-user-page.jsp";
 	
@@ -43,8 +44,7 @@ public class GoToAnotherUserPageCommand implements Command {
 		int loggedUserRole = loggedUserInfo.getUserRoleId();
 
 		if (userLogin != null && loggedUserRole > 1) {
-			
-			int userId = Integer.parseInt(request.getParameter("userId"));
+			int userId = Integer.parseInt(request.getParameter(REQUEST_ATTRIBUTE_USER_ID));
 			try {
 				
 				UserInfo userInfo = new UserInfo();

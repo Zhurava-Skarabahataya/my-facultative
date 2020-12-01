@@ -8,4 +8,6 @@ public interface EmployeeStatusService {
 
 	void disapproveEmployee(int employeeId) throws ServiceException;
 
+	void fireEmployee(int userId) throws ServiceException;
+
 }

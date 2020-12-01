@@ -87,7 +87,7 @@ public class Feedback implements Serializable{
 		return "Feedback [feedbackId=" + feedbackId + ", authorId=" + authorId + ", courseId=" + courseId
 				+ ", feedbackText=" + feedbackText + "]";
 	}
-	
+
 	
 	
 }

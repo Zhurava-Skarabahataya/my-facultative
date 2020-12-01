@@ -2,33 +2,42 @@ package by.epamtc.facultative.bean;
 
 import java.io.Serializable;
 
-public class News implements Serializable{
+public class News implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String title;
 	private String text;
 	private String imagePath;
-	
-	
+
+	public News() {
+
+	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public String getText() {
 		return text;
 	}
+
 	public String getImagePath() {
 		return imagePath;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public void setText(String text) {
 		this.text = text;
 	}
+
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -38,6 +47,7 @@ public class News implements Serializable{
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -64,10 +74,10 @@ public class News implements Serializable{
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "News [title=" + title + ", text=" + text + ", imagePath=" + imagePath + "]";
 	}
-	
-	
+
 }

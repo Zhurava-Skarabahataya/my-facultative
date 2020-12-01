@@ -152,4 +152,5 @@ public class UserRegistrationInfo implements Serializable {
 				+ ", userRoleID=" + userRoleID + ", departmentID=" + departmentID + "]";
 	}
 
+
 }

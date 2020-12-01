@@ -30,6 +30,14 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 <fmt:message bundle="${loc}" key="field.patronymic"
 	var="field.patronymic" />
 <fmt:message bundle="${loc}" key="field.role" var="field.role" />
+<fmt:message bundle="${loc}" key="user_first_name" var="user_first_name" />
+<fmt:message bundle="${loc}" key="user_second_name" var="user_second_name" />
+<fmt:message bundle="${loc}" key="user_patronymic" var="user_patronymic" />
+<fmt:message bundle="${loc}" key="user_role" var="user_role" />
+<fmt:message bundle="${loc}" key="user_faculty" var="user_faculty" />
+<fmt:message bundle="${loc}" key="user_adress" var="user_adress" />
+<fmt:message bundle="${loc}" key="user_date_of_birth" var="user_date_of_birth" />
+<fmt:message bundle="${loc}" key="user_tel_number" var="user_tel_number" />
 <fmt:message bundle="${loc}" key="field.faculty" var="field.faculty" />
 <fmt:message bundle="${loc}" key="field.adress" var="field.adress" />
 <fmt:message bundle="${loc}" key="field.date_of_birth"
@@ -65,26 +73,26 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 
 			<table class="table_user_info">
 				<tr>
-					<td><c:out value="${field.first_name}" /></td>
+					<td><c:out value="${user_first_name}" /></td>
 					<td><input type="text" name="userFirstName" required
 						value="${sessionScope.bean.userFirstName}" /></td>
 				</tr>
 				<tr>
-					<td><c:out value="${field.field.second_name}" /></td>
+					<td><c:out value="${user_second_name}" /></td>
 					<td><input type="text" name="userSecondName" required
 						value="${sessionScope.bean.userSecondName}" /></td>
 				</tr>
 				<tr>
-					<td><c:out value="${field.patronymic}" /></td>
+					<td><c:out value="${user_patronymic}" /></td>
 					<td><input type="text" name="userPatronymic"
 						value="${sessionScope.bean.userPatronymic}" /></td>
 				</tr>
 				<tr>
-					<td><c:out value="${field.role}" /></td>
+					<td><c:out value="${user_role}" /></td>
 					<td><c:out value="${sessionScope.bean.userRole}" /></td>
 				</tr>
 				<tr>
-					<td><c:out value="${field.faculty}" /></td>
+					<td><c:out value="${user_faculty}" /></td>
 					<td><select name="faculty" size="1">
 							<option selected="selected" disabled><c:out
 									value="${sessionScope.bean.userFaculty}" /></option>
@@ -100,18 +108,18 @@ b<%@ page language="java" contentType="text/html; charset=UTF-8"
 					</select></td>
 				</tr>
 				<tr>
-					<td><c:out value="${field.adress}" /></td>
+					<td><c:out value="${user_adress}" /></td>
 					<td><input type="text" name="userAdress"
 						value="${sessionScope.bean.userAdress}" /></td>
 				</tr>
 				<tr>
-					<td><c:out value="${field.date_of_birth}" /></td>
-					<td><input type="date" id="userDateOfBirth"
+					<td><c:out value="${user_date_of_birth}" /></td>
+					<td><input type="date"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" id="userDateOfBirth"
 						name="userDateOfBirth"
 						value="${sessionScope.bean.userDateOfBirth}" />
 				</tr>
 				<tr>
-					<td><c:out value="${field.tel_number}" /></td>
+					<td><c:out value="${user_tel_number}" /></td>
 					<td><input type="text" name="userPhone"
 						value="${sessionScope.bean.userPhone}" /></td>
 				</tr>

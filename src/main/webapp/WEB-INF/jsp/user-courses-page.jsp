@@ -251,7 +251,8 @@
 					</c:if>
 
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
-						<td><c:out value="${course.studentResult}" /></td>
+						<c:if test="${course.studentResult != 0}">
+						<td><c:out value="${course.studentResult}" /></td></c:if>
 					</c:if>
 					<c:if test="${sessionScope.bean.userRoleId == 1}">
 						<td><c:out value="${course.studentStatusName}" /></td>

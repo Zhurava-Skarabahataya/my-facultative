@@ -31,12 +31,13 @@ public class RatingServiceImpl implements RatingService{
 			rating = null;
 
 			if (marks.size() != 0) {
-				int sumOfMarks = 0;
+				double sumOfMarks = 0;
 
 				for (Mark mark : marks) {
 					sumOfMarks += mark.getMarkGrade();
 				}
-				double averageMark = sumOfMarks / marks.size();
+
+				double averageMark = sumOfMarks / (double)marks.size();
 
 				rating = String.format("%.1f", averageMark);
 			}
@@ -53,15 +54,16 @@ public class RatingServiceImpl implements RatingService{
 		String rating = null;
 
 		if (marks.size() != 0) {
-			int sumOfMarks = 0;
+			double sumOfMarks = 0;
 
 			for (Mark mark : marks) {
 				sumOfMarks += mark.getMarkGrade();
 			}
-			double averageMark = sumOfMarks / marks.size();
+			double averageMark = sumOfMarks / (double) marks.size();
 
 			rating = String.format("%.1f", averageMark);
 		}
+
 		student.setStudentRating(rating);
 	}
 

@@ -10,7 +10,6 @@ public class InfoForWelcomePage implements Serializable {
 	private List <News> news;
 
 	public InfoForWelcomePage() {
-		super();
 	}
 
 	public List<News> getNews() {
@@ -51,7 +50,6 @@ public class InfoForWelcomePage implements Serializable {
 		return "InfoForWelcomePage [news=" + news + "]";
 	}
 
-	
 	
 
 }

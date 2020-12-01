@@ -82,6 +82,7 @@
 				<th><c:out value="${more}"/></th>
 			</tr>
 			<c:forEach var="run_course" items="${requestScope.course.runCourses}">
+				<c:if test="${(sessionScope.userLogin != null) || (run_course.currentState>2)}">
 				<tr>
 					<td><my:formDate date="${run_course.dateOfStart}"/></td>
 					<td><my:formDate date="${run_course.dateOfEnd}"/></td>
@@ -101,6 +102,7 @@
 					<input type="submit" value="${more}" />
 					</form></td>
 				</tr>
+				</c:if>
 			</c:forEach>
 			
 			</table>

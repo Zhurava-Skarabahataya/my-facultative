@@ -1,6 +1,7 @@
 package by.epamtc.facultative.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import by.epamtc.facultative.bean.StudentOnCourse;
@@ -9,6 +10,7 @@ import by.epamtc.facultative.bean.Course;
 import by.epamtc.facultative.bean.RunnedCourse;
 import by.epamtc.facultative.dao.CourseDAO;
 import by.epamtc.facultative.dao.DAOFactory;
+import by.epamtc.facultative.dao.DepartmentDAO;
 import by.epamtc.facultative.dao.exception.DAOException;
 import by.epamtc.facultative.service.CourseInfoService;
 import by.epamtc.facultative.service.exception.ServiceException;
@@ -17,7 +19,8 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 
 	private static final CourseInfoServiceImpl instance = new CourseInfoServiceImpl();
 
-	//private final String PHOTO_LINK_PREFIX = "D:/Java/facultative-project/user_photos/";
+	// private final String PHOTO_LINK_PREFIX =
+	// "D:/Java/facultative-project/user_photos/";
 	private final String PHOTO_LINK_PREFIX = "image/";
 	private final String PHOTO_LINK_POSTFIX = ".jpg";
 	private final int APPROVED_STUDENT_STATUS = 2;
@@ -95,10 +98,24 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 		countStudentsOnCourse(userPageInfo.getEndedCourses());
 		countStudentsOnCourse(userPageInfo.getCurrentCourses());
 	}
-	
+
 	@Override
-	public void findDeanRunCourses(UserInfo userPageInfo){
-		
+	public void findDeanRunCourses(UserInfo userPageInfo) throws ServiceException {
+
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		CourseDAO courseDAO = daoFactory.getCourseDAO();
+
+		try {
+			courseDAO.findRunCoursesOfDean(userPageInfo);
+
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+
+		}
+		countStudentsOnCourse(userPageInfo.getCanselledCourses());
+		countStudentsOnCourse(userPageInfo.getEndedCourses());
+		countStudentsOnCourse(userPageInfo.getCurrentCourses());
+
 	}
 
 	@Override
@@ -107,19 +124,29 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		CourseDAO courseDAO = daoFactory.getCourseDAO();
 
-		List<RunnedCourse> courses = null;
+		List<RunnedCourse> allCourses = null;
+		List<RunnedCourse> availableCourses = new ArrayList<RunnedCourse>();
 
 		try {
-			courses = courseDAO.findAllAvailableRunCourses();
+			allCourses = courseDAO.findAllAvailableRunCourses();
+
+			countStudentsOnCourse(allCourses);
+			defineCourseLaunchStatus(allCourses);
+
+			for (int index = 0; index < allCourses.size(); index++) {
+
+				RunnedCourse course = allCourses.get(index);
+
+				if (course.getCurrentState() > 2) {
+					availableCourses.add(course);
+				}
+			}
 
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}
 
-		countStudentsOnCourse(courses);
-		defineCourseLaunchStatus(courses);
-
-		return courses;
+		return availableCourses;
 	}
 
 	@Override
@@ -365,7 +392,7 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isStudentOnRunCourse(int userId, RunnedCourse info) {
 

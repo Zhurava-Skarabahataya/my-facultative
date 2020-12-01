@@ -3,7 +3,6 @@ package by.epamtc.facultative.bean;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public class UserInfo implements Serializable {
 
@@ -39,14 +38,85 @@ public class UserInfo implements Serializable {
 
 	}
 
-	
-	
-	
+
+	public String getUserFirstName() {
+		return userFirstName;
+	}
+
+
+	public String getUserSecondName() {
+		return userSecondName;
+	}
+
+
+	public String getUserPatronymic() {
+		return userPatronymic;
+	}
+
+
+	public String getUserLogin() {
+		return userLogin;
+	}
+
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+
+	public String getUserFaculty() {
+		return userFaculty;
+	}
+
+
+	public String getUserAdress() {
+		return userAdress;
+	}
+
+
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+
+	public String getUserPhotoLink() {
+		return userPhotoLink;
+	}
+
+
 	public String getStudentRating() {
 		return studentRating;
 	}
 
 
+	public LocalDate getUserDateOfBirth() {
+		return userDateOfBirth;
+	}
+
+
+	public int getUserId() {
+		return userId;
+	}
+
+
+	public int getUserRoleId() {
+		return userRoleId;
+	}
+
+
+	public int getUserStatusId() {
+		return userStatusId;
+	}
+
+
+	public int getUserFacultyId() {
+		return userFacultyId;
+	}
 
 
 	public List<Mark> getStudentMarks() {
@@ -54,32 +124,9 @@ public class UserInfo implements Serializable {
 	}
 
 
-
-
-	public void setStudentRating(String studentRating) {
-		this.studentRating = studentRating;
-	}
-
-
-
-
-	public void setStudentMarks(List<Mark> studentMarks) {
-		this.studentMarks = studentMarks;
-	}
-
-
-
-
 	public List<RunnedCourse> getCurrentCourses() {
 		return currentCourses;
 	}
-
-
-
-	public void setCurrentCourses(List<RunnedCourse> currentCourses) {
-		this.currentCourses = currentCourses;
-	}
-
 
 
 	public List<RunnedCourse> getEndedCourses() {
@@ -87,11 +134,99 @@ public class UserInfo implements Serializable {
 	}
 
 
-
 	public List<RunnedCourse> getCanselledCourses() {
 		return canselledCourses;
 	}
 
+
+	public void setUserFirstName(String userFirstName) {
+		this.userFirstName = userFirstName;
+	}
+
+
+	public void setUserSecondName(String userSecondName) {
+		this.userSecondName = userSecondName;
+	}
+
+
+	public void setUserPatronymic(String userPatronymic) {
+		this.userPatronymic = userPatronymic;
+	}
+
+
+	public void setUserLogin(String userLogin) {
+		this.userLogin = userLogin;
+	}
+
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+
+
+	public void setUserFaculty(String userFaculty) {
+		this.userFaculty = userFaculty;
+	}
+
+
+	public void setUserAdress(String userAdress) {
+		this.userAdress = userAdress;
+	}
+
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
+
+
+	public void setUserPhotoLink(String userPhotoLink) {
+		this.userPhotoLink = userPhotoLink;
+	}
+
+
+	public void setStudentRating(String studentRating) {
+		this.studentRating = studentRating;
+	}
+
+
+	public void setUserDateOfBirth(LocalDate userDateOfBirth) {
+		this.userDateOfBirth = userDateOfBirth;
+	}
+
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+
+	public void setUserRoleId(int userRoleId) {
+		this.userRoleId = userRoleId;
+	}
+
+
+	public void setUserStatusId(int userStatusId) {
+		this.userStatusId = userStatusId;
+	}
+
+
+	public void setUserFacultyId(int userFacultyId) {
+		this.userFacultyId = userFacultyId;
+	}
+
+
+	public void setStudentMarks(List<Mark> studentMarks) {
+		this.studentMarks = studentMarks;
+	}
+
+
+	public void setCurrentCourses(List<RunnedCourse> currentCourses) {
+		this.currentCourses = currentCourses;
+	}
 
 
 	public void setEndedCourses(List<RunnedCourse> endedCourses) {
@@ -99,140 +234,20 @@ public class UserInfo implements Serializable {
 	}
 
 
-
 	public void setCanselledCourses(List<RunnedCourse> canselledCourses) {
 		this.canselledCourses = canselledCourses;
 	}
 
 
-
-	public String getUserFirstName() {
-		return userFirstName;
-	}
-
-	public String getUserSecondName() {
-		return userSecondName;
-	}
-
-	public String getUserPatronymic() {
-		return userPatronymic;
-	}
-
-	public String getUserLogin() {
-		return userLogin;
-	}
-
-	public String getUserEmail() {
-		return userEmail;
-	}
-
-	public String getUserRole() {
-		return userRole;
-	}
-
-	public String getUserFaculty() {
-		return userFaculty;
-	}
-
-	public String getUserAdress() {
-		return userAdress;
-	}
-
-	public String getUserPhone() {
-		return userPhone;
-	}
-
-	public String getUserPhotoLink() {
-		return userPhotoLink;
-	}
-
-	public LocalDate getUserDateOfBirth() {
-		return userDateOfBirth;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public int getUserRoleId() {
-		return userRoleId;
-	}
-
-	public int getUserStatusId() {
-		return userStatusId;
-	}
-
-	public int getUserFacultyId() {
-		return userFacultyId;
-	}
-
-	
-
-	public void setUserFirstName(String userFirstName) {
-		this.userFirstName = userFirstName;
-	}
-
-	public void setUserSecondName(String userSecondName) {
-		this.userSecondName = userSecondName;
-	}
-
-	public void setUserPatronymic(String userPatronymic) {
-		this.userPatronymic = userPatronymic;
-	}
-
-	public void setUserLogin(String userLogin) {
-		this.userLogin = userLogin;
-	}
-
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
-
-	public void setUserFaculty(String userFaculty) {
-		this.userFaculty = userFaculty;
-	}
-
-	public void setUserAdress(String userAdress) {
-		this.userAdress = userAdress;
-	}
-
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
-	}
-
-	public void setUserPhotoLink(String userPhotoLink) {
-		this.userPhotoLink = userPhotoLink;
-	}
-
-	public void setUserDateOfBirth(LocalDate userDateOfBirth) {
-		this.userDateOfBirth = userDateOfBirth;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public void setUserRoleId(int userRoleId) {
-		this.userRoleId = userRoleId;
-	}
-
-	public void setUserStatusId(int userStatusId) {
-		this.userStatusId = userStatusId;
-	}
-
-	public void setUserFacultyId(int userFacultyId) {
-		this.userFacultyId = userFacultyId;
-	}
-
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((canselledCourses == null) ? 0 : canselledCourses.hashCode());
+		result = prime * result + ((currentCourses == null) ? 0 : currentCourses.hashCode());
+		result = prime * result + ((endedCourses == null) ? 0 : endedCourses.hashCode());
+		result = prime * result + ((studentMarks == null) ? 0 : studentMarks.hashCode());
+		result = prime * result + ((studentRating == null) ? 0 : studentRating.hashCode());
 		result = prime * result + ((userAdress == null) ? 0 : userAdress.hashCode());
 		result = prime * result + ((userDateOfBirth == null) ? 0 : userDateOfBirth.hashCode());
 		result = prime * result + ((userEmail == null) ? 0 : userEmail.hashCode());
@@ -251,6 +266,7 @@ public class UserInfo implements Serializable {
 		return result;
 	}
 
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -260,6 +276,31 @@ public class UserInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserInfo other = (UserInfo) obj;
+		if (canselledCourses == null) {
+			if (other.canselledCourses != null)
+				return false;
+		} else if (!canselledCourses.equals(other.canselledCourses))
+			return false;
+		if (currentCourses == null) {
+			if (other.currentCourses != null)
+				return false;
+		} else if (!currentCourses.equals(other.currentCourses))
+			return false;
+		if (endedCourses == null) {
+			if (other.endedCourses != null)
+				return false;
+		} else if (!endedCourses.equals(other.endedCourses))
+			return false;
+		if (studentMarks == null) {
+			if (other.studentMarks != null)
+				return false;
+		} else if (!studentMarks.equals(other.studentMarks))
+			return false;
+		if (studentRating == null) {
+			if (other.studentRating != null)
+				return false;
+		} else if (!studentRating.equals(other.studentRating))
+			return false;
 		if (userAdress == null) {
 			if (other.userAdress != null)
 				return false;
@@ -327,8 +368,6 @@ public class UserInfo implements Serializable {
 	}
 
 
-
-
 	@Override
 	public String toString() {
 		return "UserInfo [userFirstName=" + userFirstName + ", userSecondName=" + userSecondName + ", userPatronymic="
@@ -341,7 +380,4 @@ public class UserInfo implements Serializable {
 				+ canselledCourses + "]";
 	}
 
-
-
-		
 }

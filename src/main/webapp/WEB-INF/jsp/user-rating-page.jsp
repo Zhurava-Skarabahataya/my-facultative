@@ -151,6 +151,12 @@
 		</table>
 	</c:if>
 
+	<form action="Controller" method="post">
+		<input type="hidden" name="command" value="go_to_another_user_page" />
+		<input type="hidden" name = "userId" value="${requestScope.student.userId}"/>
+		<input type="submit"value="${user_page_title}" />
+	</form>
+
 	<jsp:include page="footer.jsp" />
 
 

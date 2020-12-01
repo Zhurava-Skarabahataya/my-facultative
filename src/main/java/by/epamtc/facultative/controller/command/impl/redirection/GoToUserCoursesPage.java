@@ -1,4 +1,4 @@
-package by.epamtc.facultative.controller.command.impl;
+package by.epamtc.facultative.controller.command.impl.redirection;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ public class GoToUserCoursesPage implements Command {
 
 	private final int USER_ROLE_STUDENT = 1;
 	private final int USER_ROLE_LECTURER = 2;
-	private final int USER_ROLE_RECTOR = 3;
+	private final int USER_ROLE_DEAN = 3;
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,7 +65,6 @@ public class GoToUserCoursesPage implements Command {
 				try {
 					courseInfoProvider.findLecturerRunCourses(userPageInfo);
 				} catch (ServiceException e) {
-					e.printStackTrace();
 
 					logger.error(e);
 
@@ -73,8 +72,16 @@ public class GoToUserCoursesPage implements Command {
 							+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
 				}
 			}
-			if (userRoleId == USER_ROLE_RECTOR) {
-				courseInfoProvider.findDeanRunCourses(userPageInfo);
+			if (userRoleId == USER_ROLE_DEAN) {
+
+				try {
+					courseInfoProvider.findDeanRunCourses(userPageInfo);
+				} catch (ServiceException e) {
+					logger.error(e);
+
+					response.sendRedirect(request.getRequestURI() + COMMAND_GO_TO_ERROR_PAGE
+							+ MESSAGE_GO_TO_ERROR_PAGE_INTERNAL_SERVER_ERROR);
+				}
 
 			}
 

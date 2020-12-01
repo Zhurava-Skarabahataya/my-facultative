@@ -143,7 +143,7 @@
 
 	<c:choose>
 		
-		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState >2)}">
+		<c:when test="${(sessionScope.bean.userRoleId == 1) && (run_course.currentState >2) && (sessionScope.bean.userStatusId != 3)}">
 			<c:choose>
 				<c:when test="${requestScope.user_approval_status_id == 0}">
 					<c:choose>

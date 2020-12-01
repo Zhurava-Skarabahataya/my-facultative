@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import by.epamtc.facultative.bean.UserInfo;
 import by.epamtc.facultative.controller.command.Command;
+import by.epamtc.facultative.controller.command.impl.redirection.GoToUserPageCommand;
 import by.epamtc.facultative.service.CourseInfoService;
 import by.epamtc.facultative.service.ServiceProvider;
 import by.epamtc.facultative.service.exception.ServiceException;

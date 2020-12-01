@@ -56,7 +56,6 @@ public class UploadUserPhotoCommand implements Command {
 			File targetFile = new File(
 					//request.getContextPath() + 
 					FOLDER_PATH + userLogin + FILENAME_EXTENSION);
-			System.out.println(FOLDER_PATH + userLogin + FILENAME_EXTENSION);
 
 			if (!targetFile.exists()) {
 				targetFile.createNewFile();

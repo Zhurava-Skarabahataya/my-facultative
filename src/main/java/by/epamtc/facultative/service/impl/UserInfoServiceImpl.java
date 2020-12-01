@@ -192,6 +192,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 					String employeeDepartmentName = employee.getUserFaculty();
 
 					departmentStaff.setDepartmentName(employeeDepartmentName);
+					
+					System.out.println(employee);
 
 					if (employeeStatus == LECTURER_STATUS_WORKING) {
 						workingLecturers.add(employee);

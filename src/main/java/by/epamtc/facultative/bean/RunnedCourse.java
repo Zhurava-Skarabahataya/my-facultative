@@ -9,7 +9,7 @@ public class RunnedCourse implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	Course infoAboutCourse;
-	
+
 	String courseName;
 	String shedule;
 	String lecturerName;
@@ -30,89 +30,12 @@ public class RunnedCourse implements Serializable {
 	int studentLimit;
 	int studentAmount;
 	int studentResult;
-	
+
 	List<StudentOnCourse> studentsOnCourse;
 
 	public RunnedCourse() {
-		
+
 	}
-	
-	
-	
-	
-
-	
-	public int getStudentResult() {
-		return studentResult;
-	}
-
-
-
-
-
-
-	public void setStudentResult(int studentResult) {
-		this.studentResult = studentResult;
-	}
-
-
-
-
-
-
-	public String getLecturerLogin() {
-		return lecturerLogin;
-	}
-
-
-
-
-	public String getLecturerPhotoLink() {
-		return lecturerPhotoLink;
-	}
-
-
-
-
-	public void setLecturerLogin(String lecturerLogin) {
-		this.lecturerLogin = lecturerLogin;
-	}
-
-
-
-
-	public void setLecturerPhotoLink(String lecturerPhotoLink) {
-		this.lecturerPhotoLink = lecturerPhotoLink;
-	}
-
-
-
-
-	public int getCurrentState() {
-		return currentState;
-	}
-
-
-
-
-	public void setCurrentState(int currentState) {
-		this.currentState = currentState;
-	}
-
-
-
-
-	public String getStudentStatusName() {
-		return studentStatusName;
-	}
-
-
-
-	public void setStudentStatusName(String studentStatusName) {
-		this.studentStatusName = studentStatusName;
-	}
-
-
 
 	public Course getInfoAboutCourse() {
 		return infoAboutCourse;
@@ -130,8 +53,20 @@ public class RunnedCourse implements Serializable {
 		return lecturerName;
 	}
 
+	public String getLecturerLogin() {
+		return lecturerLogin;
+	}
+
+	public String getLecturerPhotoLink() {
+		return lecturerPhotoLink;
+	}
+
 	public String getCourseStatusName() {
 		return courseStatusName;
+	}
+
+	public String getStudentStatusName() {
+		return studentStatusName;
 	}
 
 	public LocalDate getDateOfStart() {
@@ -154,6 +89,10 @@ public class RunnedCourse implements Serializable {
 		return courseStatus;
 	}
 
+	public int getCurrentState() {
+		return currentState;
+	}
+
 	public int getLecturerId() {
 		return lecturerId;
 	}
@@ -168,6 +107,10 @@ public class RunnedCourse implements Serializable {
 
 	public int getStudentAmount() {
 		return studentAmount;
+	}
+
+	public int getStudentResult() {
+		return studentResult;
 	}
 
 	public List<StudentOnCourse> getStudentsOnCourse() {
@@ -190,8 +133,20 @@ public class RunnedCourse implements Serializable {
 		this.lecturerName = lecturerName;
 	}
 
+	public void setLecturerLogin(String lecturerLogin) {
+		this.lecturerLogin = lecturerLogin;
+	}
+
+	public void setLecturerPhotoLink(String lecturerPhotoLink) {
+		this.lecturerPhotoLink = lecturerPhotoLink;
+	}
+
 	public void setCourseStatusName(String courseStatusName) {
 		this.courseStatusName = courseStatusName;
+	}
+
+	public void setStudentStatusName(String studentStatusName) {
+		this.studentStatusName = studentStatusName;
 	}
 
 	public void setDateOfStart(LocalDate dateOfStart) {
@@ -214,6 +169,10 @@ public class RunnedCourse implements Serializable {
 		this.courseStatus = courseStatus;
 	}
 
+	public void setCurrentState(int currentState) {
+		this.currentState = currentState;
+	}
+
 	public void setLecturerId(int lecturerId) {
 		this.lecturerId = lecturerId;
 	}
@@ -230,6 +189,10 @@ public class RunnedCourse implements Serializable {
 		this.studentAmount = studentAmount;
 	}
 
+	public void setStudentResult(int studentResult) {
+		this.studentResult = studentResult;
+	}
+
 	public void setStudentsOnCourse(List<StudentOnCourse> studentsOnCourse) {
 		this.studentsOnCourse = studentsOnCourse;
 	}
@@ -243,15 +206,20 @@ public class RunnedCourse implements Serializable {
 		result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
 		result = prime * result + courseStatus;
 		result = prime * result + ((courseStatusName == null) ? 0 : courseStatusName.hashCode());
+		result = prime * result + currentState;
 		result = prime * result + ((dateOfEnd == null) ? 0 : dateOfEnd.hashCode());
 		result = prime * result + ((dateOfStart == null) ? 0 : dateOfStart.hashCode());
 		result = prime * result + ((infoAboutCourse == null) ? 0 : infoAboutCourse.hashCode());
 		result = prime * result + lecturerId;
+		result = prime * result + ((lecturerLogin == null) ? 0 : lecturerLogin.hashCode());
 		result = prime * result + ((lecturerName == null) ? 0 : lecturerName.hashCode());
+		result = prime * result + ((lecturerPhotoLink == null) ? 0 : lecturerPhotoLink.hashCode());
 		result = prime * result + runCourseId;
 		result = prime * result + ((shedule == null) ? 0 : shedule.hashCode());
 		result = prime * result + studentAmount;
 		result = prime * result + studentLimit;
+		result = prime * result + studentResult;
+		result = prime * result + ((studentStatusName == null) ? 0 : studentStatusName.hashCode());
 		result = prime * result + ((studentsOnCourse == null) ? 0 : studentsOnCourse.hashCode());
 		return result;
 	}
@@ -281,6 +249,8 @@ public class RunnedCourse implements Serializable {
 				return false;
 		} else if (!courseStatusName.equals(other.courseStatusName))
 			return false;
+		if (currentState != other.currentState)
+			return false;
 		if (dateOfEnd == null) {
 			if (other.dateOfEnd != null)
 				return false;
@@ -298,10 +268,20 @@ public class RunnedCourse implements Serializable {
 			return false;
 		if (lecturerId != other.lecturerId)
 			return false;
+		if (lecturerLogin == null) {
+			if (other.lecturerLogin != null)
+				return false;
+		} else if (!lecturerLogin.equals(other.lecturerLogin))
+			return false;
 		if (lecturerName == null) {
 			if (other.lecturerName != null)
 				return false;
 		} else if (!lecturerName.equals(other.lecturerName))
+			return false;
+		if (lecturerPhotoLink == null) {
+			if (other.lecturerPhotoLink != null)
+				return false;
+		} else if (!lecturerPhotoLink.equals(other.lecturerPhotoLink))
 			return false;
 		if (runCourseId != other.runCourseId)
 			return false;
@@ -314,6 +294,13 @@ public class RunnedCourse implements Serializable {
 			return false;
 		if (studentLimit != other.studentLimit)
 			return false;
+		if (studentResult != other.studentResult)
+			return false;
+		if (studentStatusName == null) {
+			if (other.studentStatusName != null)
+				return false;
+		} else if (!studentStatusName.equals(other.studentStatusName))
+			return false;
 		if (studentsOnCourse == null) {
 			if (other.studentsOnCourse != null)
 				return false;
@@ -324,15 +311,16 @@ public class RunnedCourse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "InfoAboutRunnedCourse [infoAboutCourse=" + infoAboutCourse + ", courseName=" + courseName + ", shedule="
-				+ shedule + ", lecturerName=" + lecturerName + ", courseStatusName=" + courseStatusName
-				+ ", dateOfStart=" + dateOfStart + ", dateOfEnd=" + dateOfEnd + ", courseId=" + courseId
-				+ ", runCourseId=" + runCourseId + ", courseStatus=" + courseStatus + ", lecturerId=" + lecturerId
-				+ ", classroomNumber=" + classroomNumber + ", studentLimit=" + studentLimit + ", studentAmount="
-				+ studentAmount + ", studentsOnCourse=" + studentsOnCourse + "]";
+		return "RunnedCourse [infoAboutCourse=" + infoAboutCourse + ", courseName=" + courseName + ", shedule="
+				+ shedule + ", lecturerName=" + lecturerName + ", lecturerLogin=" + lecturerLogin
+				+ ", lecturerPhotoLink=" + lecturerPhotoLink + ", courseStatusName=" + courseStatusName
+				+ ", studentStatusName=" + studentStatusName + ", dateOfStart=" + dateOfStart + ", dateOfEnd="
+				+ dateOfEnd + ", courseId=" + courseId + ", runCourseId=" + runCourseId + ", courseStatus="
+				+ courseStatus + ", currentState=" + currentState + ", lecturerId=" + lecturerId + ", classroomNumber="
+				+ classroomNumber + ", studentLimit=" + studentLimit + ", studentAmount=" + studentAmount
+				+ ", studentResult=" + studentResult + ", studentsOnCourse=" + studentsOnCourse + "]";
 	}
 
 	
-	
-	
+
 }

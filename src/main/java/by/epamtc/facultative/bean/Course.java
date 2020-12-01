@@ -24,32 +24,6 @@ public class Course implements Serializable{
 		
 	}
 
-	
-	
-	public List<Feedback> getFeedbacks() {
-		return feedbacks;
-	}
-
-
-
-	public void setFeedbacks(List<Feedback> feedbacks) {
-		this.feedbacks = feedbacks;
-	}
-
-
-
-	public List<RunnedCourse> getRunCourses() {
-		return runCourses;
-	}
-
-
-
-	public void setRunCourses(List<RunnedCourse> runCourses) {
-		this.runCourses = runCourses;
-	}
-
-
-
 	public String getCourseName() {
 		return courseName;
 	}
@@ -74,12 +48,20 @@ public class Course implements Serializable{
 		return courseId;
 	}
 
+	public int getCourseDepartment() {
+		return courseDepartment;
+	}
+
 	public int getCourseDuration() {
 		return courseDuration;
 	}
 
-	public int getCourseDepartment() {
-		return courseDepartment;
+	public List<RunnedCourse> getRunCourses() {
+		return runCourses;
+	}
+
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
 	}
 
 	public void setCourseName(String courseName) {
@@ -106,12 +88,20 @@ public class Course implements Serializable{
 		this.courseId = courseId;
 	}
 
+	public void setCourseDepartment(int courseDepartment) {
+		this.courseDepartment = courseDepartment;
+	}
+
 	public void setCourseDuration(int courseDuration) {
 		this.courseDuration = courseDuration;
 	}
 
-	public void setCourseDepartment(int courseDepartment) {
-		this.courseDepartment = courseDepartment;
+	public void setRunCourses(List<RunnedCourse> runCourses) {
+		this.runCourses = runCourses;
+	}
+
+	public void setFeedbacks(List<Feedback> feedbacks) {
+		this.feedbacks = feedbacks;
 	}
 
 	@Override
@@ -126,6 +116,8 @@ public class Course implements Serializable{
 		result = prime * result + ((courseProgram == null) ? 0 : courseProgram.hashCode());
 		result = prime * result + ((courseRequirement == null) ? 0 : courseRequirement.hashCode());
 		result = prime * result + ((departmentName == null) ? 0 : departmentName.hashCode());
+		result = prime * result + ((feedbacks == null) ? 0 : feedbacks.hashCode());
+		result = prime * result + ((runCourses == null) ? 0 : runCourses.hashCode());
 		return result;
 	}
 
@@ -169,17 +161,25 @@ public class Course implements Serializable{
 				return false;
 		} else if (!departmentName.equals(other.departmentName))
 			return false;
+		if (feedbacks == null) {
+			if (other.feedbacks != null)
+				return false;
+		} else if (!feedbacks.equals(other.feedbacks))
+			return false;
+		if (runCourses == null) {
+			if (other.runCourses != null)
+				return false;
+		} else if (!runCourses.equals(other.runCourses))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "InfoAboutCourse [courseName=" + courseName + ", courseDescription=" + courseDescription
-				+ ", courseProgram=" + courseProgram + ", courseRequirement=" + courseRequirement + ", departmentName="
-				+ departmentName + ", courseId=" + courseId + ", courseDuration=" + courseDuration
-				+ ", courseDepartment=" + courseDepartment + "]";
+		return "Course [courseName=" + courseName + ", courseDescription=" + courseDescription + ", courseProgram="
+				+ courseProgram + ", courseRequirement=" + courseRequirement + ", departmentName=" + departmentName
+				+ ", courseId=" + courseId + ", courseDepartment=" + courseDepartment + ", courseDuration="
+				+ courseDuration + ", runCourses=" + runCourses + ", feedbacks=" + feedbacks + "]";
 	}
-
-	
 
 }

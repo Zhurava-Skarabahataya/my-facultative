@@ -8,4 +8,6 @@ public interface StudentStatusService {
 
 	void disapproveStudentOnCourse(int studentId, int runCourseId) throws ServiceException;
 
+	void expelStudent(int userId) throws ServiceException;
+
 }

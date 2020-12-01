@@ -51,4 +51,20 @@ public class StudentStatusServiceImpl implements StudentStatusService {
 
 	}
 
+	@Override
+	public void expelStudent(int userId) throws ServiceException {
+		
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		CourseDAO courseDAO = daoFactory.getCourseDAO();
+		
+		try {
+			courseDAO.expellStudent(userId);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+
+		}
+
+		
+	}
+
 }

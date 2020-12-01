@@ -19,7 +19,7 @@ public interface CourseInfoService {
 
 	void findLecturerRunCourses(UserInfo userPageInfo) throws ServiceException;
 
-	void findDeanRunCourses(UserInfo userPageInfo);
+	void findDeanRunCourses(UserInfo userPageInfo) throws ServiceException;
 
 	void applyStudentForRunCourse(int userId, int runCourseId) throws ServiceException;
 

@@ -21,32 +21,6 @@ public class StudentOnCourse implements Serializable {
 	public StudentOnCourse() {
 		
 	}
-	
-	
-	
-	public String getUserPhotoLink() {
-		return userPhotoLink;
-	}
-
-
-
-	public RunnedCourse getInfoAboutRunnedCourse() {
-		return infoAboutRunnedCourse;
-	}
-
-
-
-	public void setUserPhotoLink(String userPhotoLink) {
-		this.userPhotoLink = userPhotoLink;
-	}
-
-
-
-	public void setInfoAboutRunnedCourse(RunnedCourse infoAboutRunnedCourse) {
-		this.infoAboutRunnedCourse = infoAboutRunnedCourse;
-	}
-
-
 
 	public int getUserId() {
 		return userId;
@@ -68,6 +42,10 @@ public class StudentOnCourse implements Serializable {
 		return userPatronymic;
 	}
 
+	public String getUserPhotoLink() {
+		return userPhotoLink;
+	}
+
 	public int getResult() {
 		return result;
 	}
@@ -78,6 +56,10 @@ public class StudentOnCourse implements Serializable {
 
 	public String getUserApprovalStatusName() {
 		return userApprovalStatusName;
+	}
+
+	public RunnedCourse getInfoAboutRunnedCourse() {
+		return infoAboutRunnedCourse;
 	}
 
 	public void setUserId(int userId) {
@@ -100,6 +82,10 @@ public class StudentOnCourse implements Serializable {
 		this.userPatronymic = userPatronymic;
 	}
 
+	public void setUserPhotoLink(String userPhotoLink) {
+		this.userPhotoLink = userPhotoLink;
+	}
+
 	public void setResult(int result) {
 		this.result = result;
 	}
@@ -112,10 +98,15 @@ public class StudentOnCourse implements Serializable {
 		this.userApprovalStatusName = userApprovalStatusName;
 	}
 
+	public void setInfoAboutRunnedCourse(RunnedCourse infoAboutRunnedCourse) {
+		this.infoAboutRunnedCourse = infoAboutRunnedCourse;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((infoAboutRunnedCourse == null) ? 0 : infoAboutRunnedCourse.hashCode());
 		result = prime * result + this.result;
 		result = prime * result + userApprovalStatusId;
 		result = prime * result + ((userApprovalStatusName == null) ? 0 : userApprovalStatusName.hashCode());
@@ -123,6 +114,7 @@ public class StudentOnCourse implements Serializable {
 		result = prime * result + userId;
 		result = prime * result + ((userLogin == null) ? 0 : userLogin.hashCode());
 		result = prime * result + ((userPatronymic == null) ? 0 : userPatronymic.hashCode());
+		result = prime * result + ((userPhotoLink == null) ? 0 : userPhotoLink.hashCode());
 		result = prime * result + ((userSecondName == null) ? 0 : userSecondName.hashCode());
 		return result;
 	}
@@ -136,6 +128,11 @@ public class StudentOnCourse implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentOnCourse other = (StudentOnCourse) obj;
+		if (infoAboutRunnedCourse == null) {
+			if (other.infoAboutRunnedCourse != null)
+				return false;
+		} else if (!infoAboutRunnedCourse.equals(other.infoAboutRunnedCourse))
+			return false;
 		if (result != other.result)
 			return false;
 		if (userApprovalStatusId != other.userApprovalStatusId)
@@ -162,6 +159,11 @@ public class StudentOnCourse implements Serializable {
 				return false;
 		} else if (!userPatronymic.equals(other.userPatronymic))
 			return false;
+		if (userPhotoLink == null) {
+			if (other.userPhotoLink != null)
+				return false;
+		} else if (!userPhotoLink.equals(other.userPhotoLink))
+			return false;
 		if (userSecondName == null) {
 			if (other.userSecondName != null)
 				return false;
@@ -172,10 +174,12 @@ public class StudentOnCourse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CourseStudentInfo [userId=" + userId + ", userLogin=" + userLogin + ", userFirstName=" + userFirstName
-				+ ", userSecondName=" + userSecondName + ", userPatronymic=" + userPatronymic + ", result=" + result
-				+ ", userApprovalStatusId=" + userApprovalStatusId + ", userApprovalStatusName="
-				+ userApprovalStatusName + "]";
+		return "StudentOnCourse [userId=" + userId + ", userLogin=" + userLogin + ", userFirstName=" + userFirstName
+				+ ", userSecondName=" + userSecondName + ", userPatronymic=" + userPatronymic + ", userPhotoLink="
+				+ userPhotoLink + ", result=" + result + ", userApprovalStatusId=" + userApprovalStatusId
+				+ ", userApprovalStatusName=" + userApprovalStatusName + ", infoAboutRunnedCourse="
+				+ infoAboutRunnedCourse + "]";
 	}
+	
 
 }

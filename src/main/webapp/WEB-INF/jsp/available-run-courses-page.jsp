@@ -33,6 +33,8 @@
 <fmt:message bundle="${loc}" key="course_recruting" var="course_recruting" />
 <fmt:message bundle="${loc}" key="course_running" var="course_running" />
 <fmt:message bundle="${loc}" key="no_available_courses" var="no_available_courses" />
+<fmt:message bundle="${loc}" key="back" var="back" />
+<fmt:message bundle="${loc}" key="forward" var="forward" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_available_run_courses_page" />
 
@@ -65,7 +67,9 @@
 					<td><c:out value="${run_course.lecturerName}"/></td>
 					<td><c:out value="${run_course.shedule}"/></td>
 					<td><c:out value="${run_course.studentLimit - run_course.studentAmount}"/></td>
-					<td><c:choose>
+					<td>
+					
+					<c:choose>
 				<c:when test="${run_course.currentState == 1}"><c:out value="${course_canselled}"/> </c:when>
 				<c:when test="${run_course.currentState== 2}"><c:out value="${course_ended}"/> </c:when>
 				<c:when test="${run_course.currentState== 3}"><c:out value="${course_recruting}"/> </c:when>
@@ -84,6 +88,30 @@
 			</c:forEach>
 		
 			</table>
+		
+		<div style = "display:inline-block">
+			<c:if test="${requestScope.page != 1}">
+				<div style="float:left;"> 
+					<form action="Controller" method="post">
+						<input type="hidden" name="command" value="go_to_available_run_courses_page" />
+						<input type="hidden" name="page" value = "${requestScope.page - 1}"/>
+						<input type="submit" value="${back}" />
+					</form>
+				</div>
+			</c:if>
+			<div style="float:left;"></div>
+			
+			<c:if test="${requestScope.page != pageAmount}">
+				<div style="float:left;"> 
+					<form action="Controller" method="post">
+						<input type="hidden" name="command" value="go_to_available_run_courses_page" />
+						<input type="hidden" name="page" value = "${requestScope.page + 1}"/>
+						<input type="submit" value="${forward}" />
+					</form>
+				</div>
+			</c:if>		
+		
+		</div>
 		
 		</c:when>
 		<c:otherwise>

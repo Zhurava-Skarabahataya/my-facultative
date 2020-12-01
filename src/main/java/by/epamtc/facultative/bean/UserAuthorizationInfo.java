@@ -12,7 +12,6 @@ public class UserAuthorizationInfo implements Serializable {
 	String telephoneNumber;
 
 	public UserAuthorizationInfo() {
-		super();
 	}
 
 	public String getLogin() {
@@ -23,20 +22,20 @@ public class UserAuthorizationInfo implements Serializable {
 		return password;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public String getTelephoneNumber() {
 		return telephoneNumber;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setEmail(String email) {
@@ -95,5 +94,6 @@ public class UserAuthorizationInfo implements Serializable {
 		return "UserAuthorizationInfo [login=" + login + ", password=" + password + ", email=" + email
 				+ ", telephoneNumber=" + telephoneNumber + "]";
 	}
+
 
 }

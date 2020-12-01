@@ -12,6 +12,7 @@ public class EmployeeStatusServiceImpl implements EmployeeStatusService {
 
 	private final int APPROVED_STATUS = 2;
 	private final int DISAPPROVED_STATUS = 4;
+	private final int FIRED_STATUS = 5;
 
 	private EmployeeStatusServiceImpl() {
 
@@ -51,5 +52,22 @@ public class EmployeeStatusServiceImpl implements EmployeeStatusService {
 		}
 
 	}
+
+	@Override
+	public void fireEmployee(int employeeId) throws ServiceException {
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		UserDAO userDAO = daoFactory.getUserDAO();
+
+		try {
+			userDAO.changeEmployeeStatus(employeeId, FIRED_STATUS);
+
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+
+		}
+		
+	}
+	
+	
 
 }

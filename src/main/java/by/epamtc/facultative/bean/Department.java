@@ -3,31 +3,31 @@ package by.epamtc.facultative.bean;
 import java.io.Serializable;
 import java.util.List;
 
-public class Department implements Serializable{
-		
+public class Department implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private String departmentName;
 	private String departmentDescription;
 	private String deanName;
 	private String deanLogin;
 	private String deanImagePath;
-	
+
 	private int departmentID;
 	private int deanId;
-	
+
 	private List<UserInfo> lecturers;
 	private List<UserInfo> students;
 	private List<Course> courses;
-	
+
 	private UserInfo dean;
-		
-	private List <UserInfo> workingStaff;
-	private List <UserInfo> NotApprovedStaff;
-	private List <UserInfo> firedStaff;
-	
+
+	private List<UserInfo> workingStaff;
+	private List<UserInfo> NotApprovedStaff;
+	private List<UserInfo> firedStaff;
+
 	public Department() {
-		
+
 	}
 
 	public String getDepartmentName() {
@@ -247,8 +247,5 @@ public class Department implements Serializable{
 				+ students + ", courses=" + courses + ", dean=" + dean + ", workingStaff=" + workingStaff
 				+ ", NotApprovedStaff=" + NotApprovedStaff + ", firedStaff=" + firedStaff + "]";
 	}
-	
-	
-	
-	
+
 }

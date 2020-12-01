@@ -48,6 +48,9 @@
 <fmt:message bundle="${loc}" key="success_leaving_feedback"
 	var="success_leaving_feedback" />
 <fmt:message bundle="${loc}" key="to_main_page" var="to_main_page" />
+<fmt:message bundle="${loc}" key="go_to_staff_page" var="go_to_staff_page" />
+<fmt:message bundle="${loc}" key="success_employee_fired" var="success_employee_fired" />
+<fmt:message bundle="${loc}" key="success_student_expelled" var="success_student_expelled" />
 
 <c:set var="commandToLanguageChanger" scope="session"
 	value="go_to_welcome_page" />
@@ -91,6 +94,10 @@
 				<c:out value="${success_authorization}" />
 
 			</c:when>
+			<c:when test="${requestScope.message =='success_student_expelled'}">
+				<c:out value="${success_student_expelled}" />
+
+			</c:when>
 			<c:when test="${requestScope.message =='success_student_approved'}">
 				<c:out value="${success_student_approved}" />
 				<form action="Controller" method="post">
@@ -101,6 +108,14 @@
 			</c:when>
 			<c:when test="${requestScope.message =='success_employee_approved'}">
 				<c:out value="${success_employee_approved}" />
+				<form action="Controller" method="post">
+					<input type="hidden" name="command" value="go_to_staff_page" /> <input
+						type="submit" value="${go_to_staff_page}" /><br />
+				</form>
+
+			</c:when>
+			<c:when test="${requestScope.message =='success_employee_fired'}">
+				<c:out value="${success_employee_fired}" />
 				<form action="Controller" method="post">
 					<input type="hidden" name="command" value="go_to_staff_page" /> <input
 						type="submit" value="${go_to_staff_page}" /><br />

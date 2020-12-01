@@ -74,7 +74,14 @@
 
 			</table>
 			 <input type="submit" value="${send}" /> 
-			<input type="submit" value="${forgot_password}" /><br>
+		<br>
+		</form>
+		
+		<form action="Controller" method="post">
+			<input type="hidden" name="command" value="go_to_error_page" />
+			<input type="hidden" name="errorMessage" value="forgot_password" />
+			
+			<input type="submit" value="${forgot_password}" />
 		</form>
 	</div>
 	</div>

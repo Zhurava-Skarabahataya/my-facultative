@@ -2,37 +2,42 @@ package by.epamtc.facultative.bean;
 
 import java.io.Serializable;
 
-public class Mark implements Serializable{
+public class Mark implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int markGrade;
 	private int runCourseId;
 	private String courseTitle;
-	
-	
+
 	public Mark() {
-		
+
 	}
-	
+
 	public int getMarkGrade() {
 		return markGrade;
 	}
+
 	public int getRunCourseId() {
 		return runCourseId;
 	}
+
 	public String getCourseTitle() {
 		return courseTitle;
 	}
+
 	public void setMarkGrade(int markGrade) {
 		this.markGrade = markGrade;
 	}
+
 	public void setRunCourseId(int runCourseId) {
 		this.runCourseId = runCourseId;
 	}
+
 	public void setCourseTitle(String courseTitle) {
 		this.courseTitle = courseTitle;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -42,6 +47,7 @@ public class Mark implements Serializable{
 		result = prime * result + runCourseId;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -62,11 +68,10 @@ public class Mark implements Serializable{
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Mark [markGrade=" + markGrade + ", runCourseId=" + runCourseId + ", courseTitle=" + courseTitle + "]";
 	}
-	
-	
-	
+
 }

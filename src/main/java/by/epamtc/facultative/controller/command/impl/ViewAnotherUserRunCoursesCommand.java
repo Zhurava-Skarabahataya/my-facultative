@@ -67,7 +67,10 @@ public class ViewAnotherUserRunCoursesCommand implements Command {
 			}
 			
 			List<RunnedCourse> userCourses = userFromRequest.getCurrentCourses();
+			
+			if (userFromRequest.getEndedCourses() != null) {
 			userCourses.addAll(userFromRequest.getEndedCourses());
+			}
 			
 			request.setAttribute(REQUEST_PARAMETER_COURSES, userCourses);
 			

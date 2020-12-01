@@ -37,7 +37,7 @@
 <body>
 	<jsp:include page="header.jsp" />
 	
-	<div class="prescription"><c:out value="${user_profile}"/></div>
+	<div class="inscription"><c:out value="${user_profile}"/></div>
 	
 	<table>
 		<tr>
@@ -92,12 +92,7 @@
 							<input type="hidden" name="userRole" value="${requestScope.user.userRoleId}"/>
 						<input type="submit" value="${see_student_run_courses}" />
 		</form>
-		<form action="Controller" method="post">
-				<input type="hidden" name="command"
-					value="expel_student" /> 
-					<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
-					<input type="submit" value="${expell_student}" onclick="return confirm('Are you sure you want to expell?')" />
-		</form>
+		
 		</c:if>
 			
 	
@@ -118,7 +113,7 @@
 		</c:if>
 		<form action="Controller" method="post">
 				<input type="hidden" name="command"
-					value="fire_user_command" /> 
+					value="fire_employee" /> 
 										<input type="hidden" name="userId" value="${requestScope.user.userId}"/>
 					
 					<input type="submit" value="${fire_employee}" onclick="return confirm('Are you sure you want to fire?')" />

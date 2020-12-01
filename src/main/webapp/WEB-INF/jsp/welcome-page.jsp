@@ -19,6 +19,7 @@
 	var="loc" scope="session" />
 
 <fmt:message bundle="${loc}" key="page_title" var="page_title" />
+<fmt:message bundle="${loc}" key="greetings" var="greetings" />
 <fmt:message bundle="${loc}" key="welcomepage.message.welcome"
 	var="message" />
 <fmt:message bundle="${loc}" key="welcomepage.message.choose_form"
@@ -36,8 +37,11 @@
 <body>
 	<jsp:include page="header.jsp" />
 
-	<div
-		style="background-image: url(image/main-page-photo.jpg); background-size: contain; background-repeat: no-repeat; height: 600px;">
+	<div 
+		style="background-image: url(image/main-page-photo.jpg); background-size: contain; 
+		background-repeat: no-repeat; height: 600px; display: block;
+  margin-left: auto; 
+  margin-right: auto;">
 
 		<div style="margin: 25px; padding: 20px;">
 			<h1 align="left" style="color: white; width: 400px; opacity: 0.9">
@@ -69,7 +73,7 @@
 				style="text-aligh: center; width: 300px; padding: 30px; margin: 30px;">
 				<div style="text-align: center; opacity: 0.8">
 					<div class="inscription">
-						GREETINGS,
+						<c:out value="${greetings}"/> 
 						<c:out value="${sessionScope.bean.userFirstName}" />
 						<c:if test="${sessionScope.bean.userPatronymic!=null}">
 							<c:out value="${sessionScope.bean.userPatronymic}" />
@@ -86,8 +90,11 @@
 	</div>
 
 
-	<img src="image/welcome-cat.png" alt="Здесь должен был быть кот."
-		height=200 style="opacity:0.9">
+	<img src="image/news-cat.png" alt="Здесь должен был быть кот."
+		height=200 style="opacity:0.9; border-radius: 10px;display: block;
+  margin-left: auto; margin-top:15px;
+  margin-right: auto;
+ ">
 
 	<div style = "display:inline-block; padding:5px; ">
 		<c:forEach var="news" items="${requestScope.info.news}">
@@ -105,7 +112,6 @@
 	
 	</div>
 
-	<c:out value="${popularCourses}" />
 	<jsp:include page="footer.jsp" />
 
 </body>

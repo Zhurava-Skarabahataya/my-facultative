@@ -32,6 +32,7 @@
 <fmt:message bundle="${loc}" key="not_enought_right_for_procedure" var="not_enought_right_for_procedure" />
 <fmt:message bundle="${loc}" key="invalid_user_data" var="invalid_user_data" />
 <fmt:message bundle="${loc}" key="wrong_date_format" var="wrong_date_format" />
+<fmt:message bundle="${loc}" key="forgot_password" var="forgot_password" />
 
 <c:set var="commandToLanguageChanger" scope="session" value="go_to_error_page" />
 <body>
@@ -64,6 +65,9 @@
 			</c:when>
 			<c:when test="${requestScope.errorMessage=='server_error'}">
 					<c:out value="${server_error}" />
+			</c:when>
+			<c:when test="${requestScope.errorMessage=='forgot_password'}">
+					<c:out value="${forgot_password}" />
 			</c:when>
 			<c:when test="${requestScope.errorMessage=='wrong_date_format'}">
 					<c:out value="${wrong_date_format}" />

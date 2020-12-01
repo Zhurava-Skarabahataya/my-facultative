@@ -125,7 +125,7 @@
 						<form action="Controller" method="post">
 							<input type="hidden" name="command"
 								value="go_to_another_user_page" /> <input type="hidden"
-								name="employeeId" value="${employee.userId}" /> <input
+								name="userId" value="${employee.userId}" /> <input
 								type="submit" value="${watch_page}" />
 						</form></td>
 						

@@ -135,4 +135,19 @@ public interface CourseDAO {
 	 */
 	RunnedCourse findRunCourse(int runCourseId) throws DAOException;
 
+	/**
+	 * Changes user status to "expelled".
+	 * @param userId id of the expelled student
+	 * @throws DAOException when problems with database access occur.
+	 */
+	void expellStudent(int userId) throws DAOException;
+
+	/**
+	 * Method that connects to database and finds run courses of dean.
+	 * 
+	 * @param userPageInfo dean page info
+	 * @throws DAOException when problems with database access occur.
+	 */
+	void findRunCoursesOfDean(UserInfo userPageInfo) throws DAOException;
+
 }

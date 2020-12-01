@@ -8,6 +8,7 @@ import by.epamtc.facultative.service.impl.EmployeeStatusServiceImpl;
 import by.epamtc.facultative.service.impl.FeedbackServiceImpl;
 import by.epamtc.facultative.service.impl.FullNameServiceImpl;
 import by.epamtc.facultative.service.impl.NewsServiceImpl;
+import by.epamtc.facultative.service.impl.PaginationServiceImpl;
 import by.epamtc.facultative.service.impl.PasswordEncryptorImpl;
 import by.epamtc.facultative.service.impl.RatingServiceImpl;
 import by.epamtc.facultative.service.impl.RegistrationServiceImpl;
@@ -17,9 +18,9 @@ import by.epamtc.facultative.service.impl.UserInfoServiceImpl;
 import by.epamtc.facultative.service.impl.WelcomePageServiceImpl;
 
 public class ServiceProvider {
-	
+
 	private static final ServiceProvider instance = new ServiceProvider();
-	
+
 	private final FullNameService fullNameService = FullNameServiceImpl.getInstance();
 	private final AuthorizationService authorizationUserService = AuthorizationServiceImpl.getInstance();
 	private final CourseInfoService courseInfoService = CourseInfoServiceImpl.getInstance();
@@ -35,11 +36,12 @@ public class ServiceProvider {
 	private final UpdateUserInfoService updateUserInfoService = UpdateUserInfoServiceImpl.getInstance();
 	private final WelcomePageService welcomePageService = WelcomePageServiceImpl.getInstance();
 	private final NewsService newsService = NewsServiceImpl.getInstance();
-	
+	private final PaginationService paginationService = PaginationServiceImpl.getInstance();
+
 	private ServiceProvider() {
-		
+
 	}
-	
+
 	public static ServiceProvider getInstance() {
 		return instance;
 	}
@@ -103,10 +105,9 @@ public class ServiceProvider {
 	public NewsService getNewsService() {
 		return newsService;
 	}
-	
-	
 
-	
-	
-	
+	public PaginationService getPaginationService() {
+		return paginationService;
+	}
+
 }

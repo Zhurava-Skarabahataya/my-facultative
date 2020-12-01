@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import org.apache.log4j.Logger;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -60,6 +59,8 @@ public class UserDAOImplTest {
 	private final String DATABASE_PARAMETER_DEPARTMENT_ID = "users.department_department_id";
 	private final String DATABASE_PARAMETER_DEPARTMENT_NAME = "departments.name";
 	private final String DATABASE_PARAMETER_COURSE_TITLE = "courses.title";
+	
+	private final String TEST_LOGIN = "test";
 
 	@BeforeClass
 	public static void initializeConnectionPools() throws ConnectionPoolException {
@@ -76,7 +77,7 @@ public class UserDAOImplTest {
 
 		UserInfo userTestInfo = new UserInfo();
 
-		String testLogin = "test";
+		String testLogin = TEST_LOGIN;
 		userTestInfo.setUserLogin(testLogin);
 
 		ConnectionPoolTest connectionPoolTest = ConnectionPoolTest.getInstance();
@@ -109,6 +110,7 @@ public class UserDAOImplTest {
 				String userPhone;
 
 				LocalDate userDateOfBirth = null;
+				
 				userId = resultSet.getInt(DATABASE_PARAMETER_USER_ID);
 				userFacultyId = resultSet.getInt(DATABASE_PARAMETER_DEPARTMENT_ID);
 				userRoleId = resultSet.getInt(DATABASE_PARAMETER_USER_ROLE_ID);

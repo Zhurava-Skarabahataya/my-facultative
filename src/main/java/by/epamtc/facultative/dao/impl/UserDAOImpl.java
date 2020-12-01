@@ -591,7 +591,6 @@ public class UserDAOImpl implements UserDAO {
 				}
 
 				UserInfo employee = new UserInfo();
-
 				employee.setUserId(userId);
 				employee.setUserRoleId(userRoleId);
 				employee.setUserStatusId(userStatus);
